@@ -123,7 +123,32 @@ public class UserInterface {
         }
     }
     public static void adminMenu(){
-        
+        //Asks the administrator to choose an option, then calls the corresponding method menu.
+        System.out.println("                             Admin Menu  \n");
+        System.out.println("Collect Deposits (c) - Restock Withdrawal Tray (r) - Withdrawal Tray Status (w)");
+        System.out.println(" View Transactions (v) -    Unflag User (u)    -      Logout (l) \n");
+        String userInput = "";
+        while (true){
+            userInput = promptForText("Enter Decision: ").toLowerCase();
+            if(userInput.equals("c")){
+                collectDeposits();
+            }
+            else if(userInput.equals("r")){
+                restockWithdrawalTray();
+            }
+            else if(userInput.equals("w")){
+                withdrawalStatus();
+            }
+            else if(userInput.equals("v")){
+                viewAllTransactions();
+            }
+            else if(userInput.equals("u")){
+                unflagUser();
+            }
+            else if(userInput.equals("l")){
+                logout();
+            }
+        }
     }
     public static void createProfile(){
         /* Asks user for their attributes / account properties
@@ -270,15 +295,15 @@ public class UserInterface {
         Account currAccount = am.getCurrentAccount();
         double currBalance = currAccount.getBalance();
         double userWithdraw = 0;
-        if(currBalance<5.0){
+        if(currBalance<10.0){
             System.out.println("You have insufficient funds to process a withdrawal on this account.");
-            System.out.println("You must have at least $5 to perform a partial withdraw.");
+            System.out.println("You must have at least $10 to perform a partial withdraw.");
             System.out.println("You may withdraw all available funds if you wish.  Current Balance: "+currBalance);
             String userAnswer = "";
             while (!userAnswer.equals("w")&&!userAnswer.equals("r")) {
-                userAnswer = promptForText("\n    Withdraw All Funds (w) -- Return to Account Manager (r)  ").toLowerCase();
+                userAnswer = promptForText("\n    Withdraw All Funds (w) -- Return to Account Manager (x)  ").toLowerCase();
             }
-            if (userAnswer.equals("r")){
+            if (userAnswer.equals("x")){
                 accountMenu();
                 //don't want to use return here, always want to start at the top of all menu's
             }
@@ -286,14 +311,14 @@ public class UserInterface {
                 userWithdraw=currBalance;
             }
         }
-        else if(currBalance>=5.0) {
+        else if(currBalance>=10.0) {
             boolean gettingAmount = true;
             while (gettingAmount) {
-                userWithdraw = promptForPositiveDouble("What amount would you like to withdraw? ($5 increments)");
+                userWithdraw = promptForPositiveDouble("What amount would you like to withdraw? ($10 increments)");
                 if (userWithdraw > currBalance) {
                     System.out.println("Insufficient funds.  Enter a lower amount.");
-                } else if (userWithdraw % 5 != 0) {
-                    System.out.println("Your withdrawal must be in $5 increments.");
+                } else if (userWithdraw % 10 != 0) {
+                    System.out.println("Your withdrawal must be in $10 increments.");
                 } else if (userWithdraw > 300) {
                     System.out.println("Maximum withdrawal: $300");
                 } else {
@@ -435,11 +460,35 @@ public class UserInterface {
             accountMenu();
         }
     }
+    //ADMIN SUB-MENUs
+    public static void collectDeposits(){
 
-    public static void checkATMBalance(){
+    }
+    public static void restockWithdrawalTray(){
+
+
 
     }
 
+    public static void withdrawalStatus(){
+
+    }
+    public static void viewAllTransactions(){
+
+
+
+    }
+    public static void unflagUser(){
+
+
+
+
+    }
+
+
+
+
+    //UTILITY METHODS
     public static void delayedPrint(int millisecondsDelay) {
         try {
             Thread.sleep(millisecondsDelay);
