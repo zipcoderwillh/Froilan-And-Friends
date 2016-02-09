@@ -1,6 +1,6 @@
 package io.froilanandfriends.atm;
 
-import java.util.ArrayList;
+
 
 public class User {
     private boolean isAdmin = false;
@@ -14,11 +14,20 @@ public class User {
         }
         return false;
     }
-    public User(String[] x){
-
-    }
-    public User(){
-
+    /*** FROM FILE IO  ***/
+    //Added general constructor for loading purposes. String x comes from UserManager.loadUsers().
+    public User(String x){
+        String[] cSeparated = x.split(",");
+        this.userName  = cSeparated[0];
+        this.userID  = Integer.parseInt(cSeparated[1]);
+        this.firstName  = cSeparated[2];
+        this.lastName  = cSeparated[3];
+        this.email  = cSeparated[4];
+        this.pin  = Integer.parseInt(cSeparated[5]);
+        this.securityQuestion  = cSeparated[6];
+        this.securityAnswer  = cSeparated[7];
+        this.flagged  = Boolean.parseBoolean(cSeparated[8]);
+        this.isAdmin  = Boolean.parseBoolean(cSeparated[9]);
     }
 
     public User(String userName, String firstName, String lastName, String email, int pin, String securityQuestion, String securityAnswer){
@@ -59,6 +68,10 @@ public class User {
 
     public boolean isFlagged() {
         return flagged;
+    }
+
+    public void setUserID(int ID){
+        this.userID = ID;
     }
 
     public int getUserID() {
