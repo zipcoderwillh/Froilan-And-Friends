@@ -1,6 +1,7 @@
 package io.froilanandfriends.atm;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Scanner;
 
 public class UserInterface {
@@ -124,6 +125,7 @@ public class UserInterface {
     }
     public static void adminMenu(){
         //Asks the administrator to choose an option, then calls the corresponding method menu.
+        clearScreen();
         System.out.println("                             Admin Menu  \n");
         System.out.println("Collect Deposits (c) - Restock Withdrawal Tray (r) - Withdrawal Tray Status (w)");
         System.out.println(" View Transactions (v) -    Unflag User (u)    -      Logout (l) \n");
@@ -462,31 +464,92 @@ public class UserInterface {
     }
     //ADMIN SUB-MENUs
     public static void collectDeposits(){
-
+        //Empties the deposit tray from ATM and returns to -> adminMenu()
+        clearScreen();
+        ATM atm = ATM.getATM();
+        System.out.println("Please Retrieve Deposits..");
+        atm.emptyDepositTray();
+        delayedPrint(2000,"Returning to Admin Menu");
+        delayedPrint(1200);
+        adminMenu();
     }
     public static void restockWithdrawalTray(){
+        /*Prompts admin to enter number of each bill they want to stock
+         *      checks legality
+         *          if illegal -> returns to adminMenu()
+         *          if illegal -> processes restock, returns to -> adminMenu() */
+        clearScreen();
+        ATM atm = ATM.getATM();
+        int numTwenties = promptForPositiveInt("Enter the number of twenty dollar bills:");
+        int numTens = promptForPositiveInt("Enter the number of tens:");
 
+        boolean restockSuccess = atm.reloadWithdrawalTray(numTwenties,numTens);
 
-
+        if(restockSuccess){
+            System.out.println("ATM successfully restocked.");
+            delayedPrint(2000,"Returning to Admin Menu");
+            delayedPrint(1200);
+            adminMenu();
+        }
+        else{
+            System.out.println("Restocking Unsuccessful.  Check Withdrawal Tray Status and Try Again. ");
+            delayedPrint(2000,"Returning to Admin Menu");
+            delayedPrint(1200);
+            adminMenu();
+        }
     }
-
     public static void withdrawalStatus(){
+        //Prints out the status of the withdrawal trays in the ATM then returns to -> adminMenu()
+        clearScreen();
+        ATM atm = ATM.getATM();
+        System.out.println("Current Withdrawal Tray Balance :   "+atm.getATMBalance);
+        HashMap<Integer,Integer> withdrawalTray = atm.getWithdrawlTray();
+        int totalBills = withdrawalTray.get(20)+withdrawalTray.get(10);
+        System.out.println(" Twenties  : "+withdrawalTray.get(20));
+        System.out.println("   Tens    : "+withdrawalTray.get(10));
+        System.out.println("\nTotal Bills: "+totalBills);
+        System.out.println("Max Capacity: 2,000 bills");
 
+        delayedPrint(1500);
+        promptForText("\n When finished, hit RETURN.");
+        adminMenu();
     }
     public static void viewAllTransactions(){
-
-
-
+        //Prints out the entire transaction history of the ATM, then returns to -> adminMenu()
+        clearScreen();
+        TransactionManager tm = TransactionManager.getTransactionManager();
+        ArrayList<Transaction> allTrans = tm.getAllTransactions();
+        for(Transaction t:allTrans){
+            System.out.println(t.getDate()+ " - "+t.getTransactionType()+" - "+t.getAmount());
+        }
+        delayedPrint(1500);
+        promptForText("Press RETURN when finished.");
+        accountMenu();
     }
     public static void unflagUser(){
-
-
-
-
+        /* Prompts for a username to unflag
+         *      Deflags if user is flagged, returns to -> adminMenu()*/
+        clearScreen();
+        UserManager um = UserManager.getUserManager();
+        Authenticator am = Authenticator.getAuthenticator();
+        String userName = promptForText("Enter the user's username:");
+        User user = am.validateUser(userName);
+        if(user==null){
+            System.out.println("No such username.");
+        }
+        else{
+            boolean flagged = user.isFlagged();
+            if(!flagged){
+                System.out.println("User was not flagged.");
+            }
+            else{
+                user.removeFlagged();
+                System.out.println("User was unflagged.");
+            }
+        }
+        delayedPrint(1400,"Returning to Admin Menu.");
+        adminMenu();
     }
-
-
-
 
     //UTILITY METHODS
     public static void delayedPrint(int millisecondsDelay) {
@@ -561,6 +624,7 @@ public class UserInterface {
         }
         return userAnswer;
     }
+
     public static void clearScreen(){
         for (int x=0;x<100;x++){
             System.out.println();
