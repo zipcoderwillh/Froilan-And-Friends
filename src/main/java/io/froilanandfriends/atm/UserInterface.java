@@ -108,13 +108,22 @@ public class UserInterface {
         if(authenticated){
             UserManager um = UserManager.getUserManager();
             um.setCurrentUser(um.getUser(userNameInput));
-            userMenu();
+            User currentUser = um.getCurrentUser();
+            if(currentUser.isAdmin()){
+                adminMenu();
+            }
+            else {
+                userMenu();
+            }
         }
         else{
             System.out.println("Login failed.");
             delayedPrint(2000);
             loginMenu();
         }
+    }
+    public static void adminMenu(){
+        
     }
     public static void createProfile(){
         /* Asks user for their attributes / account properties
