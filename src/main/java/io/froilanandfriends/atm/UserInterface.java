@@ -50,7 +50,7 @@ public class UserInterface {
         }
         else{
             int accountIndexChosen = Character.getNumericValue(userInput.charAt(0))-97;
-            am.setCurrentAccount(userAccounts.get(accountIndexChosen));
+            am.switchAccount(userAccounts.get(accountIndexChosen).getId());
             accountMenu();
         }
     }
@@ -283,7 +283,7 @@ public class UserInterface {
             am.createAccount(AccountType.BUSINESS);
         }
         ArrayList<Account> allAccounts = am.getAllAccounts();
-        am.setCurrentAccount(allAccounts.get(allAccounts.size()-1));
+        am.switchAccount(allAccounts.get(allAccounts.size()-1).getId());
         accountMenu();
     }
 
@@ -430,8 +430,8 @@ public class UserInterface {
         AccountManager am = AccountManager.getAccountManager();
         UserManager um = UserManager.getUserManager();
         //null current fields
-        am.setCurrentAccount(null);
-        um.setCurrentUser(null);
+        am.clearCurrentAccount();
+        um.clearUser();
         System.out.println("Logging out..");
         delayedPrint(2000);
 
@@ -453,13 +453,14 @@ public class UserInterface {
          *       if yes: closes account, goes to -> userMenu()
          *       if no: goes to -> accountMenu()                     */
         clearScreen();
-        UserManager um = UserManager.getUserManager();
+        AccountManager am = AccountManager.getAccountManager();
+        Account currentAccount = am.getCurrentAccount();
         String userInput="";
         while (!userInput.equals("y")&&!userInput.equals("n") ){
             promptForText("Are you sure? (y/n)").toLowerCase();
         }
         if(userInput.equals("y")){
-            um.closeCurrentAccount();
+            am.deleteAccount(currentAccount.getId());
             System.out.println("Account Closed.");
             delayedPrint(2000);
             userMenu();
