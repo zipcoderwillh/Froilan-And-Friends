@@ -66,7 +66,6 @@ public class AccountManager {
         currentAccount.deposit(amountToDeposit);
         TransactionManager.getTransactionManager().createTransaction(currentAccount.getId(),-1,amountToDeposit);
     }
-
     public void transfer(long accountNumber, double amountToTransfer){
         //if the target account number is wrong, do nothing
         if (getAccount(accountNumber) == null)
