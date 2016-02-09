@@ -61,12 +61,12 @@ public class AccountManager {
         currentAccount.withdraw(amountToWithdrawl);
         TransactionManager.getTransactionManager().createTransaction(-1,currentAccount.getId(),amountToWithdrawl);
     }
-    public void deposit(int numBills, double amountToDeposit){
+    public void deposit( double amountToDeposit){
         //add given money to the current account
         currentAccount.deposit(amountToDeposit);
         TransactionManager.getTransactionManager().createTransaction(currentAccount.getId(),-1,amountToDeposit);
-        // TODO: 2/9/16 add numBills and the amount to the ATM
     }
+
     public void transfer(long accountNumber, double amountToTransfer){
         //if the target account number is wrong, do nothing
         if (getAccount(accountNumber) == null)

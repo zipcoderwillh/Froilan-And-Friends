@@ -24,7 +24,7 @@ public class AccountManagerTest {
     public void testCreateAccount() throws Exception {
         AccountManager am = new AccountManager();
         am.createAccount(AccountType.CHECKING);
-        assertEquals("Ensure the method returns an object of type: Account", Class.forName("Account"), am.getAllAccounts().get(0).getClass());
+        assertEquals("Ensure the method returns an object of type: Account", Class.forName("io.froilanandfriends.atm.Account"), am.getAllAccounts().get(0).getClass());
         am.createAccount(AccountType.BUSINESS);
         assertEquals("Ensure the method sets new Account to 'currentAccount", am.getCurrentAccount(), am.getAllAccounts().get(1));
     }
@@ -64,7 +64,7 @@ public class AccountManagerTest {
     public void testWithdrawl() throws Exception {
         AccountManager am = new AccountManager();
         am.createAccount(AccountType.CHECKING);
-        am.deposit(5,50.00d);
+        am.deposit(50.00d);
         assertEquals("account at id 0 should now have a balance of 50.00d",50.00d,am.getAllAccounts().get(0).getBalance(),0.01d);
         am.withdrawl(20.00d);
         assertEquals("account at id 0 should now have a balance of 30.00d",30.00d,am.getAllAccounts().get(0).getBalance(),0.01d);
@@ -75,9 +75,9 @@ public class AccountManagerTest {
         AccountManager am = new AccountManager();
         am.createAccount(AccountType.CHECKING);
         assertEquals("account at id 0 should have a balance of 0.00d",0.00d,am.getAllAccounts().get(0).getBalance(),0.01d);
-        am.deposit(3,25.00d);
+        am.deposit(25.00d);
         assertEquals("account at id 0 should now have a balance of 25.00d",25.00d,am.getAllAccounts().get(0).getBalance(),0.01d);
-        am.deposit(2,15.00d);
+        am.deposit(15.00d);
         assertEquals("account at id 0 should now have a balance of 40.00d",40.00d,am.getAllAccounts().get(0).getBalance(),0.01d);
     }
 
@@ -85,10 +85,10 @@ public class AccountManagerTest {
     public void testTransfer() throws Exception {
         AccountManager am = new AccountManager();
         am.createAccount(AccountType.CHECKING);
-        am.deposit(5,25.00d);
+        am.deposit(25.00d);
         assertEquals("account at id 0 should now have a balance of 25.00d",25.00d,am.getAllAccounts().get(0).getBalance(),0.01d);
         am.createAccount(AccountType.SAVINGS);
-        am.deposit(5,50.00d);
+        am.deposit(50.00d);
         assertEquals("account at id 1 should now have a balance of 50.00d",50.00d,am.getAllAccounts().get(1).getBalance(),0.01d);
         am.transfer(am.getAllAccounts().get(0).getId(),10.00d);
         assertEquals("account with id 0 should now have 35.00d",35.00d,am.getAllAccounts().get(0).getBalance(),0.01d);
