@@ -1,12 +1,14 @@
 package io.froilanandfriends.atm;
 
+import org.omg.CORBA.INTERNAL;
+
 import java.util.ArrayList;
 
 public class Account {
     private AccountType accountType;
     private long id;
     private double balance;
-    private ArrayList<Integer> userIDs;
+    private ArrayList<Integer> userIDs = new ArrayList<Integer>();
     Account(AccountType accountType){
         //set the account type to the given type
         this.accountType=accountType;
@@ -40,6 +42,9 @@ public class Account {
         return balance;
     }
 
+    public ArrayList<Integer> getUserIDs() {
+        return userIDs;
+    }
 }
 
 enum AccountType{

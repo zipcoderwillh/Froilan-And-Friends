@@ -47,6 +47,11 @@ public class AccountManager {
         currentAccount = getAccount(accountIDtoSwitchTo);
     }
 
+    public void clearCurrentAccount()
+    {
+        currentAccount = null;
+    }
+
     public long getCurrentAccountID()
     {
         //return the id of the current account
@@ -83,6 +88,23 @@ public class AccountManager {
         //and add to the target account
         getAccount(accountNumber).deposit(amountToTransfer);
         TransactionManager.getTransactionManager().createTransaction(TransactionType.TRANSFER,accountNumber,currentAccount.getId(),amountToTransfer);
+    }
+
+    public ArrayList<Account> getCurrentUsersAccounts(){
+        UserManager um = UserManager.getUserManager();
+        User currentUser = um.getCurrentUser();
+        int currentUserID = currentUser.getUserID();
+        ArrayList<Account> usersAccounts = new ArrayList<Account>();
+        for(int x=0;x<allAccounts.size();x++){
+            Account thisAccount = allAccounts.get(x);
+            ArrayList<Integer> accountsUserIDs = thisAccount.getUserIDs();
+            for(Integer z : accountsUserIDs){
+                if(z==currentUserID){
+                    usersAccounts.add(thisAccount);
+                }
+            }
+        }
+        return usersAccounts;
     }
 
     public ArrayList<Account> getAllAccounts() {

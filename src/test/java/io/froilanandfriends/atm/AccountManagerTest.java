@@ -1,5 +1,6 @@
 package io.froilanandfriends.atm;
 
+import jdk.nashorn.internal.runtime.ECMAException;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -104,5 +105,16 @@ public class AccountManagerTest {
         am.createAccount(AccountType.CHECKING);
         assertEquals("getAllaccounts should return an arraylist of size 4",4,am.getAllAccounts().size());
         assertEquals("account with the id at index 2 of the list should be of type BUSINESS",AccountType.BUSINESS,am.getAllAccounts().get(2).getAccountType());
+    }
+
+    @Test
+    public void testGetCurrentUsersAccounts() throws Exception {
+        UserManager.getUserManager().setCurrentUser(new User("bob1","Bob","Bobby","bob@aol.com",1234,"What is?","Yes"));
+        AccountManager am = new AccountManager();
+        am.createAccount(AccountType.BUSINESS);
+        am.getAllAccounts().get(0).getUserIDs().add(UserManager.getUserManager().getCurrentUser().getUserID());
+        User u2 = new User("joe22","Joe","Joey","joe@aol.com",4321,"What is I?","You");
+        am.getAllAccounts().get(0).getUserIDs().add(u2.getUserID());
+        assertEquals("current account should be linked to two users",2,am.getCurrentAccount().getUserIDs().size());
     }
 }

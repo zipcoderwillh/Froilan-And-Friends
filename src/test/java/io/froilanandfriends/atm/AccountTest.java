@@ -46,6 +46,14 @@ public class AccountTest {
         assertNotEquals("a1's id sould not be 0",0,a1.getId());
     }
 
+
+    @Test
+    public void testGetUserIDs() {
+        Account a = new Account(AccountType.BUSINESS);
+        a.getUserIDs().add(12312);
+        a.getUserIDs().add(3423423);
+        assertEquals("account's userids should be of size 2",2,a.getUserIDs().size());
+    }
     @Test
     public void testGetBalance() throws Exception {
         Account a = new Account(AccountType.BUSINESS);
