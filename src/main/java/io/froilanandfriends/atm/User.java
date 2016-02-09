@@ -29,6 +29,7 @@ public class User {
         this.flagged  = Boolean.parseBoolean(cSeparated[8]);
         this.isAdmin  = Boolean.parseBoolean(cSeparated[9]);
     }
+    /*** END OF FILE IO ***/
 
     public User(String userName, String firstName, String lastName, String email, int pin, String securityQuestion, String securityAnswer){
         this.userName = userName;
