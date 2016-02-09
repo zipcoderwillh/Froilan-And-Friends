@@ -22,10 +22,12 @@
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
         <processorPath useClasspath="true" />
+        <module name="ATM" />
         <module name="Froilan-And-Friends" />
       </profile>
     </annotationProcessing>
     <bytecodeTargetLevel>
+      <module name="ATM" target="1.5" />
       <module name="Froilan-And-Friends" target="1.5" />
     </bytecodeTargetLevel>
   </component>
