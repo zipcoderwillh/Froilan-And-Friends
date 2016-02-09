@@ -302,11 +302,11 @@ public class UserInterface {
         AccountManager am = AccountManager.getAccountManager();
         Account currAccount = am.getCurrentAccount();
         double currBalance = currAccount.getBalance();
-        double userWithdraw = 0;
+        int userWithdraw = 0;
         if(currBalance<10.0){
             System.out.println("You have insufficient funds to process a withdrawal on this account.");
             System.out.println("You must have at least $10 to perform a partial withdraw.");
-            System.out.println("You may withdraw all available funds if you wish.  Current Balance: "+currBalance);
+            System.out.println("You may withdraw all available funds in the form of a mailed check.  Current Balance: "+currBalance);
             String userAnswer = "";
             while (!userAnswer.equals("w")&&!userAnswer.equals("r")) {
                 userAnswer = promptForText("\n    Withdraw All Funds (w) -- Return to Account Manager (x)  ").toLowerCase();
@@ -316,13 +316,14 @@ public class UserInterface {
                 //don't want to use return here, always want to start at the top of all menu's
             }
             else {
-                userWithdraw=currBalance;
+                am.withdrawl(currBalance);
+                accountMenu();
             }
         }
         else if(currBalance>=10.0) {
             boolean gettingAmount = true;
             while (gettingAmount) {
-                userWithdraw = promptForPositiveDouble("What amount would you like to withdraw? ($10 increments)");
+                userWithdraw = promptForPositiveInt("What amount would you like to withdraw? ($10 increments)");
                 if (userWithdraw > currBalance) {
                     System.out.println("Insufficient funds.  Enter a lower amount.");
                 } else if (userWithdraw % 10 != 0) {
@@ -336,7 +337,7 @@ public class UserInterface {
         }
         ATM atm = ATM.getATM();
         boolean withdrawSuccess = atm.withdraw(userWithdraw);
-        if (withdrawSuccess==false){
+        if (!withdrawSuccess){
             System.out.println("We're sorry. Our ATM is running low on bills and cannot support a withdrawal of this amount at the current time.");
             delayedPrint(2000);
             accountMenu();
@@ -344,7 +345,6 @@ public class UserInterface {
         else {
             am.withdrawl(userWithdraw);
             System.out.println("Dispensing Cash.."); delayedPrint(2000);
-
             accountMenu();
         }
     }
@@ -365,7 +365,8 @@ public class UserInterface {
             accountMenu();
         }
         else {
-            am.deposit(depositAmount);
+            double depositDouble = (double) depositAmount;
+            am.deposit(depositDouble);
             System.out.println("$"+depositAmount+" deposited into your account.");
             accountMenu();
         }
@@ -509,7 +510,7 @@ public class UserInterface {
         //Prints out the status of the withdrawal trays in the ATM then returns to -> adminMenu()
         clearScreen();
         ATM atm = ATM.getATM();
-        System.out.println("Current Withdrawal Tray Balance :   "+atm.getATMBalance);
+        System.out.println("Current Withdrawal Tray Balance :   "+atm.getATMBalance());
         HashMap<Integer,Integer> withdrawalTray = atm.getWithdrawlTray();
         int totalBills = withdrawalTray.get(20)+withdrawalTray.get(10);
         System.out.println(" Twenties  : "+withdrawalTray.get(20));
