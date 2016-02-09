@@ -39,6 +39,7 @@ public class User {
         this.pin = pin;
         this.securityQuestion = securityQuestion;
         this.securityAnswer = securityAnswer;
+        this.userID = Integer.parseInt(userName);
     }
 
     public void setFlagged(){
