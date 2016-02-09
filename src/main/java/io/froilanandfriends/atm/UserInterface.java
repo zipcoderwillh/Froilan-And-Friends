@@ -162,8 +162,14 @@ public class UserInterface {
         String userName = ""; String firstName = ""; String lastName = ""; String email = "";
         while (true) {
             userName = promptForText("Enter Desired Username: ").toLowerCase();
+            userName = userName.replace(",","");
+            userName = userName.replace("\n","");
             //check username availability:
-            if (um.getUser(userName) != null) {
+            if(userName.indexOf(' ')>=0||userName.length()>8){
+                System.out.println("Usernames can be a maximum of 8 characters and may not contain spaces.");
+                delayedPrint(800);
+            }
+            else if (um.getUser(userName) != null) {
                 System.out.println("Username unavailable.");
                 delayedPrint(800);
             }
