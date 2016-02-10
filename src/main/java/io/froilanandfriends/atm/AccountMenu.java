@@ -144,9 +144,9 @@ public class AccountMenu {
             MenuUtilities.delayedPrint(1400);
             accountMenu();
         }
-        int idToTransfer = 0;
+        long idToTransfer = 0;
         double amountToTransfer=0;
-        idToTransfer=MenuUtilities.promptForPositiveInt("Enter Account Number to transfer funds to: ");
+        idToTransfer=MenuUtilities.promptForPositiveLong("Enter Account Number to transfer funds to: ");
         Account destinationAccount = am.getAccount(idToTransfer);
         if(destinationAccount==null){
             System.out.println("Not a valid account number.");
@@ -165,8 +165,7 @@ public class AccountMenu {
             }
         }
         if(amountToTransfer>0){
-            currAccount.withdraw(amountToTransfer);
-            destinationAccount.deposit(amountToTransfer);
+            am.transfer(destinationAccount.getId(),amountToTransfer);
         }
         accountMenu();
     }

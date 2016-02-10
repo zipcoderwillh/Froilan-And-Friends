@@ -101,6 +101,22 @@ public class MenuUtilities {
         }
         return userAnswer;
     }
+    public static long promptForPositiveLong(String textToDisplay){
+        Scanner input = new Scanner(System.in);
+        System.out.println(textToDisplay);
+        while(!input.hasNextLong()) {
+            input.next();
+        }
+        Long userAnswer=input.nextLong();
+        while (userAnswer<=0){
+            System.out.println("Please enter a positive value.");
+            while(!input.hasNextLong()) {
+                input.next();
+            }
+            userAnswer=input.nextLong();
+        }
+        return userAnswer;
+    }
 
     public static void clearScreen(){
         for (int x=0;x<100;x++){
