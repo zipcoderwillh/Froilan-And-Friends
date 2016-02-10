@@ -5,7 +5,7 @@ package io.froilanandfriends.atm;
 public class User {
     private boolean isAdmin = false;
     private boolean flagged = false;
-    private int userID,pin;
+    private int userID= 54542,pin;
     private String userName, firstName, lastName, email, securityQuestion, securityAnswer;
 
     boolean authenticate(int pin){
@@ -39,7 +39,7 @@ public class User {
         this.pin = pin;
         this.securityQuestion = securityQuestion;
         this.securityAnswer = securityAnswer;
-        this.userID = Integer.parseInt(userName);
+        this.userID += 42;
     }
 
     public void setFlagged(){
