@@ -2,6 +2,9 @@ package io.froilanandfriends.atm;
 
 import org.junit.Test;
 
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileReader;
 import java.util.Date;
 
 import static org.junit.Assert.*;
@@ -15,6 +18,14 @@ public class TransactionTest {
     public final static long EXPECTED_FROM_ACCOUNT = 2;
     public final static double EXPECTED_AMOUNT = 100.00;
     public final static TransactionType EXPECTED_TYPE = TransactionType.TRANSFER;
+
+    @Test
+    public void testCustomConstructor(){
+        /**if this constructor works, there will be a transaction object with an accountFrom# 12345. Passes **/
+
+        Transaction transaction = new Transaction(TransactionType.DEPOSIT, 12345, 12345, 1111, new Date(), 111111);
+        assertEquals(12345, transaction.getFromAccount());
+    }
 
     @Test
     public void testGetDate() throws Exception {
@@ -66,4 +77,5 @@ public class TransactionTest {
 
         assertEquals("Date not as expected", currentTime, transaction.getDate());
     }
+
 }
