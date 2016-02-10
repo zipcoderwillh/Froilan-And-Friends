@@ -2,6 +2,9 @@ package io.froilanandfriends.atm;
 
 import org.junit.Test;
 
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileReader;
 import java.util.Date;
 
 import static org.junit.Assert.*;
@@ -15,6 +18,14 @@ public class TransactionTest {
     public final static long EXPECTED_FROM_ACCOUNT = 2;
     public final static double EXPECTED_AMOUNT = 100.00;
     public final static TransactionType EXPECTED_TYPE = TransactionType.TRANSFER;
+
+    @Test
+    public void testCustomConstructor(){
+        /**if this constructor works, there will be a transaction object with an accountFrom# 12345. Passes **/
+
+        Transaction transaction = new Transaction(TransactionType.DEPOSIT, 12345, 12345, 1111, new Date(), 111111);
+        assertEquals(12345, transaction.getFromAccount());
+    }
 
     @Test
     public void testGetDate() throws Exception {
@@ -65,5 +76,48 @@ public class TransactionTest {
         transaction.setDate(currentTime);
 
         assertEquals("Date not as expected", currentTime, transaction.getDate());
+    }
+
+    @Test
+    public void testLoadTransactions() throws Exception {
+        /****
+         loadTransactions looks in the file transactionsLog.csv
+         and makes a transaction object with each line of the file, and stores each in
+         manager's transactions array
+         The test runs successfully when the to-account # we read from line 1 is the same
+         as the to-account of transaction object at index 0 if the array. There is something a bit
+         wonky right now because one of the factory's in transactionManager makes the accounts in an order
+         different than normal.
+         ****/
+        TransactionManager manager = TransactionManager.getTransactionManager();
+        manager.loadTransactions();
+        Transaction transaction = manager.getAllTransactions().get(0);
+        assertEquals(1899888, transaction.getToAccount());
+
+    }
+
+    @Test
+    public void testLogTransactions() throws Exception {
+        /** test shows that after we stock manager's transaction array, logTransactions()
+         * can take those objects create a long string with them and write it to
+         * a file. The test shows the file exists and we can see the contents are in order
+         * when we print out
+         **/
+        TransactionManager manager = TransactionManager.getTransactionManager();
+        //                                        type      to      from    amount
+        manager.createTransaction(TransactionType.DEPOSIT, 1899888, 1888181, 80000);
+        manager.createTransaction(TransactionType.DEPOSIT, 1899888, 1888181, 80000);
+        manager.createTransaction(TransactionType.DEPOSIT, 1899888, 1888181, 80000);
+        manager.logTransactions();
+
+        File file = new File("transactionsLog.csv");
+
+        assertTrue("File does not exist :)",file.exists());
+        BufferedReader br = new BufferedReader(new FileReader(file));
+        String line;
+        while((line = br.readLine()) != null){
+            System.out.println(line);
+        }
+
     }
 }
