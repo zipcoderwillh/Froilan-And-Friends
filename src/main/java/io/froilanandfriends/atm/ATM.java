@@ -129,8 +129,18 @@ public class ATM {
 
     public static void main(String[] args) {
 
-        ATM atm = new ATM();
-        // This will eventually kick off... UserInterface?
+        try {
+            UserManager.getUserManager().loadUsers();
+        } catch(Exception e) {
+        }
+
+        try {
+            AccountManager.getAccountManager().loadAccounts();
+        } catch(Exception e) {
+        }
+
+        TransactionManager.getTransactionManager().loadTransactions();
+        UserInterface.loginMenu();
 
     }
 
