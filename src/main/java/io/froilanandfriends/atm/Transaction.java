@@ -11,6 +11,19 @@ public class Transaction {
     private static long transactionIdCount = 0;
     TransactionType transactionType;
 
+
+    /*** This is the constructor we will use to load transaction objects from history***/
+    Transaction(TransactionType mType, long mFromAccount, long mToAccount, double mAmount, Date date, long id){
+        transactionType = mType;
+        fromAccount = mFromAccount;
+        toAccount = mToAccount;
+        amount = mAmount;
+        //Set date to time when previous transaction took place
+        this.date = date;
+        //Set id to id of old transaction
+        this.id = id;
+    }
+
     Transaction(TransactionType mType, long mFromAccount, long mToAccount, double mAmount){
         transactionType = mType;
         fromAccount = mFromAccount;

@@ -6,7 +6,7 @@ public class ATM {
 
     private int depositTray; // Total number of bills deposited in the machine
     private int depositValue; // Running dollar total of all deposits
-    private HashMap<Integer,Integer> withdrawalTray = new HashMap<>();  // Number of 20-dollar and 10-dollar bills
+    private HashMap<Integer,Integer> withdrawalTray = new HashMap<Integer, Integer>();  // Number of 20-dollar and 10-dollar bills
     private int ATMBalance;  // Total dollar amount available to WITHDRAW (does not include value of deposits
     private final int MAXCAPACITY = 2000;   // Max number of bills the ATM can hold, including deposit and
     // withdrawal trays. (Arbitrarily set to 2000 for now.)
