@@ -12,7 +12,8 @@ public class TransactionManager {
 
     //Singleton Setup
     private static TransactionManager current = new TransactionManager();
-    TransactionManager(){}
+    TransactionManager(){
+    }
     public static TransactionManager getTransactionManager(){
         return current;
     }
@@ -21,12 +22,23 @@ public class TransactionManager {
     public void createTransaction(TransactionType type, long fromAccount,long toAccount , double amount){
         Transaction transaction = new Transaction(type, fromAccount, toAccount, amount);
         allTransactions.add(transaction);
+        try{
+            logTransactions();
+        }catch (Exception e){
+
+        }
+
     }
 
     //Overload for no to account. i.e Withdrawls
     public void createTransaction(TransactionType type, long fromAccount, double amount){
         Transaction transaction = new Transaction(type, fromAccount, amount);
         allTransactions.add(transaction);
+        try{
+            logTransactions();
+        }catch (Exception e){
+
+        }
     }
 
     /**
