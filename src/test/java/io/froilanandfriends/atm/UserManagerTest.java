@@ -173,4 +173,16 @@ public class UserManagerTest {
         assertNull("Current user should no longer exist", userManager.getCurrentUser());
 
     }
+
+    @Test
+    public void testRandomUserID() throws Exception{
+        UserManager userManager = new UserManager();
+
+        userManager.addUser("nwebb89", "Nick", "Webb", "TestEmail@gmail.com", 4477, "What is your dogs name?","Tucker");
+        userManager.addUser("testman", "Test", "Man", "tester@yahoo.com", 5874, "Where are you from?", "testville");
+
+        userManager.setCurrentUser(userManager.getAllUsers().get(0));
+        assertEquals("User ID should be the int version of their username", Integer.parseInt("nwebb89"), userManager.getCurrentUser().getUserID());
+
+    }
 }

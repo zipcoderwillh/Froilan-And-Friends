@@ -1,11 +1,11 @@
 package io.froilanandfriends.atm;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Scanner;
 
 public class UserInterface {
-    //FIX:
-    //admin menu
+
     public static void loginMenu(){
         /*Login Menu:
          *       Prompts the user to login or create a new profile
@@ -49,7 +49,7 @@ public class UserInterface {
         }
         else{
             int accountIndexChosen = Character.getNumericValue(userInput.charAt(0))-97;
-            am.setCurrentAccount(userAccounts.get(accountIndexChosen));
+            am.switchAccount(userAccounts.get(accountIndexChosen).getId());
             accountMenu();
         }
     }
@@ -123,7 +123,33 @@ public class UserInterface {
         }
     }
     public static void adminMenu(){
-        
+        //Asks the administrator to choose an option, then calls the corresponding method menu.
+        clearScreen();
+        System.out.println("                             Admin Menu  \n");
+        System.out.println("Collect Deposits (c) - Restock Withdrawal Tray (r) - Withdrawal Tray Status (w)");
+        System.out.println(" View Transactions (v) -    Unflag User (u)    -      Logout (l) \n");
+        String userInput = "";
+        while (true){
+            userInput = promptForText("Enter Decision: ").toLowerCase();
+            if(userInput.equals("c")){
+                collectDeposits();
+            }
+            else if(userInput.equals("r")){
+                restockWithdrawalTray();
+            }
+            else if(userInput.equals("w")){
+                withdrawalStatus();
+            }
+            else if(userInput.equals("v")){
+                viewAllTransactions();
+            }
+            else if(userInput.equals("u")){
+                unflagUser();
+            }
+            else if(userInput.equals("l")){
+                logout();
+            }
+        }
     }
     public static void createProfile(){
         /* Asks user for their attributes / account properties
@@ -135,8 +161,13 @@ public class UserInterface {
         String userName = ""; String firstName = ""; String lastName = ""; String email = "";
         while (true) {
             userName = promptForText("Enter Desired Username: ").toLowerCase();
+            userName = removeIllegalCharacters(userName);
             //check username availability:
-            if (um.getUser(userName) != null) {
+            if(userName.indexOf(' ')>=0||userName.length()>8){
+                System.out.println("Usernames can be a maximum of 8 characters and may not contain spaces.");
+                delayedPrint(800);
+            }
+            else if (um.getUser(userName) != null) {
                 System.out.println("Username unavailable.");
                 delayedPrint(800);
             }
@@ -154,8 +185,7 @@ public class UserInterface {
         }
         while (true){
             firstName = promptForText("Enter your first name: ");
-            firstName = firstName.replace(",","");
-            firstName = firstName.replace("\n","");
+            firstName = removeIllegalCharacters(firstName);
             String input = "";
             while (!input.equals("y")&&!input.equals("n")){
                 input = promptForText("Your first name is: "+firstName+", is that correct? (y/n)").toLowerCase();
@@ -166,8 +196,7 @@ public class UserInterface {
         }
         while (true){
             lastName = promptForText("Enter your last name: ");
-            lastName = lastName.replace(",","");
-            lastName = lastName.replace("\n","");
+            lastName = removeIllegalCharacters(lastName);
             String input = "";
             while (!input.equals("y")&&!input.equals("n")){
                 input = promptForText("Your last name is: "+lastName+", is that correct? (y/n)").toLowerCase();
@@ -178,8 +207,7 @@ public class UserInterface {
         }
         while (true){
             email = promptForText("Enter your e-mail address: ");
-            email = email.replace(",","");
-            email = email.replace("\n","");
+            email = removeIllegalCharacters(email);
             String input = "";
             while (!input.equals("y")&&!input.equals("n")){
                 input = promptForText("Your e-mail is: "+email+", is that correct? (y/n)").toLowerCase();
@@ -213,8 +241,7 @@ public class UserInterface {
         String securityAnswer = "";
         while (true){
             securityAnswer = promptForText("Enter your answer: ");
-            securityAnswer = securityAnswer.replace(",","");
-            securityAnswer = securityAnswer.replace("\n","");
+            securityAnswer = removeIllegalCharacters(securityAnswer);
             String input = "";
             while (!input.equals("y")&&!input.equals("n")){
                 input = promptForText("Your answer is: "+securityAnswer+", is that correct? (y/n)").toLowerCase();
@@ -250,17 +277,17 @@ public class UserInterface {
             am.createAccount(AccountType.BUSINESS);
         }
         ArrayList<Account> allAccounts = am.getAllAccounts();
-        am.setCurrentAccount(allAccounts.get(allAccounts.size()-1));
+        am.switchAccount(allAccounts.get(allAccounts.size()-1).getId());
         accountMenu();
     }
 
     public static void withdraw(){
-        /* If user has <$5, prompts them to empty their account,
-         *           if yes, sets withdraw amount to balance
+        /* If user has <$10, prompts them to empty their account,
+         *           if yes, withdraws balance
          *           if no, goes to -> accountMenu()
-         * User has >$5:
-         *       prompts user to enter withdraw amount in $5 increments
-         *           validates that amount is in $5 increments
+         * User has >$10:
+         *       prompts user to enter withdraw amount in $10 increments
+         *           validates that amount is in $10 increments
          *           validates that amount is <= $300 maximum withdrawal
          *   Checks atm tray to ensure withdraw amount can be processed
          *      if yes: processes withdrawal, success message, goes to -> accountMenu()
@@ -269,31 +296,32 @@ public class UserInterface {
         AccountManager am = AccountManager.getAccountManager();
         Account currAccount = am.getCurrentAccount();
         double currBalance = currAccount.getBalance();
-        double userWithdraw = 0;
-        if(currBalance<5.0){
+        int userWithdraw = 0;
+        if(currBalance<10.0){
             System.out.println("You have insufficient funds to process a withdrawal on this account.");
-            System.out.println("You must have at least $5 to perform a partial withdraw.");
-            System.out.println("You may withdraw all available funds if you wish.  Current Balance: "+currBalance);
+            System.out.println("You must have at least $10 to perform a partial withdraw.");
+            System.out.println("You may withdraw all available funds in the form of a mailed check.  Current Balance: "+currBalance);
             String userAnswer = "";
             while (!userAnswer.equals("w")&&!userAnswer.equals("r")) {
-                userAnswer = promptForText("\n    Withdraw All Funds (w) -- Return to Account Manager (r)  ").toLowerCase();
+                userAnswer = promptForText("\n    Withdraw All Funds (w) -- Return to Account Manager (x)  ").toLowerCase();
             }
-            if (userAnswer.equals("r")){
+            if (userAnswer.equals("x")){
                 accountMenu();
                 //don't want to use return here, always want to start at the top of all menu's
             }
             else {
-                userWithdraw=currBalance;
+                am.withdrawl(currBalance);
+                accountMenu();
             }
         }
-        else if(currBalance>=5.0) {
+        else if(currBalance>=10.0) {
             boolean gettingAmount = true;
             while (gettingAmount) {
-                userWithdraw = promptForPositiveDouble("What amount would you like to withdraw? ($5 increments)");
+                userWithdraw = promptForPositiveInt("What amount would you like to withdraw? ($10 increments)");
                 if (userWithdraw > currBalance) {
                     System.out.println("Insufficient funds.  Enter a lower amount.");
-                } else if (userWithdraw % 5 != 0) {
-                    System.out.println("Your withdrawal must be in $5 increments.");
+                } else if (userWithdraw % 10 != 0) {
+                    System.out.println("Your withdrawal must be in $10 increments.");
                 } else if (userWithdraw > 300) {
                     System.out.println("Maximum withdrawal: $300");
                 } else {
@@ -303,7 +331,7 @@ public class UserInterface {
         }
         ATM atm = ATM.getATM();
         boolean withdrawSuccess = atm.withdraw(userWithdraw);
-        if (withdrawSuccess==false){
+        if (!withdrawSuccess){
             System.out.println("We're sorry. Our ATM is running low on bills and cannot support a withdrawal of this amount at the current time.");
             delayedPrint(2000);
             accountMenu();
@@ -311,7 +339,6 @@ public class UserInterface {
         else {
             am.withdrawl(userWithdraw);
             System.out.println("Dispensing Cash.."); delayedPrint(2000);
-
             accountMenu();
         }
     }
@@ -332,7 +359,8 @@ public class UserInterface {
             accountMenu();
         }
         else {
-            am.deposit(depositAmount);
+            double depositDouble = (double) depositAmount;
+            am.deposit(depositDouble);
             System.out.println("$"+depositAmount+" deposited into your account.");
             accountMenu();
         }
@@ -397,8 +425,8 @@ public class UserInterface {
         AccountManager am = AccountManager.getAccountManager();
         UserManager um = UserManager.getUserManager();
         //null current fields
-        am.setCurrentAccount(null);
-        um.setCurrentUser(null);
+        am.clearCurrentAccount();
+        um.clearUser();
         System.out.println("Logging out..");
         delayedPrint(2000);
 
@@ -420,13 +448,14 @@ public class UserInterface {
          *       if yes: closes account, goes to -> userMenu()
          *       if no: goes to -> accountMenu()                     */
         clearScreen();
-        UserManager um = UserManager.getUserManager();
+        AccountManager am = AccountManager.getAccountManager();
+        Account currentAccount = am.getCurrentAccount();
         String userInput="";
         while (!userInput.equals("y")&&!userInput.equals("n") ){
             promptForText("Are you sure? (y/n)").toLowerCase();
         }
         if(userInput.equals("y")){
-            um.closeCurrentAccount();
+            am.deleteAccount(currentAccount.getId());
             System.out.println("Account Closed.");
             delayedPrint(2000);
             userMenu();
@@ -435,11 +464,96 @@ public class UserInterface {
             accountMenu();
         }
     }
+    //ADMIN SUB-MENUs
+    public static void collectDeposits(){
+        //Empties the deposit tray from ATM and returns to -> adminMenu()
+        clearScreen();
+        ATM atm = ATM.getATM();
+        System.out.println("Please Retrieve Deposits..");
+        atm.emptyDepositTray();
+        delayedPrint(2000,"Returning to Admin Menu");
+        delayedPrint(1200);
+        adminMenu();
+    }
+    public static void restockWithdrawalTray(){
+        /*Prompts admin to enter number of each bill they want to stock
+         *      checks legality
+         *          if illegal -> returns to adminMenu()
+         *          if illegal -> processes restock, returns to -> adminMenu() */
+        clearScreen();
+        ATM atm = ATM.getATM();
+        int numTwenties = promptForPositiveInt("Enter the number of twenty dollar bills:");
+        int numTens = promptForPositiveInt("Enter the number of tens:");
 
-    public static void checkATMBalance(){
+        boolean restockSuccess = atm.reloadWithdrawalTray(numTwenties,numTens);
 
+        if(restockSuccess){
+            System.out.println("ATM successfully restocked.");
+            delayedPrint(2000,"Returning to Admin Menu");
+            delayedPrint(1200);
+            adminMenu();
+        }
+        else{
+            System.out.println("Restocking Unsuccessful.  Check Withdrawal Tray Status and Try Again. ");
+            delayedPrint(2000,"Returning to Admin Menu");
+            delayedPrint(1200);
+            adminMenu();
+        }
+    }
+    public static void withdrawalStatus(){
+        //Prints out the status of the withdrawal trays in the ATM then returns to -> adminMenu()
+        clearScreen();
+        ATM atm = ATM.getATM();
+        System.out.println("Current Withdrawal Tray Balance :   "+atm.getATMBalance());
+        HashMap<Integer,Integer> withdrawalTray = atm.getWithdrawlTray();
+        int totalBills = withdrawalTray.get(20)+withdrawalTray.get(10);
+        System.out.println(" Twenties  : "+withdrawalTray.get(20));
+        System.out.println("   Tens    : "+withdrawalTray.get(10));
+        System.out.println("\nTotal Bills: "+totalBills);
+        System.out.println("Max Capacity: 2,000 bills");
+
+        delayedPrint(1500);
+        promptForText("\n When finished, hit RETURN.");
+        adminMenu();
+    }
+    public static void viewAllTransactions(){
+        //Prints out the entire transaction history of the ATM, then returns to -> adminMenu()
+        clearScreen();
+        TransactionManager tm = TransactionManager.getTransactionManager();
+        ArrayList<Transaction> allTrans = tm.getAllTransactions();
+        for(Transaction t:allTrans){
+            System.out.println(t.getDate()+ " - "+t.getTransactionType()+" - "+t.getAmount());
+        }
+        delayedPrint(1500);
+        promptForText("Press RETURN when finished.");
+        accountMenu();
+    }
+    public static void unflagUser(){
+        /* Prompts for a username to unflag
+         *      Deflags if user is flagged, returns to -> adminMenu()*/
+        clearScreen();
+        UserManager um = UserManager.getUserManager();
+        Authenticator am = Authenticator.getAuthenticator();
+        String userName = promptForText("Enter the user's username:");
+        User user = am.validateUser(userName);
+        if(user==null){
+            System.out.println("No such username.");
+        }
+        else{
+            boolean flagged = user.isFlagged();
+            if(!flagged){
+                System.out.println("User was not flagged.");
+            }
+            else{
+                user.removeFlagged();
+                System.out.println("User was unflagged.");
+            }
+        }
+        delayedPrint(1400,"Returning to Admin Menu.");
+        adminMenu();
     }
 
+    //UTILITY METHODS
     public static void delayedPrint(int millisecondsDelay) {
         try {
             Thread.sleep(millisecondsDelay);
@@ -512,10 +626,16 @@ public class UserInterface {
         }
         return userAnswer;
     }
+
     public static void clearScreen(){
         for (int x=0;x<100;x++){
             System.out.println();
         }
+    }
+    public static String removeIllegalCharacters (String stringToEdit){
+        stringToEdit=stringToEdit.replace(",","");
+        stringToEdit=stringToEdit.replace("\n","");
+        return stringToEdit;
     }
 }
 

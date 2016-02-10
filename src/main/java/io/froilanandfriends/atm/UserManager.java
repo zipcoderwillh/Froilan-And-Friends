@@ -1,9 +1,11 @@
 package io.froilanandfriends.atm;
 import java.util.ArrayList;
+import java.lang.StringBuilder;
 
 public class UserManager {
     private User currentUser;
     private ArrayList<User> allUsers = new ArrayList<User>();
+    private static final String PATHNAME = "userLog.csv";
 
     //Singleton Setup
     private static UserManager current = new UserManager();
@@ -12,11 +14,34 @@ public class UserManager {
         return current;
     }
 
-    public void loadUsers(){
-        //calls setUsers from fileIO, which sends back a huge string of users
-        //iterates over string to populate allUsers
-
+    /*** FROM FILEIO ***/
+    // Receives long String from FILEIO, breaks by line, sends each line to Constructor.
+    public void loadUsers() throws Exception {
+        String[] hrSeparated = FileIO.readRecords(PATHNAME).split("\\n");
+        for(String a : hrSeparated){
+            allUsers.add(new User(a));
+        }
     }
+    // For each User in UserArrayList, add User attributes to stringbuilder, send long string to FILEIO.
+    public void logUsers () throws Exception {
+        StringBuilder stringBuilder = new StringBuilder();
+        for(User x : allUsers){
+            stringBuilder.append(x.getUserName()).append(",");
+            stringBuilder.append(x.getUserID()).append(",");
+            stringBuilder.append(x.getFirstName()).append(",");
+            stringBuilder.append(x.getLastName()).append(",");
+            stringBuilder.append(x.getEmail()).append(",");
+            stringBuilder.append(x.getPin()).append(",");
+            stringBuilder.append(x.getSecurityQuestion()).append(",");
+            stringBuilder.append(x.getSecurityAnswer()).append(",");
+            stringBuilder.append(x.isAdmin()).append(",");
+            stringBuilder.append(x.isFlagged());
+            stringBuilder.append("\n");
+
+        }
+        FileIO.logRecords(stringBuilder.toString(),PATHNAME);
+    }
+    /*** END OF FILEIO  ***/
     public void clearUser(){ //removes currentUser
         currentUser = null;
     }
@@ -71,5 +96,14 @@ public class UserManager {
     //will remove specific user from list
     public void removeCurrentUser(User u){
         allUsers.remove(u);
+    }
+    public User getUserByID(int id) {
+        for (int i =0; i<allUsers.size(); i++){
+        User thisUser = allUsers.get(i);
+        if(thisUser.getUserID()==id){
+            return thisUser;
+        }
+    }
+        return null;
     }
 }
