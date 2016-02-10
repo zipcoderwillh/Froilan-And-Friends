@@ -142,7 +142,6 @@ public class ATM {
         try {
             TransactionManager.getTransactionManager().loadTransactions();
         } catch (Exception e) {
-            e.printStackTrace();
         }
 
         UserInterface.loginMenu();
