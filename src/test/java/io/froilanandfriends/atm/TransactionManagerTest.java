@@ -57,7 +57,7 @@ public class TransactionManagerTest {
         TransactionManager manager = TransactionManager.getTransactionManager();
         manager.loadTransactions();
         Transaction transaction = manager.getAllTransactions().get(0);
-        assertEquals(1899888, transaction.getToAccount());
+        assertEquals(1899888, transaction.getFromAccount());
 
     }
 

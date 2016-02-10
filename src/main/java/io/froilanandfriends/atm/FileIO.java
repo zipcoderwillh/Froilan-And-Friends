@@ -29,7 +29,7 @@ public class FileIO {
     // a String pathname = its log file path.  When it calls setRecords, it should pass its pathname.
     public static void logRecords(String outString, String path) throws Exception {
         PrintWriter out = new PrintWriter(new FileWriter(path, false), false);
-        out.write(outString);
+        out.write(outString.trim());
         out.close();
     }
     /**** END OF FILE WRITING  ****/

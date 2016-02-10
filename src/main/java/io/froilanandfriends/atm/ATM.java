@@ -139,7 +139,12 @@ public class ATM {
         } catch(Exception e) {
         }
 
-        TransactionManager.getTransactionManager().loadTransactions();
+        try {
+            TransactionManager.getTransactionManager().loadTransactions();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
         UserInterface.loginMenu();
 
     }
