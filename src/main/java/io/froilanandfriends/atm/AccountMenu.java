@@ -176,7 +176,7 @@ public class AccountMenu {
         MenuUtilities.clearScreen();
         TransactionManager tm = TransactionManager.getTransactionManager();
         UserManager um = UserManager.getUserManager();
-        ArrayList<Transaction> userTrans = tm.getCurrentAccountTransactions(um.getCurrentUser().getUserID());
+        ArrayList<Transaction> userTrans = tm.getCurrentAccountTransactions();
         for(Transaction t:userTrans){
             System.out.println(t.getDate()+ " - "+t.getTransactionType()+" - "+t.getAmount());
         }

@@ -144,7 +144,7 @@ public class ATM {
         } catch (Exception e) {
         }
 
-        UserInterface.loginMenu();
+        LoginMenu.loginMenu();
 
     }
 

@@ -21,8 +21,8 @@ public class UserMenu {
             }
         }
         System.out.println("\n(0) - Create New Account \n");
-        String userInput = "";
-        while (userInput!="0"&&(userInput.length()>1||userInput.charAt(0)<'a'||userInput.charAt(0)>(96+userAccounts.size()))){
+        String userInput = "error";
+        while (!userInput.equals("0")&&(userInput.length()>1||userInput.charAt(0)<'a'||userInput.charAt(0)>(96+userAccounts.size()))){
             userInput=MenuUtilities.promptForText("Choose an account option.").toLowerCase();
         }
         if(userInput.equals("0")){
