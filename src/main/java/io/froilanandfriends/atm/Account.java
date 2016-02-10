@@ -4,16 +4,13 @@ import org.omg.CORBA.INTERNAL;
 
 import java.util.ArrayList;
 
-public class Account {
-    private AccountType accountType;
-    private long id;
-    private double balance;
-    private ArrayList<Integer> userIDs = new ArrayList<Integer>();
-    Account(AccountType accountType){
-        //set the account type to the given type
-        this.accountType=accountType;
-        //give each account a unique number
-        //based on the current nano seconds
+public abstract class Account {
+    protected AccountType accountType;
+    protected long id;
+    protected double balance;
+    protected ArrayList<Integer> userIDs = new ArrayList<Integer>();
+    Account(){
+        //Give this account a unique id based on the nanosecond
         this.id = System.nanoTime();
     }
     //secondary constructor for strings read in from file
@@ -28,7 +25,7 @@ public class Account {
             this.accountType = AccountType.BUSINESS;
         }
         this.id = Long.parseLong(accountFields[1].trim());
-
+        this.balance = Double.parseDouble(accountFields[2].trim());
     }
 
     //remove money from this account

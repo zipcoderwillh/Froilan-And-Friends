@@ -1,6 +1,8 @@
 package io.froilanandfriends.atm;
 
+import java.io.IOException;
 import java.util.ArrayList;
+import java.util.logging.Logger;
 
 public class AccountManager {
 
@@ -20,7 +22,7 @@ public class AccountManager {
         String bigInputString = FileIO.readRecords(PATHNAME);
         String[] lineArray = bigInputString.split("\n");
         for (String accountLine: lineArray) {
-            allAccounts.add(new Account(accountLine));
+            createAccount(accountLine);
         }
     }
     // logs out the array of accounts, allAccounts, to a file specified by PATHNAME
@@ -35,19 +37,59 @@ public class AccountManager {
         String accountsToString = stringBuilder.toString();
         FileIO.logRecords(accountsToString, PATHNAME);
     }
-    public void LogOut()
-    {
-        currentAccount = null;
-    }
     /**** FILEIO ****/
-
-    public void createAccount(AccountType accountType){
-        //create account and add it to the list of accounts
-        Account account = new Account(accountType);
-        allAccounts.add(account);
+    //Account factory
+    public Account createAccount(AccountType accountType){
+        Account newAccount;
+        switch (accountType) {
+            case BUSINESS:
+                newAccount = new BusinessAccount();
+                break;
+            case CHECKING:
+                newAccount = new CheckingAccount();
+                break;
+            case SAVINGS:
+                newAccount = new SavingsAccount();
+                break;
+            default:
+                return null;
+        }
+        //add new account to the accounts list
+        allAccounts.add(newAccount);
         //set currentAccount to the one we just made
-        currentAccount = account;
+        currentAccount = newAccount;
+        //add the current user to the account's userid list
+        newAccount.getUserIDs().add(UserManager.getUserManager().getCurrentUser().getUserID());
+        return newAccount;
     }
+
+    public Account createAccount(String accountString)
+    {
+        Account newAccount;
+        switch (accountString.substring(0,accountString.indexOf(',')).toUpperCase())
+        {
+            case "SAVINGS":
+                newAccount = new BusinessAccount(accountString);
+                break;
+            case "CHECKING":
+                newAccount = new CheckingAccount(accountString);
+                break;
+            case "BUSINESS":
+                newAccount = new BusinessAccount(accountString);
+                break;
+            default:
+                return null;
+        }
+
+        //add new account to the accounts list
+        allAccounts.add(newAccount);
+        //set currentAccount to the one we just made
+        currentAccount = newAccount;
+        //add the current user to the account's userid list
+        return newAccount;
+
+    }
+
     public void deleteAccount(long accountIDtoDelete){
         //loop through all accounts and remove the one with a matching id
         for(int i = 0; i < allAccounts.size(); i++) {
@@ -85,14 +127,28 @@ public class AccountManager {
     public void withdrawl(double amountToWithdrawl){
         //remove given money from the current account
         currentAccount.withdraw(amountToWithdrawl);
-        TransactionManager.getTransactionManager().createTransaction(TransactionType.WITHDRAWL,-1,currentAccount.getId(),amountToWithdrawl);
+        TransactionManager.getTransactionManager().createTransaction(TransactionType.WITHDRAWL,currentAccount.getId(),amountToWithdrawl);
+        try {
+            logAccounts();
+        }
+        catch (Exception e)
+        {
+            System.out.println("ERROR: Could not log accounts.");
+        }
     }
     public void deposit( double amountToDeposit){
         //add given money to the current account
         currentAccount.deposit(amountToDeposit);
-        TransactionManager.getTransactionManager().createTransaction(TransactionType.DEPOSIT, currentAccount.getId(),-1,amountToDeposit);
+        TransactionManager.getTransactionManager().createTransaction(TransactionType.DEPOSIT, currentAccount.getId(),amountToDeposit);
+        try {
+            logAccounts();
+        }
+        catch (Exception e)
+        {
+            System.out.println("ERROR: Could not log accounts.");
+        }
     }
-    public void transfer(long accountNumber, double amountToTransfer){
+    public void transfer(long accountNumber, double amountToTransfer) {
         //if the target account number is wrong, do nothing
         if (getAccount(accountNumber) == null)
         {
@@ -103,6 +159,13 @@ public class AccountManager {
         //and add to the target account
         getAccount(accountNumber).deposit(amountToTransfer);
         TransactionManager.getTransactionManager().createTransaction(TransactionType.TRANSFER,accountNumber,currentAccount.getId(),amountToTransfer);
+        try {
+            logAccounts();
+        }
+        catch (Exception e)
+        {
+            System.out.println("ERROR: Could not log accounts.");
+        }
     }
 
     public ArrayList<Account> getCurrentUsersAccounts(){
@@ -132,5 +195,28 @@ public class AccountManager {
         return currentAccount;
     }
 
+    public void addUserToCurrentAccount(int userID) {
+        currentAccount.getUserIDs().add(userID);
+    }
+    public void addUserToCurrentAccount(User user) {
+        addUserToCurrentAccount(user.getUserID());
+    }
 
+    public void removeUserFromCurrentAccount(int userID) {
+        int toRemove = -1;
+        for (int i = 0;i < currentAccount.getUserIDs().size();i++)
+        {
+            if (currentAccount.getUserIDs().get(i) == userID)
+            {
+                toRemove = i;
+            }
+        }
+        if (toRemove >= 0)
+        {
+            currentAccount.getUserIDs().remove(toRemove);
+        }
+    }
+    public void removeUserFromCurrentAccount(User user) {
+        removeUserFromCurrentAccount(user.getUserID());
+    }
 }
