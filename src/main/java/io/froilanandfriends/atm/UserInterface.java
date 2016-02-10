@@ -266,7 +266,6 @@ public class UserInterface {
         while (userInput.length()!=1||(userInput.charAt(0)!='c'&&userInput.charAt(0)!='s'&&userInput.charAt(0)!='b')){
             userInput=promptForText("Enter a valid account type: ").toLowerCase();
         }
-        AccountType typeToCreate;
         if(userInput.equals("c")){
             am.createAccount(AccountType.CHECKING);
         }
@@ -302,7 +301,7 @@ public class UserInterface {
             System.out.println("You must have at least $10 to perform a partial withdraw.");
             System.out.println("You may withdraw all available funds in the form of a mailed check.  Current Balance: "+currBalance);
             String userAnswer = "";
-            while (!userAnswer.equals("w")&&!userAnswer.equals("r")) {
+            while (!userAnswer.equals("w")&&!userAnswer.equals("x")) {
                 userAnswer = promptForText("\n    Withdraw All Funds (w) -- Return to Account Manager (x)  ").toLowerCase();
             }
             if (userAnswer.equals("x")){
@@ -315,8 +314,7 @@ public class UserInterface {
             }
         }
         else if(currBalance>=10.0) {
-            boolean gettingAmount = true;
-            while (gettingAmount) {
+            while (true) {
                 userWithdraw = promptForPositiveInt("What amount would you like to withdraw? ($10 increments)");
                 if (userWithdraw > currBalance) {
                     System.out.println("Insufficient funds.  Enter a lower amount.");
@@ -355,7 +353,7 @@ public class UserInterface {
 
         boolean depositSuccess = atm.deposit(numBills,depositAmount);
         if(!depositSuccess){
-            System.out.println("Apologies!  The ATM cannot accept that number of bills at this time.  Come back soon!");
+            System.out.println("Apologies!  Your deposit cannot be accepted at this time.  Come back soon!");
             accountMenu();
         }
         else {
