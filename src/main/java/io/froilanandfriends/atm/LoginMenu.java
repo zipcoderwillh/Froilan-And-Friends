@@ -60,8 +60,30 @@ public class LoginMenu {
          Goes to -> userMenu()                     */
         MenuUtilities.clearScreen();
         UserManager um =UserManager.getUserManager();
-        String userName = ""; String firstName = ""; String lastName = ""; String email = "";
+
+        String userName = promptUserName();
+        int pin = promptPin();
+        String firstName = promptFirstName();
+        String lastName = promptLastName();
+        String email = promptEmail();
+        String securityQuestion = promptSecQuestion();
+        String securityAnswer = promptSecAnswer();
+
+        um.addUser(userName,firstName,lastName,email,pin,securityQuestion,securityAnswer);
+        um.setCurrentUser(um.getUser(userName));
+        UserMenu.userMenu();
+    }
+
+    public static String removeIllegalCharacters (String stringToEdit){
+        stringToEdit=stringToEdit.replace(",","");
+        stringToEdit=stringToEdit.replace("\n","");
+        return stringToEdit;
+    }
+    public static String promptUserName(){
+        String userName;
+        UserManager um = UserManager.getUserManager();
         while (true) {
+
             userName = MenuUtilities.promptForText("Enter Desired Username: ").toLowerCase();
             userName = removeIllegalCharacters(userName);
             //check username availability:
@@ -77,6 +99,9 @@ public class LoginMenu {
                 break;
             }
         }
+        return userName;
+    }
+    public static int promptPin(){
         int pin=0;
         while (pin<1000||pin>9999){
             pin=MenuUtilities.promptForPositiveInt("Enter desired 4-digit pin number: ");
@@ -85,6 +110,10 @@ public class LoginMenu {
                 System.out.println("Please ensure your pin is 4 digits.");
             }
         }
+        return pin;
+    }
+    public static String promptFirstName(){
+        String firstName = "";
         while (true){
             firstName = MenuUtilities.promptForText("Enter your first name: ");
             firstName = removeIllegalCharacters(firstName);
@@ -96,6 +125,10 @@ public class LoginMenu {
                 break;
             }
         }
+        return firstName;
+    }
+    public static String promptLastName(){
+        String lastName = "";
         while (true){
             lastName = MenuUtilities.promptForText("Enter your last name: ");
             lastName = removeIllegalCharacters(lastName);
@@ -107,6 +140,10 @@ public class LoginMenu {
                 break;
             }
         }
+        return lastName;
+    }
+    public static String promptEmail(){
+        String email = "";
         while (true){
             email = MenuUtilities.promptForText("Enter your e-mail address: ");
             email = removeIllegalCharacters(email);
@@ -118,11 +155,14 @@ public class LoginMenu {
                 break;
             }
         }
+        return email;
+    }
+    public static String promptSecQuestion(){
+        int userAnswer = 0;
         String secQues1 = "What was your first pet's name?";
         String secQues2 = "In which city were you born?";
         String secQues3 = "Who was the first person to see you naked?";
 
-        int userAnswer = 0;
         while (userAnswer!=1&&userAnswer!=2&&userAnswer!=3){
             System.out.println("Please choose a security question: \n");
             System.out.println("(1) : "+secQues1);
@@ -140,7 +180,10 @@ public class LoginMenu {
         else{
             securityQuestion=secQues3;
         }
-        String securityAnswer = "";
+        return securityQuestion;
+    }
+    public static String promptSecAnswer(){
+        String securityAnswer="";
         while (true){
             securityAnswer = MenuUtilities.promptForText("Enter your answer: ");
             securityAnswer = removeIllegalCharacters(securityAnswer);
@@ -152,17 +195,7 @@ public class LoginMenu {
                 break;
             }
         }
-        um.addUser(userName,firstName,lastName,email,pin,securityQuestion,securityAnswer);
-        um.setCurrentUser(um.getUser(userName));
-        UserMenu.userMenu();
+        return securityAnswer;
     }
-
-    public static String removeIllegalCharacters (String stringToEdit){
-        stringToEdit=stringToEdit.replace(",","");
-        stringToEdit=stringToEdit.replace("\n","");
-        return stringToEdit;
-    }
-
-
 }
 
