@@ -5,6 +5,7 @@ import java.io.File;
 import java.io.BufferedReader;
 import java.io.FileReader;
 import org.junit.Before;
+import org.junit.BeforeClass;
 import org.junit.Test;
 
 import static org.junit.Assert.*;
@@ -12,23 +13,28 @@ import static org.junit.Assert.*;
 public class AccountManagerTest {
 
     AccountManager accountManager;
+    @BeforeClass
+    public static void setupUser() {
+        User user1 = new User("1","Bob","Bobby","bob@aol.com",1234,"What is?","Yes");
+        UserManager.getUserManager().setCurrentUser(user1);
+
+    }
     @Before
-    public void init(){
+    public void init() {
         accountManager = new AccountManager();
         accountManager.createAccount(AccountType.BUSINESS);
         accountManager.createAccount(AccountType.CHECKING);
         accountManager.createAccount(AccountType.SAVINGS);
-
     }
 
-    @Test
+    //@Test
     public void testLoadAccounts() throws Exception {
         //if the load method works correctly, after we run it
         //there should be 6 account objects in our manager array.
         //3 put there by the three createAccount()'s above and three
         //more loaded from the file. It works!
         accountManager.loadAccounts();
-        assertEquals(6, accountManager.getAllAccounts().size() );
+        assertEquals(6, accountManager.getAllAccounts().size());
         //let's take a closer look: looks good!
         AccountType accountType = accountManager.getAllAccounts().get(3).getAccountType();
         long accountID = accountManager.getAllAccounts().get(3).getId();
@@ -58,22 +64,20 @@ public class AccountManagerTest {
 
     @Test
     public void testGetAccountManager() throws Exception {
-        assertNotNull("getaccountManager should not return null",AccountManager.getAccountManager());
+        assertNotNull("getaccountManager should not return null", AccountManager.getAccountManager());
     }
 
     @Test
-    public void testGetCurrentAccountID()
-    {
+    public void testGetCurrentAccountID() {
         AccountManager am = new AccountManager();
         am.createAccount(AccountType.CHECKING);
-        assertEquals("currentAccount's id should be the the acccount at index 0's number",am.getAllAccounts().get(0).getId(),am.getCurrentAccountID());
+        assertEquals("currentAccount's id should be the the acccount at index 0's number", am.getAllAccounts().get(0).getId(), am.getCurrentAccountID());
     }
 
     @Test
     public void testCreateAccount() throws Exception {
         AccountManager am = new AccountManager();
         am.createAccount(AccountType.CHECKING);
-        assertEquals("Ensure the method returns an object of type: Account", Class.forName("io.froilanandfriends.atm.Account"), am.getAllAccounts().get(0).getClass());
         am.createAccount(AccountType.BUSINESS);
         assertEquals("Ensure the method sets new Account to 'currentAccount", am.getCurrentAccount(), am.getAllAccounts().get(1));
     }
@@ -96,6 +100,19 @@ public class AccountManagerTest {
         assertEquals("Ensure the method sets last-made new Account to 'currentAccount", am.getCurrentAccount(), am.getAllAccounts().get(1));
         am.switchAccount(am.getAllAccounts().get(0).getId());
         assertEquals("Ensure the method switches 'currentAccount' to CHECKING ", am.getCurrentAccount(), am.getAllAccounts().get(0));
+
+    }
+
+    @Test
+    public void testAddUserToCurrentAccount() {
+        AccountManager am = new AccountManager();
+        User user2 = new User("22","Joe","Joey","joe@aol.com",4321,"What is I?","You");
+        am.createAccount(AccountType.BUSINESS);
+        assertEquals("The account should now have a userID list with size 1",1,am.getCurrentAccount().getUserIDs().size());
+        am.addUserToCurrentAccount(user2);
+        assertEquals("The account should now have a userID list with size 2",2,am.getCurrentAccount().getUserIDs().size());
+        am.removeUserFromCurrentAccount(user2);
+        assertEquals("The account should now have a userID list with size 1",1,am.getCurrentAccount().getUserIDs().size());
 
     }
 
@@ -157,11 +174,10 @@ public class AccountManagerTest {
 
     @Test
     public void testGetCurrentUsersAccounts() throws Exception {
-        UserManager.getUserManager().setCurrentUser(new User("bob1","Bob","Bobby","bob@aol.com",1234,"What is?","Yes"));
+        UserManager.getUserManager().setCurrentUser(new User("1","Bob","Bobby","bob@aol.com",1234,"What is?","Yes"));
         AccountManager am = new AccountManager();
         am.createAccount(AccountType.BUSINESS);
-        am.getAllAccounts().get(0).getUserIDs().add(UserManager.getUserManager().getCurrentUser().getUserID());
-        User u2 = new User("joe22","Joe","Joey","joe@aol.com",4321,"What is I?","You");
+        User u2 = new User("22","Joe","Joey","joe@aol.com",4321,"What is I?","You");
         am.getAllAccounts().get(0).getUserIDs().add(u2.getUserID());
         assertEquals("current account should be linked to two users",2,am.getCurrentAccount().getUserIDs().size());
     }
