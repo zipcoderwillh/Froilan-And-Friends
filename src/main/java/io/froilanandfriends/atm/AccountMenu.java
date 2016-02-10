@@ -117,7 +117,7 @@ public class AccountMenu {
         int depositAmount=MenuUtilities.promptForPositiveInt("How much are you depositing? ");
         int numBills = MenuUtilities.promptForPositiveInt("Enter the number of bills you are depositing.");
 
-        boolean depositSuccess = atm.deposit(numBills,depositAmount);
+        boolean depositSuccess = atm.deposit(depositAmount);
         if(!depositSuccess){
             System.out.println("Apologies!  The ATM cannot accept that number of bills at this time.  Come back soon!");
             accountMenu();

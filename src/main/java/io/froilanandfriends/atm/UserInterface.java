@@ -351,7 +351,7 @@ public class UserInterface {
         int depositAmount=promptForPositiveInt("How much are you depositing? ");
         int numBills = promptForPositiveInt("Enter the number of bills you are depositing.");
 
-        boolean depositSuccess = atm.deposit(numBills,depositAmount);
+        boolean depositSuccess = atm.deposit(depositAmount);
         if(!depositSuccess){
             System.out.println("Apologies!  Your deposit cannot be accepted at this time.  Come back soon!");
             accountMenu();
