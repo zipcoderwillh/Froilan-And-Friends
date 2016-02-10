@@ -85,12 +85,12 @@ public class AccountManager {
     public void withdrawl(double amountToWithdrawl){
         //remove given money from the current account
         currentAccount.withdraw(amountToWithdrawl);
-        //TransactionManager.getTransactionManager().createTransaction(TransactionType.WITHDRAWL,-1,currentAccount.getId(),amountToWithdrawl);
+        TransactionManager.getTransactionManager().createTransaction(TransactionType.WITHDRAWL,-1,currentAccount.getId(),amountToWithdrawl);
     }
     public void deposit( double amountToDeposit){
         //add given money to the current account
         currentAccount.deposit(amountToDeposit);
-        //TransactionManager.getTransactionManager().createTransaction(TransactionType.DEPOSIT, currentAccount.getId(),-1,amountToDeposit);
+        TransactionManager.getTransactionManager().createTransaction(TransactionType.DEPOSIT, currentAccount.getId(),-1,amountToDeposit);
     }
     public void transfer(long accountNumber, double amountToTransfer){
         //if the target account number is wrong, do nothing
@@ -102,7 +102,7 @@ public class AccountManager {
         currentAccount.withdraw(amountToTransfer);
         //and add to the target account
         getAccount(accountNumber).deposit(amountToTransfer);
-        //TransactionManager.getTransactionManager().createTransaction(TransactionType.TRANSFER,accountNumber,currentAccount.getId(),amountToTransfer);
+        TransactionManager.getTransactionManager().createTransaction(TransactionType.TRANSFER,accountNumber,currentAccount.getId(),amountToTransfer);
     }
 
     public ArrayList<Account> getCurrentUsersAccounts(){
