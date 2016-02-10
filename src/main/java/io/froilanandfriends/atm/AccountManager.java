@@ -14,11 +14,32 @@ public class AccountManager {
         return current;
     }
 
-    //load in acccounts passed from IO
-    public void loadAccounts(){
-        //calls setAccounts from fileIO, which sends back a huge string
-        //iterates over string to populate allAccounts
+    /**** FILEIO  ***/
+    //load in accounts passed from IO
+    public void loadAccounts() throws Exception {
+        String bigInputString = FileIO.readRecords(PATHNAME);
+        String[] lineArray = bigInputString.split("\n");
+        for (String accountLine: lineArray) {
+            allAccounts.add(new Account(accountLine));
+        }
     }
+    // logs out the array of accounts, allAccounts, to a file specified by PATHNAME
+    public void logAccounts() throws Exception {
+        StringBuilder stringBuilder = new StringBuilder();
+        for (Account account: allAccounts) {
+            String accountType = account.getAccountType().toString() + ",";
+            String accountID = account.getId() + "\n";
+            stringBuilder.append(accountType);
+            stringBuilder.append(accountID);
+        }
+        String accountsToString = stringBuilder.toString();
+        FileIO.logRecords(accountsToString, PATHNAME);
+    }
+    public void LogOut()
+    {
+        currentAccount = null;
+    }
+    /**** FILEIO ****/
 
     public void createAccount(AccountType accountType){
         //create account and add it to the list of accounts
@@ -41,6 +62,11 @@ public class AccountManager {
         currentAccount = getAccount(accountIDtoSwitchTo);
     }
 
+    public void clearCurrentAccount()
+    {
+        currentAccount = null;
+    }
+
     public long getCurrentAccountID()
     {
         //return the id of the current account
@@ -59,13 +85,12 @@ public class AccountManager {
     public void withdrawl(double amountToWithdrawl){
         //remove given money from the current account
         currentAccount.withdraw(amountToWithdrawl);
-        TransactionManager.getTransactionManager().createTransaction(-1,currentAccount.getId(),amountToWithdrawl);
+        TransactionManager.getTransactionManager().createTransaction(TransactionType.WITHDRAWL,-1,currentAccount.getId(),amountToWithdrawl);
     }
-    public void deposit(int numBills, double amountToDeposit){
+    public void deposit( double amountToDeposit){
         //add given money to the current account
         currentAccount.deposit(amountToDeposit);
-        TransactionManager.getTransactionManager().createTransaction(currentAccount.getId(),-1,amountToDeposit);
-        // TODO: 2/9/16 add numBills and the amount to the ATM
+        TransactionManager.getTransactionManager().createTransaction(TransactionType.DEPOSIT, currentAccount.getId(),-1,amountToDeposit);
     }
     public void transfer(long accountNumber, double amountToTransfer){
         //if the target account number is wrong, do nothing
@@ -77,7 +102,24 @@ public class AccountManager {
         currentAccount.withdraw(amountToTransfer);
         //and add to the target account
         getAccount(accountNumber).deposit(amountToTransfer);
-        TransactionManager.getTransactionManager().createTransaction(accountNumber,currentAccount.getId(),amountToTransfer);
+        TransactionManager.getTransactionManager().createTransaction(TransactionType.TRANSFER,accountNumber,currentAccount.getId(),amountToTransfer);
+    }
+
+    public ArrayList<Account> getCurrentUsersAccounts(){
+        UserManager um = UserManager.getUserManager();
+        User currentUser = um.getCurrentUser();
+        int currentUserID = currentUser.getUserID();
+        ArrayList<Account> usersAccounts = new ArrayList<Account>();
+        for(int x=0;x<allAccounts.size();x++){
+            Account thisAccount = allAccounts.get(x);
+            ArrayList<Integer> accountsUserIDs = thisAccount.getUserIDs();
+            for(Integer z : accountsUserIDs){
+                if(z==currentUserID){
+                    usersAccounts.add(thisAccount);
+                }
+            }
+        }
+        return usersAccounts;
     }
 
     public ArrayList<Account> getAllAccounts() {
@@ -90,8 +132,5 @@ public class AccountManager {
         return currentAccount;
     }
 
-    public void LogOut()
-    {
-        currentAccount = null;
-    }
+
 }
