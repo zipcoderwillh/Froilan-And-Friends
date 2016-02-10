@@ -18,7 +18,6 @@ public class TransactionManagerTest {
     @Test
     public void testGetTransactionManager() throws Exception {
         TransactionManager manager = TransactionManager.getTransactionManager();
-
         assertNotNull(manager);
     }
 
@@ -55,9 +54,12 @@ public class TransactionManagerTest {
          different than normal.
          ****/
         TransactionManager manager = TransactionManager.getTransactionManager();
+        manager.createTransaction(TransactionType.DEPOSIT, 22673, 1888181, 80000);
         manager.loadTransactions();
-        Transaction transaction = manager.getAllTransactions().get(0);
-        assertEquals(1899888, transaction.getToAccount());
+
+
+        Transaction transaction =  manager.getLastTransaction();
+        assertEquals(22673, transaction.getFromAccount());
 
     }
 
