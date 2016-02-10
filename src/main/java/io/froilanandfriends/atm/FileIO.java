@@ -20,7 +20,7 @@ public class FileIO {
             stringBuilder.append(line).append("\n");
         }
         br.close();
-        return stringBuilder.toString();
+        return stringBuilder.toString().trim();
     }
     /****  END OF FILE READING  ****/
 
