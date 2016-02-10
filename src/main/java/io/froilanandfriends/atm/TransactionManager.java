@@ -124,13 +124,14 @@ public class TransactionManager {
     }
 
 
-    public ArrayList<Transaction> getCurrentAccountTransactions(long AccountId){
+    public ArrayList<Transaction> getCurrentAccountTransactions(){
         //Get an account manager.
         AccountManager manager = AccountManager.getAccountManager();
 
         //TODO: Change to get current account. Method not yet implemented
         //Find the account requested.
-        Account account = manager.getAccount(AccountId);
+        Account account = manager.getCurrentAccount();
+
 
         //Create container for Transactions
         ArrayList<Transaction> accountTransactions = new ArrayList<Transaction>();
