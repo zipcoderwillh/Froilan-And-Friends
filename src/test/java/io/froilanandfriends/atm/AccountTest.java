@@ -10,6 +10,15 @@ import static org.junit.Assert.*;
 public class AccountTest {
 
 
+
+    @Test
+    public void testStringGetId() throws Exception {
+        //account object made from single string has intended ID
+        String inputString = "CHECKING, 123456";
+        Account account = new Account(inputString);
+        assertEquals(123456, account.getId());
+}
+
     @Test
     public void testWithdraw() throws Exception {
         Account a = new Account(AccountType.SAVINGS);

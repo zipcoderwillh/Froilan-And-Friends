@@ -17,10 +17,20 @@ public class Account {
         this.id = System.nanoTime();
     }
     //secondary constructor for strings read in from file
-    Account(String details)
-    {
+    Account(String bigString){
+        String[] accountFields = bigString.split(",");
+        String acctType = accountFields[0].toLowerCase();
+        if(acctType.equals(AccountType.CHECKING.toString().toLowerCase())){
+            this.accountType = AccountType.CHECKING;
+        }else if(acctType.equals(AccountType.SAVINGS.toString().toLowerCase())){
+            this.accountType = AccountType.SAVINGS;
+        }else {
+            this.accountType = AccountType.BUSINESS;
+        }
+        this.id = Long.parseLong(accountFields[1].trim());
 
     }
+
     //remove money from this account
     public void withdraw(double amountToWithdraw){
         balance-=amountToWithdraw;

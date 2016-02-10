@@ -1,12 +1,60 @@
 package io.froilanandfriends.atm;
 
 import jdk.nashorn.internal.runtime.ECMAException;
+import java.io.File;
+import java.io.BufferedReader;
+import java.io.FileReader;
 import org.junit.Before;
 import org.junit.Test;
 
 import static org.junit.Assert.*;
 
 public class AccountManagerTest {
+
+    AccountManager accountManager;
+    @Before
+    public void init(){
+        accountManager = new AccountManager();
+        accountManager.createAccount(AccountType.BUSINESS);
+        accountManager.createAccount(AccountType.CHECKING);
+        accountManager.createAccount(AccountType.SAVINGS);
+
+    }
+
+    @Test
+    public void testLoadAccounts() throws Exception {
+        //if the load method works correctly, after we run it
+        //there should be 6 account objects in our manager array.
+        //3 put there by the three createAccount()'s above and three
+        //more loaded from the file. It works!
+        accountManager.loadAccounts();
+        assertEquals(6, accountManager.getAllAccounts().size() );
+        //let's take a closer look: looks good!
+        AccountType accountType = accountManager.getAllAccounts().get(3).getAccountType();
+        long accountID = accountManager.getAllAccounts().get(3).getId();
+        System.out.println("" + accountType + accountID);
+    }
+
+    @Test
+    public void testLogAccounts() throws Exception {
+
+        //test to see if the file logAccounts is creating to write to
+        //exists. it does. tested if the file is as many lines as we intended it
+        //to be.
+        accountManager.logAccounts();
+        File file = new File("accountLog.csv");
+        assertTrue(file.exists());
+        BufferedReader br = new BufferedReader(new FileReader("accountLog.csv"));
+        StringBuilder stringBuilder = new StringBuilder();
+        String line;
+        while ((line = br.readLine()) != null) {
+            stringBuilder.append(line + "\n");
+        }
+        String builderStr = stringBuilder.toString();
+        String[] lineArray = builderStr.split("\n");
+        assertEquals(3, lineArray.length);
+        br.close();
+    }
 
     @Test
     public void testGetAccountManager() throws Exception {
