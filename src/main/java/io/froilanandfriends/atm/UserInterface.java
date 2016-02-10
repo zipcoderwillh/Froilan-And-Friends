@@ -5,8 +5,7 @@ import java.util.HashMap;
 import java.util.Scanner;
 
 public class UserInterface {
-    //FIX:
-    //admin menu
+
     public static void loginMenu(){
         /*Login Menu:
          *       Prompts the user to login or create a new profile
@@ -162,8 +161,7 @@ public class UserInterface {
         String userName = ""; String firstName = ""; String lastName = ""; String email = "";
         while (true) {
             userName = promptForText("Enter Desired Username: ").toLowerCase();
-            userName = userName.replace(",","");
-            userName = userName.replace("\n","");
+            userName = removeIllegalCharacters(userName);
             //check username availability:
             if(userName.indexOf(' ')>=0||userName.length()>8){
                 System.out.println("Usernames can be a maximum of 8 characters and may not contain spaces.");
@@ -187,8 +185,7 @@ public class UserInterface {
         }
         while (true){
             firstName = promptForText("Enter your first name: ");
-            firstName = firstName.replace(",","");
-            firstName = firstName.replace("\n","");
+            firstName = removeIllegalCharacters(firstName);
             String input = "";
             while (!input.equals("y")&&!input.equals("n")){
                 input = promptForText("Your first name is: "+firstName+", is that correct? (y/n)").toLowerCase();
@@ -199,8 +196,7 @@ public class UserInterface {
         }
         while (true){
             lastName = promptForText("Enter your last name: ");
-            lastName = lastName.replace(",","");
-            lastName = lastName.replace("\n","");
+            lastName = removeIllegalCharacters(lastName);
             String input = "";
             while (!input.equals("y")&&!input.equals("n")){
                 input = promptForText("Your last name is: "+lastName+", is that correct? (y/n)").toLowerCase();
@@ -211,8 +207,7 @@ public class UserInterface {
         }
         while (true){
             email = promptForText("Enter your e-mail address: ");
-            email = email.replace(",","");
-            email = email.replace("\n","");
+            email = removeIllegalCharacters(email);
             String input = "";
             while (!input.equals("y")&&!input.equals("n")){
                 input = promptForText("Your e-mail is: "+email+", is that correct? (y/n)").toLowerCase();
@@ -246,8 +241,7 @@ public class UserInterface {
         String securityAnswer = "";
         while (true){
             securityAnswer = promptForText("Enter your answer: ");
-            securityAnswer = securityAnswer.replace(",","");
-            securityAnswer = securityAnswer.replace("\n","");
+            securityAnswer = removeIllegalCharacters(securityAnswer);
             String input = "";
             while (!input.equals("y")&&!input.equals("n")){
                 input = promptForText("Your answer is: "+securityAnswer+", is that correct? (y/n)").toLowerCase();
@@ -288,12 +282,12 @@ public class UserInterface {
     }
 
     public static void withdraw(){
-        /* If user has <$5, prompts them to empty their account,
-         *           if yes, sets withdraw amount to balance
+        /* If user has <$10, prompts them to empty their account,
+         *           if yes, withdraws balance
          *           if no, goes to -> accountMenu()
-         * User has >$5:
-         *       prompts user to enter withdraw amount in $5 increments
-         *           validates that amount is in $5 increments
+         * User has >$10:
+         *       prompts user to enter withdraw amount in $10 increments
+         *           validates that amount is in $10 increments
          *           validates that amount is <= $300 maximum withdrawal
          *   Checks atm tray to ensure withdraw amount can be processed
          *      if yes: processes withdrawal, success message, goes to -> accountMenu()
@@ -637,6 +631,11 @@ public class UserInterface {
         for (int x=0;x<100;x++){
             System.out.println();
         }
+    }
+    public static String removeIllegalCharacters (String stringToEdit){
+        stringToEdit=stringToEdit.replace(",","");
+        stringToEdit=stringToEdit.replace("\n","");
+        return stringToEdit;
     }
 }
 
