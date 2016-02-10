@@ -35,8 +35,19 @@ public class MenuUtilities {
     public static String promptForText(String textToDisplay) {
         Scanner input = new Scanner(System.in);
         System.out.println(textToDisplay);
-        String userAnswer = input.nextLine();
+        String userAnswer = "";
+        while (userAnswer.isEmpty()) {
+            while (!input.hasNextLine()) {
+                input.next();
+            }
+            userAnswer = input.nextLine();
+        }
         return userAnswer;
+    }
+    public static void promptForReturn(){
+        Scanner input = new Scanner(System.in);
+        System.out.println("Press RETURN when finished.");
+        String userAnswer = input.nextLine();
     }
     public static double promptForDouble(String textToDisplay){
         Scanner input = new Scanner(System.in);
