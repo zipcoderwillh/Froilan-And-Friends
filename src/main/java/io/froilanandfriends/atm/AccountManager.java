@@ -31,8 +31,10 @@ public class AccountManager {
         for (Account account: allAccounts) {
             String accountType = account.getAccountType().toString() + ",";
             String accountID = account.getId() + "\n";
+            String accountBalance = Double.toString(account.getBalance()) + "\n";
             stringBuilder.append(accountType);
             stringBuilder.append(accountID);
+            stringBuilder.append(accountBalance);
         }
         String accountsToString = stringBuilder.toString();
         FileIO.logRecords(accountsToString, PATHNAME);
