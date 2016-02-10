@@ -97,4 +97,13 @@ public class UserManager {
     public void removeCurrentUser(User u){
         allUsers.remove(u);
     }
+    public User getUserByID(int id) {
+        for (int i =0; i<allUsers.size(); i++){
+        User thisUser = allUsers.get(i);
+        if(thisUser.getUserID()==id){
+            return thisUser;
+        }
+    }
+        return null;
+    }
 }
