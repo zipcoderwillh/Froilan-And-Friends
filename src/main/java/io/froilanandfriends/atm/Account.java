@@ -1,12 +1,14 @@
 package io.froilanandfriends.atm;
 
+import org.omg.CORBA.INTERNAL;
+
 import java.util.ArrayList;
 
 public class Account {
     private AccountType accountType;
     private long id;
     private double balance;
-    private ArrayList<Integer> userIDs;
+    private ArrayList<Integer> userIDs = new ArrayList<Integer>();
     Account(AccountType accountType){
         //set the account type to the given type
         this.accountType=accountType;
@@ -15,10 +17,20 @@ public class Account {
         this.id = System.nanoTime();
     }
     //secondary constructor for strings read in from file
-    Account(String details)
-    {
+    Account(String bigString){
+        String[] accountFields = bigString.split(",");
+        String acctType = accountFields[0].toLowerCase();
+        if(acctType.equals(AccountType.CHECKING.toString().toLowerCase())){
+            this.accountType = AccountType.CHECKING;
+        }else if(acctType.equals(AccountType.SAVINGS.toString().toLowerCase())){
+            this.accountType = AccountType.SAVINGS;
+        }else {
+            this.accountType = AccountType.BUSINESS;
+        }
+        this.id = Long.parseLong(accountFields[1].trim());
 
     }
+
     //remove money from this account
     public void withdraw(double amountToWithdraw){
         balance-=amountToWithdraw;
@@ -40,6 +52,9 @@ public class Account {
         return balance;
     }
 
+    public ArrayList<Integer> getUserIDs() {
+        return userIDs;
+    }
 }
 
 enum AccountType{
