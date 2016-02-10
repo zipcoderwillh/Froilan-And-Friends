@@ -180,7 +180,7 @@ public class AccountMenu {
         for(Transaction t:userTrans){
             System.out.println(t.getDate()+ " - "+t.getTransactionType()+" - "+t.getAmount());
         }
-        MenuUtilities.promptForText("Press RETURN when finished.");
+        MenuUtilities.promptForReturn();
         accountMenu();
     }
 
@@ -213,7 +213,7 @@ public class AccountMenu {
         Account currAccount = am.getCurrentAccount();
         System.out.println(currAccount.getAccountType()+ " no. "+currAccount.getId()+"\n\n");
         System.out.println("Current Balance: "+currAccount.getBalance());
-        MenuUtilities.promptForText("Press RETURN when finished.");
+        MenuUtilities.promptForReturn();
         accountMenu();
     }
 }
