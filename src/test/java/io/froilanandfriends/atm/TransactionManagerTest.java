@@ -58,8 +58,10 @@ public class TransactionManagerTest {
         manager.loadTransactions();
 
 
+
         Transaction transaction =  manager.getLastTransaction();
         assertEquals(22673, transaction.getFromAccount());
+
 
     }
 
