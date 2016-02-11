@@ -30,36 +30,57 @@ public class LoginMenu {
          If failure, return to -> loginMenu()
          If success, set currentUser, go to -> userMenu()                */
         MenuUtilities.clearScreen();
-        String userNameInput = MenuUtilities.promptForText("Enter Username: ");
-        int pinInput=0;
-        while(pinInput<1000||(pinInput>9999&&pinInput<1000000)||pinInput>9999999){ //while not 4 or 7 digits
-            pinInput = MenuUtilities.promptForPositiveInt("Enter Pin: ");
+        ATM atm = ATM.getATM();
+        boolean firstOn = atm.isFirstOn();
+        if (firstOn){
+            System.out.println("ATM BOOTUP PROCESS..");
+            MenuUtilities.delayedPrint(1700,"Login with Administrator account.\n");
+            MenuUtilities.delayedPrint(1000);
         }
-        Authenticator auth = Authenticator.getAuthenticator();
-        boolean authenticated = auth.authenticate(userNameInput,pinInput);
-        if(authenticated){
+        loginPrompt:
+        while (true) {
+            String userNameInput = MenuUtilities.promptForText("Enter Username: ");
+            int pinInput=0;
+            while(pinInput<1000||(pinInput>9999&&pinInput<1000000)||pinInput>9999999){ //while not 4 or 7 digits
+                pinInput = MenuUtilities.promptForPositiveInt("Enter Pin: ");
+            }
+            Authenticator auth = Authenticator.getAuthenticator();
+            boolean authenticated = auth.authenticate(userNameInput,pinInput);
+            if(authenticated){
 
-            UserManager um = UserManager.getUserManager();
-            User authenticatedUser = um.getUser(userNameInput);
-            if(authenticatedUser.isFlagged()){
-                System.out.println("This account is flagged.  Please request administrator help to restore login privelages.");
-                MenuUtilities.delayedPrint(1500,"Returning to Login Menu");
-                MenuUtilities.delayedPrint(900);
-                loginMenu();
+                UserManager um = UserManager.getUserManager();
+                User authenticatedUser = um.getUser(userNameInput);
+                if (firstOn&&!authenticatedUser.isAdmin()){
+                    System.out.println("Please login on an administrator account.");
+                    MenuUtilities.delayedPrint(1200);
+                    continue loginPrompt;
+                }
+                if(authenticatedUser.isFlagged()&&!firstOn){
+                    System.out.println("This account is flagged.  Please request administrator help to restore login privileges.");
+                    MenuUtilities.delayedPrint(1500,"Returning to Login Menu");
+                    MenuUtilities.delayedPrint(900);
+                    loginMenu();
+                }
+                um.setCurrentUser(authenticatedUser);
+                User currentUser = um.getCurrentUser();
+                if(currentUser.isAdmin()){
+                    atm.setFirstOn(false);
+                    AdminMenu.adminMenu();
+                }
+                else if (!firstOn) {
+                    UserMenu.userMenu();
+                }
             }
-            um.setCurrentUser(authenticatedUser);
-            User currentUser = um.getCurrentUser();
-            if(currentUser.isAdmin()){
-                AdminMenu.adminMenu();
+            else{
+                System.out.println("Login failed.");
+                MenuUtilities.delayedPrint(2000);
+                if (firstOn){
+                    continue loginPrompt;
+                }
+                else {
+                    loginMenu();
+                }
             }
-            else {
-                UserMenu.userMenu();
-            }
-        }
-        else{
-            System.out.println("Login failed.");
-            MenuUtilities.delayedPrint(2000);
-            loginMenu();
         }
     }
 

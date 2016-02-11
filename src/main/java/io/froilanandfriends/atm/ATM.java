@@ -9,6 +9,8 @@ public class ATM {
     private HashMap<Integer,Integer> withdrawalTray = new HashMap<Integer, Integer>();  // Number of 20-dollar and 10-dollar bills
     private int ATMBalance;  // Total dollar amount available to WITHDRAW (does not include value of deposits
     private final int MAXCAPACITY = 2000;   // Max number of bills the ATM can hold, including deposit and
+
+    public static boolean firstOn = true;
     // withdrawal trays. (Arbitrarily set to 2000 for now.)
 
     // Make constructor private so nothing can instantiate ATM outside of singleton instance
@@ -161,8 +163,15 @@ public class ATM {
         } catch (Exception e) {
         }
 
-        LoginMenu.loginMenu();
+        LoginMenu.promptCredentials();
 
+    }
+    public static boolean isFirstOn() {
+        return firstOn;
+    }
+
+    public static void setFirstOn(boolean firstOn) {
+        ATM.firstOn = firstOn;
     }
 
 }
