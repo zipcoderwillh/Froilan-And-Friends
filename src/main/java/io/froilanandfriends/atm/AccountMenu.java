@@ -139,8 +139,8 @@ public class AccountMenu {
         else {
             double depositDouble = (double) depositAmount;
             am.deposit(depositDouble);
-            MenuUtilities.delayedPrint(1500);
             System.out.println("$"+depositAmount+" deposited into your account.");
+            MenuUtilities.delayedPrint(1500);
             accountMenu();
         }
     }
