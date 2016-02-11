@@ -211,10 +211,9 @@ public class AccountMenu {
         MenuUtilities.clearScreen();
         AccountManager am = AccountManager.getAccountManager();
         Account currentAccount = am.getCurrentAccount();
+        UserManager un = UserManager.getUserManager();
         if(currentAccount.getBalance()!=0){
-            System.out.println("You must withdraw all funds before attempting to close your account.");
-            MenuUtilities.delayedPrint(1500,"Returning to Account Menu");
-            accountMenu();
+            System.out.println("Closing your account will withdraw all available funds in the form of a mailed check.  Current Balance: "+currentAccount.getBalance());
         }
         String userInput="";
         while (!userInput.equals("y")&&!userInput.equals("n") ){
@@ -237,6 +236,8 @@ public class AccountMenu {
             am.deleteAccount(currentAccount.getId());
             System.out.println("Account Closed.");
             MenuUtilities.delayedPrint(2000);
+            MenuUtilities.delayedPrint(1500,"You will receive a check in the mail for "+currentAccount.getBalance()+" in the next 7 business days.");
+            MenuUtilities.delayedPrint(1700);
             UserMenu.userMenu();
         }
         else {
