@@ -98,7 +98,8 @@ public class AccountManager {
         switch (loadString.substring(0,loadString.indexOf(',')).toUpperCase())
         {
             case "SAVINGS":
-                newAccount = new BusinessAccount(loadString);
+                //changed this; it was calling a new BusinessAccount before
+                newAccount = new SavingsAccount(loadString);
                 break;
             case "CHECKING":
                 newAccount = new CheckingAccount(loadString);

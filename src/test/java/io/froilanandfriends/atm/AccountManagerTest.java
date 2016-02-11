@@ -5,6 +5,7 @@ import jdk.nashorn.internal.runtime.ECMAException;
 import java.io.File;
 import java.io.BufferedReader;
 import java.io.FileReader;
+import java.util.ArrayList;
 
 import org.junit.Before;
 import org.junit.BeforeClass;
@@ -33,76 +34,7 @@ public class AccountManagerTest {
         accountManager.createAccount(Account.AccountType.SAVINGS);
     }
 
-    @Test
-    public void testLoadAccounts() throws Exception {
-        /**
-         we set the PATHNAME to another file and write in a string formatted the same
-         way any account string in the usual log file would be. If load accounts
-         is successful there will be a account object made with the details supplied in
-         that string, and it will be the last accounts in the  allAccount array. Test works
-         like a charm
-         **/
-         AccountManager manager = AccountManager.getAccountManager();
-         manager.setPATHNAME("testAccountsLog.csv");
-         manager.loadAccounts();
-
-
-         int last = manager.getAllAccounts().size() - 1;
-         Account account =  manager.getAllAccounts().get(last);
-
-         //assertTrue("BUSINESS".equals(account.getAccountType().toString()));
-
-         assertTrue("33251523801338".equals(account.getId() + ""));
-
-         manager.setPATHNAME("accountLog.csv");
-
-
-    }
-
-    @Test
-    public void testLogAccounts() throws Exception {
-
-        //test to see if the file logAccounts is creating to write to
-        //exists. it does. tested if the file is as many lines as we intended it
-        //to be.
-
-        accountManager.setPATHNAME("testAccountsLog.csv");
-        userManager.addUser("dong", "s", "t", "e", 1234, "k", "l" );
-        User user = userManager.getUser("dong");
-        int userID = user.getUserID();
-        userManager.setCurrentUser(user);
-        accountManager.createAccount(Account.AccountType.BUSINESS);
-        long accountID = accountManager.getCurrentAccountID();
-        accountManager.logAccounts();
-        File file = new File("testAccountsLog.csv");
-
-        BufferedReader br = new BufferedReader(new FileReader("testAccountsLog.csv"));
-
-        StringBuilder stringBuilder = new StringBuilder();
-        String line;
-        while ((line = br.readLine()) != null) {
-            stringBuilder.append(line + "\n");
-
-        }
-        String bigString = stringBuilder.toString().trim();
-
-        String[] targetArr = bigString.split("\n");
-
-        int last = targetArr.length - 1;
-
-        String[] lastArr = targetArr[last].split(",");
-
-        assertTrue(lastArr[0], lastArr[0].equals("BUSINESS"));
-        System.out.println(userID);
-        assertTrue(lastArr[1].equals(accountID + ""));
-        assertTrue(lastArr[2].equals("0.0"));
-
-
-        br.close();
-
-        accountManager.setPATHNAME("accountLog.csv");
-    }
-
+    
     @Test
     public void testGetAccountManager() throws Exception {
         assertNotNull("getaccountManager should not return null", AccountManager.getAccountManager());

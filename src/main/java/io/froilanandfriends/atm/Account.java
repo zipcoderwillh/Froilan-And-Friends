@@ -8,6 +8,14 @@ public abstract class Account {
     protected AccountType accountType;
     protected long id;
     protected double balance;
+
+    /**
+     * Users are be able to share accounts, in other words, each account can
+     * have more than one userID affiliated with it. Hence we need an arrayList
+     * to hold multiple IDs. The user who creates the account will always
+     * be at index zero in the array.
+     *
+     * **/
     protected ArrayList<Integer> userIDs = new ArrayList<Integer>();
 
     //Standard Constructor - takes no args, initializes Account with subclass type setter, id with superclass id setter,
@@ -36,7 +44,7 @@ public abstract class Account {
         userIDs.add(0,Integer.parseInt(accountFields[3]));
 
         //Check size of input string lines - for every record after the fourth will be extra users in account.
-        int extraUsers = accountFields.length - 4;
+        int extraUsers = accountFields.length - 3;
         for(int i = 1; i<extraUsers; i++ ){
             userIDs.add(i,Integer.parseInt(accountFields[i+3]));
         }
