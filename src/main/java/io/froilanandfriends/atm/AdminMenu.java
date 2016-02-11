@@ -5,7 +5,12 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class AdminMenu {
-
+    /**
+     * Main menu for admins.
+     * Allows the user to perform admin specific actions.
+     * Prompts allow for collect deposits, restock withdrawal tray, the withdrawal status, view transactions, flag user
+     * and unflag user.
+     */
     public static void adminMenu(){
         //Asks the administrator to choose an option, then calls the corresponding method menu.
         MenuUtilities.clearScreen();
@@ -39,6 +44,10 @@ public class AdminMenu {
         }
     }
 
+    /**
+     * Collects all the deposits from the ATM
+     * Resets the deposit tray to 0
+     */
     public static void collectDeposits(){
         //Empties the deposit tray from ATM and returns to -> adminMenu()
         MenuUtilities.clearScreen();
@@ -49,6 +58,12 @@ public class AdminMenu {
         MenuUtilities.delayedPrint(1200);
         adminMenu();
     }
+
+    /**
+     * Prompts the admin to enter the number of twenties and tens be added to the machine.
+     * Checks with withdrawal tray status to see if there is enough room to accommodate the bills.
+     * If successful it will restock the ATM with the amount entered and return to the menu.
+     */
     public static void restockWithdrawalTray(){
         /*Prompts admin to enter number of each bill they want to stock
          *      checks legality
@@ -74,6 +89,12 @@ public class AdminMenu {
             adminMenu();
         }
     }
+
+    /**
+     * Checks the withdrawl tray.
+     * Will show how many tens and twenties are in the ATM.
+     * Has a max capacity of 2,000 bills. Refill tray checks here to make sure there are enough bill space.
+     */
     public static void withdrawalStatus(){
         //Prints out the status of the withdrawal trays in the ATM then returns to -> adminMenu()
         MenuUtilities.clearScreen();
@@ -90,6 +111,11 @@ public class AdminMenu {
         MenuUtilities.promptForReturn();
         adminMenu();
     }
+
+    /**
+     * Clears the screen and then prints all the transactions.
+     * Shows them all and then will ask for a prompt to return to the admin menu.
+     */
     public static void viewAllTransactions(){
         //Prints out the entire transaction history of the ATM, then returns to -> adminMenu()
         MenuUtilities.clearScreen();
@@ -102,6 +128,13 @@ public class AdminMenu {
         MenuUtilities.promptForReturn();
         AdminMenu.adminMenu();
     }
+
+    /**
+     * Prompts the admin to enter the username of a user to unflag them.
+     * Runs a series of checks to ensure that the username is valid.
+     * If valid the username is then checked to see if it is even flagged, if true it will unflag the user.
+     * If the user is not flagged, will prompt that the user is already unflagged.
+     */
     public static void unflagUser(){
         /* Prompts for a username to unflag
          *      Deflags if user is flagged, returns to -> adminMenu()*/
@@ -128,6 +161,13 @@ public class AdminMenu {
         MenuUtilities.delayedPrint(1400,"Returning to Admin Menu.");
         adminMenu();
     }
+
+    /**
+     * Prompts the admin to enter the username of a user to flag their account.
+     * Runs checks to ensure that the username entered is actually valid.
+     * If the user isn't flagged than it will flag them and return to admin menu.
+     * If the user is flagged, than it will prompt saying that the user is already flagged and return ot the admin menu.
+     */
     public static void flagUser(){
         /* Prompts for a username to flag
          *      flags if user isn't flagged, returns to -> adminMenu()*/
