@@ -1,7 +1,8 @@
 package io.froilanandfriends.atm;
 
 /**
- * Created by johnb on 2/10/16.
+ * <h1>Class BusinessAccount</h1>
+ * <p>Type of account for business accounts</p>
  */
 public class BusinessAccount extends Account {
     BusinessAccount(){
