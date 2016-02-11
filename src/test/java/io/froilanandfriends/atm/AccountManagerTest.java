@@ -37,9 +37,9 @@ public class AccountManagerTest {
     public void testLoadAccounts() throws Exception {
         /**
          we set the PATHNAME to another file and write in a string formatted the same
-         way any transaction string in the usual log file would be. If load transaction
-         is successful there will be a transaction object made with the details supplied in
-         that string, and it will be the last transaction in the  allTransaction array. Test works
+         way any account string in the usual log file would be. If load accounts
+         is successful there will be a account object made with the details supplied in
+         that string, and it will be the last accounts in the  allAccount array. Test works
          like a charm
          **/
          AccountManager manager = AccountManager.getAccountManager();
