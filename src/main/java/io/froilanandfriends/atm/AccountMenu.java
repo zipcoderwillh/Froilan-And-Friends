@@ -17,7 +17,7 @@ public class AccountMenu {
         System.out.println("   Close Account (x) --  Switch Account (s)  --  Logout (l) \n");
         String userInput="";
         while (!userInput.equals("c")&&!userInput.equals("w")&&!userInput.equals("d")&&!userInput.equals("t")&&
-                !userInput.equals("v")&&!userInput.equals("x")&&!userInput.equals("s")&&!userInput.equals("l")){
+                !userInput.equals("v")&&!userInput.equals("x")&&!userInput.equals("s")&&!userInput.equals("l")&&!userInput.equals("a")){
             userInput = MenuUtilities.promptForText("Enter Decision: ").toLowerCase();
         }
         if(userInput.equals("c")){
