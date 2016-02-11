@@ -58,21 +58,26 @@ public class TestATM {
     @Test
     public void testDeposit() throws Exception {
 
-        assertTrue(atm.deposit(25, 405));  // Total bills == 775 (including withdrawal trays)
+        assertTrue(atm.deposit(405));  // Total bills == 771 (including withdrawal trays)
         assertEquals(405, atm.getDepositValue());
-        assertEquals(25, atm.getDepositTray());
+        assertEquals(21, atm.getDepositTray());
 
-        assertTrue(atm.deposit(500, 1000));  // Total bills == 1275 (including withdrawal trays)
+        assertTrue(atm.deposit(1000));  // Total bills == 842 (including withdrawal trays)
         assertEquals(1405, atm.getDepositValue());
-        assertEquals(525, atm.getDepositTray());
+        assertEquals(71, atm.getDepositTray());
 
-        assertFalse(atm.deposit(726, 10001));  // Would exceed bill limit
-        assertEquals(1405, atm.getDepositValue());
-        assertEquals(525, atm.getDepositTray());
+        assertTrue(atm.deposit(10001));  // Total bills == 1,343
+        assertEquals(11406, atm.getDepositValue());
+        assertEquals(572, atm.getDepositTray());
 
-        assertTrue(atm.deposit(725, 10000));  // Total bills == 2000 (limit)
-        assertEquals(11405, atm.getDepositValue());
-        assertEquals(1250, atm.getDepositTray());
+
+        assertTrue(atm.deposit(13160));  // Total bills == 1,980
+        assertEquals(24566, atm.getDepositValue());
+        assertEquals(1230, atm.getDepositTray());
+
+        assertFalse(atm.deposit(420));  // Would exceed capacity
+        assertEquals(24566, atm.getDepositValue());
+        assertEquals(1230, atm.getDepositTray());
 
         atm.emptyDepositTray();  // Test emptying the deposit tray
         assertEquals(0, atm.getDepositTray());
