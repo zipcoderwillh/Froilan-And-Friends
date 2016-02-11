@@ -69,6 +69,7 @@ public class User {
      */
     public void setFlagged(){
         flagged = true;
+
     }
 
     /**
@@ -99,6 +100,7 @@ public class User {
      */
     public void setAsAdmin(){
         isAdmin = true;
+
     }
 
     /**

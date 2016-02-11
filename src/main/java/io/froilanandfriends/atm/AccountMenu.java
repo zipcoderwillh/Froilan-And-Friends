@@ -20,33 +20,29 @@ public class AccountMenu {
                 !userInput.equals("v")&&!userInput.equals("x")&&!userInput.equals("s")&&!userInput.equals("l")&&!userInput.equals("a")){
             userInput = MenuUtilities.promptForText("Enter Decision: ").toLowerCase();
         }
-        if(userInput.equals("c")){
-            checkBalance();
+        char userInputChar = userInput.charAt(0);
+        switch (userInputChar){
+            case 'c':checkBalance();
+                break;
+            case 'w':withdraw();
+                break;
+            case 'd':deposit();
+                break;
+            case 't':transfer();
+                break;
+            case 'v':viewTransactions();
+                break;
+            case 'a':addUser();
+                break;
+            case 'x':closeAccount();
+                break;
+            case 's':UserMenu.userMenu();
+                break;
+            case 'l':MenuUtilities.logout();
+                break;
+            default:MenuUtilities.logout();
         }
-        else if(userInput.equals("w")){
-            withdraw();
-        }
-        else if(userInput.equals("d")){
-            deposit();
-        }
-        else if(userInput.equals("t")){
-            transfer();
-        }
-        else if(userInput.equals("v")){
-            viewTransactions();
-        }
-        else if(userInput.equals("x")){
-            closeAccount();
-        }
-        else if(userInput.equals("s")){
-            UserMenu.userMenu();
-        }
-        else if(userInput.equals("l")){
-            MenuUtilities.logout();
-        }
-        else if(userInput.equals("a")){
-            addUser();
-        }
+
     }
 
     public static void withdraw(){
@@ -211,10 +207,9 @@ public class AccountMenu {
         MenuUtilities.clearScreen();
         AccountManager am = AccountManager.getAccountManager();
         Account currentAccount = am.getCurrentAccount();
+        UserManager un = UserManager.getUserManager();
         if(currentAccount.getBalance()!=0){
-            System.out.println("You must withdraw all funds before attempting to close your account.");
-            MenuUtilities.delayedPrint(1500,"Returning to Account Menu");
-            accountMenu();
+            System.out.println("Closing your account will withdraw all available funds in the form of a mailed check.  Current Balance: "+currentAccount.getBalance());
         }
         String userInput="";
         while (!userInput.equals("y")&&!userInput.equals("n") ){
@@ -237,6 +232,8 @@ public class AccountMenu {
             am.deleteAccount(currentAccount.getId());
             System.out.println("Account Closed.");
             MenuUtilities.delayedPrint(2000);
+            MenuUtilities.delayedPrint(1500,"You will receive a check in the mail for "+currentAccount.getBalance()+" in the next 7 business days.");
+            MenuUtilities.delayedPrint(1700);
             UserMenu.userMenu();
         }
         else {

@@ -188,4 +188,13 @@ public class UserManager {
     }
         return null;
     }
+    public ArrayList<User> getFlaggedUsers (){
+        ArrayList<User> listToReturn = new ArrayList<User>();
+        for(User thisUser:allUsers){
+            if (thisUser.isFlagged()){
+                listToReturn.add(thisUser);
+            }
+        }
+        return listToReturn;
+    }
 }
