@@ -5,6 +5,8 @@ import jdk.nashorn.internal.runtime.ECMAException;
 import java.io.File;
 import java.io.BufferedReader;
 import java.io.FileReader;
+import java.util.ArrayList;
+
 
 import org.junit.Before;
 import org.junit.BeforeClass;
@@ -54,6 +56,9 @@ public class AccountManagerTest {
 
          assertEquals("last account in accountManager should have an id of 84645914125183",86793680569076L,account.getId());
          assertEquals("last account in accountManager should have a balance of 2000.00",2000.0d,account.getBalance(),0.01d);
+         ArrayList<Integer> userIDs = account.getUserIDs();
+         assertEquals("last account in accountManager should be linked to account 42",42, (int) userIDs.get(0));
+         assertEquals("last account in accountManager should be linked to account 42",43, (int) userIDs.get(1));
          manager.setPATHNAME("accountLog.csv");
 
     }
@@ -68,8 +73,12 @@ public class AccountManagerTest {
         userManager.addUser("dong", "s", "t", "e", 1234, "k", "l" );
         User user = userManager.getUser("dong");
         int userID = user.getUserID();
+        userManager.addUser("flong","first","last","email",4321,"q","a");
+        User user2 = userManager.getUser("flong");
+        int userID2 = user2.getUserID();
         userManager.setCurrentUser(user);
-        accountManager.createAccount(Account.AccountType.BUSINESS);
+        Account account = accountManager.createAccount(Account.AccountType.BUSINESS);
+        account.addUserID(userID2);
         long accountID = accountManager.getCurrentAccountID();
         accountManager.logAccounts();
         File file = new File("testAccountsLog.csv");
@@ -88,6 +97,8 @@ public class AccountManagerTest {
         System.out.println(userID);
         assertTrue(lastArr[1].equals(accountID + ""));
         assertTrue(lastArr[2].equals("0.0"));
+        assertTrue(lastArr[3].equals(userID + ""));
+        assertTrue(lastArr[4].equals(userID2+ ""));
         br.close();
         accountManager.setPATHNAME("accountLog.csv");
     }
