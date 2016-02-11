@@ -92,12 +92,9 @@ public class UserManager {
     }
 
     //adds a user to the allusers list
-    public void addUser(String userName, String firstName, String lastName, String email, int pin, String securityQuestion, String secruityAnswer) throws Exception {
-        User newUser = new User(userName, firstName, lastName, email, pin, securityQuestion, secruityAnswer);
+    public void addUser(String userName, String firstName, String lastName, String email, int pin, String securityQuestion, String securityAnswer) throws Exception {
+        User newUser = new User(userName, firstName, lastName, email, pin, securityQuestion, securityAnswer);
         allUsers.add(newUser);
-
-
-
         logUsers();
 
     }
@@ -113,5 +110,14 @@ public class UserManager {
         }
     }
         return null;
+    }
+    public ArrayList<User> getFlaggedUsers (){
+        ArrayList<User> listToReturn = new ArrayList<User>();
+        for(User thisUser:allUsers){
+            if (thisUser.isFlagged()){
+                listToReturn.add(thisUser);
+            }
+        }
+        return listToReturn;
     }
 }
