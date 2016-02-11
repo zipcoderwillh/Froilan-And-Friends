@@ -7,7 +7,7 @@ import java.util.Date;
 
 public class TransactionManager {
 
-    private static final String PATHNAME = "transactionsLog.csv";
+    private static String PATHNAME = "transactionsLog.csv";
     private static ArrayList<Transaction> allTransactions = new ArrayList<Transaction>();
 
     //Singleton Setup
@@ -39,6 +39,10 @@ public class TransactionManager {
         }catch (Exception e){
 
         }
+    }
+
+    public static void setPATHNAME(String PATHNAME) {
+        TransactionManager.PATHNAME = PATHNAME;
     }
 
     /**

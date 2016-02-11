@@ -27,18 +27,31 @@ public class AccountManagerTest {
         accountManager.createAccount(AccountType.SAVINGS);
     }
 
-    //@Test
+    @Test
     public void testLoadAccounts() throws Exception {
-        //if the load method works correctly, after we run it
-        //there should be 6 account objects in our manager array.
-        //3 put there by the three createAccount()'s above and three
-        //more loaded from the file. It works!
-        accountManager.loadAccounts();
-        assertEquals(6, accountManager.getAllAccounts().size());
-        //let's take a closer look: looks good!
-        AccountType accountType = accountManager.getAllAccounts().get(3).getAccountType();
-        long accountID = accountManager.getAllAccounts().get(3).getId();
-        System.out.println("" + accountType + accountID);
+        /**
+         we set the PATHNAME to another file and write in a string formatted the same
+         way any transaction string in the usual log file would be. If load transaction
+         is successful there will be a transaction object made with the details supplied in
+         that string, and it will be the last transaction in the  allTransaction array. Test works
+         like a charm
+
+        AccountManager manager = AccountManager.getAccountManager();
+        manager.setPATHNAME("testTransactionLog.csv");
+        manager.loadAccounts();
+
+
+        int last = manager.getAllAccounts().size() - 1;
+        Account account =  manager.getAllAccounts().get(last);
+        assertEquals(20066, .getFromAccount());
+        assertTrue("WITHDRAWL".equals(transaction.getTransactionType().toString()));
+        assertEquals(20233, transaction.getToAccount());
+        assertEquals(8000.0, transaction.getAmount(), 0.01);
+        assertTrue("Wed Feb 10 14:41:27 EST 2016".equals(transaction.getDate().toString()));
+        assertEquals(12, transaction.getId());
+        manager.setPATHNAME("transactionsLog.csv");
+
+        **/
     }
 
     @Test
@@ -47,19 +60,29 @@ public class AccountManagerTest {
         //test to see if the file logAccounts is creating to write to
         //exists. it does. tested if the file is as many lines as we intended it
         //to be.
+
+        accountManager.setPATHNAME("testAccountsLog.csv");
         accountManager.logAccounts();
-        File file = new File("accountLog.csv");
+        File file = new File("testAccountsLog.csv");
         assertTrue(file.exists());
-        BufferedReader br = new BufferedReader(new FileReader("accountLog.csv"));
+        BufferedReader br = new BufferedReader(new FileReader("testAccountsLog.csv"));
         StringBuilder stringBuilder = new StringBuilder();
         String line;
-        while ((line = br.readLine()) != null) {
+        while((line = br.readLine()) != null){
             stringBuilder.append(line + "\n");
+
         }
-        String builderStr = stringBuilder.toString();
-        String[] lineArray = builderStr.split("\n");
-        assertEquals(3, lineArray.length);
+        String bigString = stringBuilder.toString().trim();
+
+        String[] targetArr = bigString.split("\n");
+        int last = targetArr.length - 1;
+        String[] lastArr = targetArr[last].split(",");
+        assertTrue(lastArr[0],lastArr[0].equals("DEPOSIT"));
+        assertTrue(lastArr[1].equals("1899888"));
+        assertTrue(lastArr[2].equals("1888181"));
+        assertTrue(lastArr[3].equals("80000.0"));
         br.close();
+        accountManager.setPATHNAME("accountLog.csv");
     }
 
     @Test
