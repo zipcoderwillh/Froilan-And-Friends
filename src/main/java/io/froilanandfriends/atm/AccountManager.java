@@ -9,11 +9,15 @@ public class AccountManager {
 
     private ArrayList<Account> allAccounts = new ArrayList<Account>();
     private Account currentAccount;
-    private static final String PATHNAME = "accountLog.csv";
+    private static String PATHNAME = "accountLog.csv";
     //Singleton Setup
     private static AccountManager current = new AccountManager();
     public static AccountManager getAccountManager(){
         return current;
+    }
+
+    public static void setPATHNAME(String PATHNAME) {
+        AccountManager.PATHNAME = PATHNAME;
     }
 
     /**** FILEIO  ***/

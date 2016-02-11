@@ -7,7 +7,7 @@ import java.util.Date;
 
 public class TransactionManager {
 
-    private static final String PATHNAME = "transactionsLog.csv";
+    private static String PATHNAME = "transactionsLog.csv";
     private static ArrayList<Transaction> allTransactions = new ArrayList<Transaction>();
 
     //Singleton Setup
@@ -43,8 +43,14 @@ public class TransactionManager {
         }
     }
 
+<<<<<<< HEAD
     public long setTransactionID(){ return allTransactions.size() + 1234567; }
 
+=======
+    public static void setPATHNAME(String PATHNAME) {
+        TransactionManager.PATHNAME = PATHNAME;
+    }
+>>>>>>> working
 
     /**
      loadTransactions() will call FileIO's readRecords method to pull up an array
