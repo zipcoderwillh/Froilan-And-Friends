@@ -65,7 +65,8 @@ public class AccountManagerTest {
 
     @Test
     public void testLogAccounts() throws Exception {
-
+        UserManager userManager = UserManager.getUserManager();
+        UserManager.setPATHNAME("testLoadUserLog.csv");
         //test to see if the file logAccounts is creating to write to
         //exists. it does. tested if the file is as many lines as we intended it
         //to be.
@@ -101,6 +102,7 @@ public class AccountManagerTest {
         assertTrue(lastArr[4].equals(userID2+ ""));
         br.close();
         accountManager.setPATHNAME("accountLog.csv");
+        UserManager.setPATHNAME("userLog.csv");
     }
 
     @Test
