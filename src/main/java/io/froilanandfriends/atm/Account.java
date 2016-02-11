@@ -15,7 +15,7 @@ public abstract class Account {
     Account(){
         //Give this account a unique id based on the nanosecond
         this.id = System.nanoTime();
-        userIDs.set(userIDs.size(),UserManager.getUserManager().getCurrentUser().getUserID());
+        userIDs.add(UserManager.getUserManager().getCurrentUser().getUserID());
     }
     
 
@@ -33,17 +33,17 @@ public abstract class Account {
         this.id = Long.parseLong(accountFields[1].trim());
         this.balance = Double.parseDouble(accountFields[2].trim());
 
-        userIDs.set(0,Integer.parseInt(accountFields[3]));
+        userIDs.add(0,Integer.parseInt(accountFields[3]));
 
         //Check size of input string lines - for every record after the fourth will be extra users in account.
         int extraUsers = accountFields.length - 4;
         for(int i = 1; i<extraUsers; i++ ){
-            userIDs.set(i,Integer.parseInt(accountFields[i+3]));
+            userIDs.add(i,Integer.parseInt(accountFields[i+3]));
         }
 
 
     }
-
+    public void addUserID(int userID){userIDs.add(userID);}
     //remove money from this account
     public void withdraw(double amountToWithdraw){
         balance-=amountToWithdraw;

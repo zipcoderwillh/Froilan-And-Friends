@@ -80,8 +80,7 @@ public class AccountManager {
         allAccounts.add(newAccount);
         //set currentAccount to the one we just made
         currentAccount = newAccount;
-        //add the current user to the account's userid list
-        newAccount.getUserIDs().add(UserManager.getUserManager().getCurrentUser().getUserID());
+
         //Log all accounts
         try {
             logAccounts();
