@@ -25,15 +25,15 @@ public class TestAuthenticator {
     @Test
     public void testAuthenticate(){
         try {
-            useM.addUser("jbutts12","J","R","j@gmail.com",1111,"applesauce?","yes");
+            useM.addUser("jbutts13","J","R","j@gmail.com",1111,"applesauce?","yes");
         } catch (Exception e){}
 
-        boolean answer = auth.authenticate("jbutts12",1110);
-        assertTrue("authenticate() test failed",answer=false);
+        boolean answer = auth.authenticate("jbutts13",1110);
+        assertTrue("authenticate() test failed",answer==false);
         answer = auth.authenticate("jbutts2",1111);
-        assertTrue("authenticate() test failed",answer=false);
-        answer = auth.authenticate("jbutts12",1111);
-        assertTrue("authenticate() test failed",answer=true);
+        assertTrue("authenticate() test failed",answer==false);
+        answer = auth.authenticate("jbutts13",1111);
+        assertTrue("authenticate() test failed",answer==true);
 
         System.out.println("All authenticate() tests passed.");
     }
