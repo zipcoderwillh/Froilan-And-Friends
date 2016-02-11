@@ -22,7 +22,7 @@ public class UserManagerTest {
     @Test
     public void testAddUser() throws Exception {
 
-        UserManager userManager = new UserManager();
+        UserManager userManager = UserManager.getUserManager();
         UserManager.setPATHNAME("testLoadUserLog.csv");
         userManager.addUser("nwebb89", "Nick", "Webb", "TestEmail@gmail.com", 4477, "What is your dogs name?","Tucker");
         assertTrue(userManager.getAllUsers().get(0).getFirstName().equals("Nick"));
@@ -31,7 +31,7 @@ public class UserManagerTest {
 
     @Test
     public void testRemoveUser() throws Exception{
-        UserManager userManager = new UserManager();
+        UserManager userManager = UserManager.getUserManager();
         UserManager.setPATHNAME("testLoadUserLog.csv");
         userManager.addUser("nwebb89", "Nick", "Webb", "TestEmail@gmail.com", 4477, "What is your dogs name?","Tucker");
         userManager.addUser("testman", "Test", "Man", "tester@yahoo.com", 5874, "Where are you from?", "testville");
@@ -44,7 +44,7 @@ public class UserManagerTest {
 
     @Test
     public void testFlagging() throws Exception{
-        UserManager userManager = new UserManager();
+        UserManager userManager = UserManager.getUserManager();
         UserManager.setPATHNAME("testLoadUserLog.csv");
         userManager.addUser("nwebb89", "Nick", "Webb", "TestEmail@gmail.com", 4477, "What is your dogs name?","Tucker");
         userManager.addUser("testman", "Test", "Man", "tester@yahoo.com", 5874, "Where are you from?", "testville");
@@ -59,7 +59,7 @@ public class UserManagerTest {
     }
     @Test
     public void testSearchCurrentUserByUserName() throws Exception{
-        UserManager userManager = new UserManager();
+        UserManager userManager = UserManager.getUserManager();
         UserManager.setPATHNAME("testLoadUserLog.csv");
         userManager.addUser("nwebb89", "Nick", "Webb", "TestEmail@gmail.com", 4477, "What is your dogs name?","Tucker");
         userManager.addUser("testman", "Test", "Man", "tester@yahoo.com",5847 , "Where are you from?", "testville");
@@ -70,18 +70,19 @@ public class UserManagerTest {
 
     @Test
     public void testSearchCurrentUserByEmail() throws Exception{
-        UserManager userManager = new UserManager();
+        UserManager userManager = UserManager.getUserManager();
         UserManager.setPATHNAME("testLoadUserLog.csv");
         userManager.addUser("nwebb89", "Nick", "Webb", "TestEmail@gmail.com", 4477, "What is your dogs name?","Tucker");
-        userManager.addUser("testman", "Test", "Man", "tester@yahoo.com", 5874, "Where are you from?", "testville");
-        User tester = userManager.getUserByEmail("tester@yahoo.com");
-        assertEquals("tester should be our second user", tester, userManager.getAllUsers().get(1));
+        userManager.addUser("testman", "Test", "Man", "EMAILTESTER@YAHOO.COM", 5874, "Where are you from?", "testville");
+        User tester = userManager.getUserByEmail("EMAILTESTER@YAHOO.COM");
+        int lastAdded = userManager.getAllUsers().size()-1;
+        assertEquals("tester should be our second user", tester, userManager.getAllUsers().get(lastAdded));
         UserManager.setPATHNAME("userLog.csv");
     }
 
     @Test
     public void testGetAllUsers() throws Exception{
-        UserManager userManager = new UserManager();
+        UserManager userManager = UserManager.getUserManager();
         UserManager.setPATHNAME("testLoadUserLog.csv");
         userManager.addUser("nwebb89", "Nick", "Webb", "TestEmail@gmail.com", 4477, "What is your dogs name?","Tucker");
         userManager.addUser("testman", "Test", "Man", "tester@yahoo.com", 5874, "Where are you from?", "testville");
@@ -95,7 +96,7 @@ public class UserManagerTest {
     }
     @Test
     public void testGetCurrentUser() throws Exception{
-        UserManager userManager = new UserManager();
+        UserManager userManager = UserManager.getUserManager();
         UserManager.setPATHNAME("testLoadUserLog.csv");
         userManager.addUser("nwebb89", "Nick", "Webb", "TestEmail@gmail.com", 4477, "What is your dogs name?","Tucker");
         userManager.addUser("testman", "Test", "Man", "tester@yahoo.com", 5874, "Where are you from?", "testville");
@@ -106,7 +107,7 @@ public class UserManagerTest {
 
     @Test
     public void testAdminSupport() throws Exception{
-        UserManager userManager = new UserManager();
+        UserManager userManager = UserManager.getUserManager();
         UserManager.setPATHNAME("testLoadUserLog.csv");
         userManager.addUser("nwebb89", "Nick", "Webb", "TestEmail@gmail.com", 4477, "What is your dogs name?","Tucker");
         userManager.addUser("testman", "Test", "Man", "tester@yahoo.com", 5874, "Where are you from?", "testville");
@@ -120,7 +121,7 @@ public class UserManagerTest {
 
     @Test
     public void testAdminRemoval() throws Exception{
-        UserManager userManager = new UserManager();
+        UserManager userManager = UserManager.getUserManager();
         UserManager.setPATHNAME("testLoadUserLog.csv");
         userManager.addUser("nwebb89", "Nick", "Webb", "TestEmail@gmail.com", 4477, "What is your dogs name?","Tucker");
         userManager.addUser("testman", "Test", "Man", "tester@yahoo.com", 5874, "Where are you from?", "testville");
@@ -136,7 +137,7 @@ public class UserManagerTest {
 
     @Test
     public void testPinSetting() throws Exception{
-        UserManager userManager = new UserManager();
+        UserManager userManager = UserManager.getUserManager();
         UserManager.setPATHNAME("testLoadUserLog.csv");
         userManager.addUser("nwebb89", "Nick", "Webb", "TestEmail@gmail.com", 4477, "What is your dogs name?","Tucker");
         userManager.addUser("testman", "Test", "Man", "tester@yahoo.com", 5874, "Where are you from?", "testville");
@@ -150,7 +151,7 @@ public class UserManagerTest {
 
     @Test
     public void testGettingUserInformation() throws Exception{
-        UserManager userManager = new UserManager();
+        UserManager userManager = UserManager.getUserManager();
         UserManager.setPATHNAME("testLoadUserLog.csv");
         userManager.addUser("nwebb89", "Nick", "Webb", "TestEmail@gmail.com", 4477, "What is your dogs name?","Tucker");
         userManager.addUser("testman", "Test", "Man", "tester@yahoo.com", 5874, "Where are you from?", "testville");
@@ -163,7 +164,7 @@ public class UserManagerTest {
 
     @Test
     public void testSecurityQuestions() throws Exception{
-        UserManager userManager = new UserManager();
+        UserManager userManager = UserManager.getUserManager();
         UserManager.setPATHNAME("testLoadUserLog.csv");
         userManager.addUser("nwebb89", "Nick", "Webb", "TestEmail@gmail.com", 4477, "What is your dogs name?","Tucker");
         userManager.addUser("testman", "Test", "Man", "tester@yahoo.com", 5874, "Where are you from?", "testville");
@@ -176,7 +177,7 @@ public class UserManagerTest {
     }
     @Test
     public void testClearUsers() throws Exception{
-        UserManager userManager = new UserManager();
+        UserManager userManager = UserManager.getUserManager();
         UserManager.setPATHNAME("testLoadUserLog.csv");
         userManager.addUser("nwebb89", "Nick", "Webb", "TestEmail@gmail.com", 4477, "What is your dogs name?","Tucker");
         userManager.addUser("testman", "Test", "Man", "tester@yahoo.com", 5874, "Where are you from?", "testville");
@@ -189,7 +190,7 @@ public class UserManagerTest {
 
     @Test
     public void testSetSequentialUserIDs() throws Exception{
-        UserManager userManager = new UserManager();
+        UserManager userManager = UserManager.getUserManager();
         UserManager.setPATHNAME("testLoadUserLog.csv");
         userManager.addUser("nwebb89", "Nick", "Webb", "TestEmail@gmail.com", 4477, "What is your dogs name?","Tucker");
         System.out.println(userManager.getAllUsers().get(0).getUserID());
@@ -197,7 +198,6 @@ public class UserManagerTest {
         System.out.println(userManager.getAllUsers().get(1).getUserID());
         int user1ID = userManager.getAllUsers().get(0).getUserID();
         int user2ID = userManager.getAllUsers().get(1).getUserID();
-
         assertTrue(user2ID-user1ID == 1);
         UserManager.setPATHNAME("userLog.csv");
     }
@@ -205,21 +205,20 @@ public class UserManagerTest {
     @Test
     public void testLoadUsers() throws Exception {
 
-        UserManager manager = new UserManager();
+        UserManager manager = UserManager.getUserManager();
         UserManager.setPATHNAME("testLoadUserLog.csv");
-        manager.loadUsers();
         manager.addUser("nwebb89", "Nick", "Webb", "TestEmail@gmail.com", 4477, "What is your dogs name?","Tucker");
-        manager.addUser("testman", "Test", "Man", "tester@yahoo.com", 5874, "Where are you from?", "testville");
-
+        manager.addUser("testman", "TESTING LOAD NAME", "Man", "tester@yahoo.com", 5874, "Where are you from?", "testville");
+        manager.loadUsers();
         int last = manager.getAllUsers().size() - 1;
         User user =  manager.getAllUsers().get(last);
-        Assert.assertEquals(42+manager.getAllUsers().size(),user.getUserID() );
+        Assert.assertEquals(user.getFirstName(), "TESTING LOAD NAME" );
         UserManager.setPATHNAME("userLog.csv");
     }
 
     @Test
     public void testLogAccounts() throws Exception {
-        UserManager manager = new UserManager();
+        UserManager manager = UserManager.getUserManager();
         UserManager.setPATHNAME("testLogUserLog.csv");
         manager.addUser("nwebb89", "Nick", "Webb", "TestEmail@gmail.com", 4477, "What is your dogs name?","Tucker");
         manager.addUser("testman", "Test", "Man", "tester@yahoo.com", 5874, "Where are you from?", "testville");
