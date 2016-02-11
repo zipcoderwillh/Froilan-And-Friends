@@ -68,8 +68,10 @@ public class LoginMenu {
         String email = promptEmail();
         String securityQuestion = promptSecQuestion();
         String securityAnswer = promptSecAnswer();
+        try {
+            um.addUser(userName,firstName,lastName,email,pin,securityQuestion,securityAnswer);
+        } catch (Exception e){}
 
-        um.addUser(userName,firstName,lastName,email,pin,securityQuestion,securityAnswer);
         um.setCurrentUser(um.getUser(userName));
         UserMenu.userMenu();
     }

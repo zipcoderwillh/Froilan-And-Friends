@@ -88,10 +88,10 @@ public class UserManager {
     }
 
     //adds a user to the allusers list
-    public void addUser(String userName, String firstName, String lastName, String email, int pin, String securityQuestion, String secruityAnswer){
+    public void addUser(String userName, String firstName, String lastName, String email, int pin, String securityQuestion, String secruityAnswer) throws Exception {
         User newUser = new User(userName, firstName, lastName, email, pin, securityQuestion, secruityAnswer);
         allUsers.add(newUser);
-
+        logUsers();
     }
     //will remove specific user from list
     public void removeCurrentUser(User u){
