@@ -75,14 +75,22 @@ public class AccountMenu {
             }
             else {
                 am.withdrawl(currBalance);
+                System.out.println("Your check will be in the mail within 3 business days.");
+                MenuUtilities.delayedPrint(1500);
                 accountMenu();
             }
         }
         else if(currBalance>=10.0) {
             boolean gettingAmount = true;
             while (gettingAmount) {
-                userWithdraw = MenuUtilities.promptForPositiveInt("What amount would you like to withdraw? ($10 increments)");
-                if (userWithdraw > currBalance) {
+                userWithdraw = MenuUtilities.promptForPositiveInt("What amount would you like to withdraw? ($10 increments)  Enter 1 to cancel the transaction.");
+                if (userWithdraw==1){
+                    System.out.println("Transaction cancelled.  Returning to Account Menu");
+                    MenuUtilities.delayedPrint(1000);
+                    accountMenu();
+                    break;
+                }
+                else if (userWithdraw > currBalance) {
                     System.out.println("Insufficient funds.  Enter a lower amount.");
                 } else if (userWithdraw % 10 != 0) {
                     System.out.println("Your withdrawal must be in $10 increments.");
