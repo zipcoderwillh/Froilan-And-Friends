@@ -9,11 +9,17 @@ public abstract class Account {
     protected long id;
     protected double balance;
     protected ArrayList<Integer> userIDs = new ArrayList<Integer>();
+
+    //Standard Constructor - takes no args, initializes Account with subclass type setter, id with superclass id setter,
+    //balance of zero, and first user in userids array as current users user id.
     Account(){
         //Give this account a unique id based on the nanosecond
         this.id = System.nanoTime();
+        userIDs.set(userIDs.size(),UserManager.getUserManager().getCurrentUser().getUserID());
     }
-    //secondary constructor for strings read in from file
+    
+
+    //Secondary constructor for strings read in from load file.
     Account(String bigString){
         String[] accountFields = bigString.split(",");
         String acctType = accountFields[0].toLowerCase();
@@ -26,6 +32,16 @@ public abstract class Account {
         }
         this.id = Long.parseLong(accountFields[1].trim());
         this.balance = Double.parseDouble(accountFields[2].trim());
+
+        userIDs.set(0,Integer.parseInt(accountFields[3]));
+
+        //Check size of input string lines - for every record after the fourth will be extra users in account.
+        int extraUsers = accountFields.length - 4;
+        for(int i = 1; i<extraUsers; i++ ){
+            userIDs.set(i,Integer.parseInt(accountFields[i+3]));
+        }
+
+
     }
 
     //remove money from this account
