@@ -97,7 +97,7 @@ public class AdminMenu {
         }
         MenuUtilities.delayedPrint(1500);
         MenuUtilities.promptForReturn();
-        AccountMenu.accountMenu();
+        AdminMenu.adminMenu();
     }
     public static void unflagUser(){
         /* Prompts for a username to unflag

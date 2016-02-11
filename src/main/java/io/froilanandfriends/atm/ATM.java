@@ -79,8 +79,8 @@ public class ATM {
         // Make sure attempted reload doesn't exceed ATM's max capacity.
         // If ok, go ahead and add bills to trays and increase ATMBalance.
         if( (currentNumberOfBills + twenties + tens) <= MAXCAPACITY ) {
-            withdrawalTray.put(20, twenties);
-            withdrawalTray.put(10, tens);
+            withdrawalTray.put(20, withdrawalTray.get(20)+twenties);
+            withdrawalTray.put(10, withdrawalTray.get(10)+tens);
             ATMBalance += (twenties * 20) + (tens * 10);
             result = true;
         }
@@ -89,15 +89,32 @@ public class ATM {
 
     }
 
-    public boolean deposit(int numBills, int amount){
+    public boolean deposit(int amount){
 
         boolean result = false;
         int currentNumberOfBills = withdrawalTray.get(20) + withdrawalTray.get(10) + depositTray;
+        int remainder = amount % 20;
+
+        // Assume that deposit amount can be covered by 20s as much as possible
+        int numberOfTwenties = (amount - remainder) / 20;
+
+        // If 20s can't cover full amount, try a 10 for the rest
+        int numberOfTens = remainder >= 10 ? 1 : 0;
+        remainder -= numberOfTens * 10;
+
+        // If 10s can't cover the rest, try a 5
+        int numberOfFives = remainder >= 5 ? 1 : 0;
+        remainder -= numberOfFives * 5;
+
+        // If 5s can't cover the rest, try 1s
+        int numberOfOnes = remainder % 5;
+
+        int totalBills = numberOfTwenties + numberOfTens + numberOfFives + numberOfOnes;
 
         // Make sure deposit will not exceed ATM's max bill capacity.
         // If not, add bills to depositTray and increase depositValue by deposit amount.
-        if(currentNumberOfBills + numBills <= MAXCAPACITY) {
-            depositTray += numBills;
+        if(currentNumberOfBills + totalBills <= MAXCAPACITY) {
+            depositTray += totalBills;
             depositValue += amount;
             result = true;
         }

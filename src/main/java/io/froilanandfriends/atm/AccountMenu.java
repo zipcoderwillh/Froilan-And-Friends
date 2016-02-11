@@ -75,14 +75,22 @@ public class AccountMenu {
             }
             else {
                 am.withdrawl(currBalance);
+                System.out.println("Your check will be in the mail within 3 business days.");
+                MenuUtilities.delayedPrint(1500);
                 accountMenu();
             }
         }
         else if(currBalance>=10.0) {
             boolean gettingAmount = true;
             while (gettingAmount) {
-                userWithdraw = MenuUtilities.promptForPositiveInt("What amount would you like to withdraw? ($10 increments)");
-                if (userWithdraw > currBalance) {
+                userWithdraw = MenuUtilities.promptForPositiveInt("What amount would you like to withdraw? ($10 increments)  Enter 1 to cancel the transaction.");
+                if (userWithdraw==1){
+                    System.out.println("Transaction cancelled.  Returning to Account Menu");
+                    MenuUtilities.delayedPrint(1000);
+                    accountMenu();
+                    break;
+                }
+                else if (userWithdraw > currBalance) {
                     System.out.println("Insufficient funds.  Enter a lower amount.");
                 } else if (userWithdraw % 10 != 0) {
                     System.out.println("Your withdrawal must be in $10 increments.");
@@ -114,10 +122,13 @@ public class AccountMenu {
         ATM atm = ATM.getATM();
         MenuUtilities.clearScreen();
         AccountManager am = AccountManager.getAccountManager();
-        int depositAmount=MenuUtilities.promptForPositiveInt("How much are you depositing? ");
-        int numBills = MenuUtilities.promptForPositiveInt("Enter the number of bills you are depositing.");
+        int depositAmount=MenuUtilities.promptForPositiveInt("How much are you depositing? Press 1 to return to the Account Menu.");
 
-        boolean depositSuccess = atm.deposit(numBills,depositAmount);
+        if(depositAmount==1){
+            System.out.println("Transaction Cancelled.  Returning to Account Menu.");
+        }
+
+        boolean depositSuccess = atm.deposit(depositAmount);
         if(!depositSuccess){
             System.out.println("Apologies!  The ATM cannot accept that number of bills at this time.  Come back soon!");
             accountMenu();
@@ -144,9 +155,9 @@ public class AccountMenu {
             MenuUtilities.delayedPrint(1400);
             accountMenu();
         }
-        int idToTransfer = 0;
+        long idToTransfer = 0;
         double amountToTransfer=0;
-        idToTransfer=MenuUtilities.promptForPositiveInt("Enter Account Number to transfer funds to: ");
+        idToTransfer=MenuUtilities.promptForPositiveLong("Enter Account Number to transfer funds to: ");
         Account destinationAccount = am.getAccount(idToTransfer);
         if(destinationAccount==null){
             System.out.println("Not a valid account number.");
@@ -165,8 +176,7 @@ public class AccountMenu {
             }
         }
         if(amountToTransfer>0){
-            currAccount.withdraw(amountToTransfer);
-            destinationAccount.deposit(amountToTransfer);
+            am.transfer(destinationAccount.getId(),amountToTransfer);
         }
         accountMenu();
     }
