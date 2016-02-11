@@ -126,6 +126,8 @@ public class AccountMenu {
 
         if(depositAmount==1){
             System.out.println("Transaction Cancelled.  Returning to Account Menu.");
+            MenuUtilities.delayedPrint(1500);
+            accountMenu();
         }
 
         boolean depositSuccess = atm.deposit(depositAmount);
@@ -203,7 +205,7 @@ public class AccountMenu {
         Account currentAccount = am.getCurrentAccount();
         String userInput="";
         while (!userInput.equals("y")&&!userInput.equals("n") ){
-            MenuUtilities.promptForText("Are you sure? (y/n)").toLowerCase();
+            userInput=MenuUtilities.promptForText("Are you sure you want to close this account? (y/n)").toLowerCase();
         }
         if(userInput.equals("y")){
             am.deleteAccount(currentAccount.getId());

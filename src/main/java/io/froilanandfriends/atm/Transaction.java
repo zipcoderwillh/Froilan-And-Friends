@@ -8,11 +8,12 @@ public class Transaction {
     private long fromAccount,toAccount;
     private double amount;
     private long id;
-    private static long transactionIdCount = 0;
+    //private static long transactionIdCount = 0;
     TransactionType transactionType;
 
 
     /*** This is the constructor we will use to load transaction objects from history***/
+    //Transaction constructor 1.
     Transaction(TransactionType mType, long mFromAccount, long mToAccount, double mAmount, Date date, long id){
         transactionType = mType;
         fromAccount = mFromAccount;
@@ -23,8 +24,8 @@ public class Transaction {
         //Set id to id of old transaction
         this.id = id;
     }
-
-    Transaction(TransactionType mType, long mFromAccount, long mToAccount, double mAmount){
+    // Transaction constructor 2.
+    Transaction(TransactionType mType, long mFromAccount, long mToAccount, double mAmount, long mId){
         transactionType = mType;
         fromAccount = mFromAccount;
         toAccount = mToAccount;
@@ -32,11 +33,12 @@ public class Transaction {
         //Set date to current time
         setDate(new Date());
         //Set id equal to last Transaction id + 1;
-        setId();
+        id = mId;
     }
+    //Transaction constructor 3.
+    Transaction(TransactionType mType, long mFromAccount, double mAmount, long mId){
 
-    Transaction(TransactionType mType, long mFromAccount, double mAmount){
-        this(mType, mFromAccount, -1, mAmount);
+        this(mType, mFromAccount, -1, mAmount, mId);
     }
 
     public Date getDate() {
@@ -67,11 +69,6 @@ public class Transaction {
         this.date = date;
     }
 
-
-    private void setId() {
-        this.id = transactionIdCount;
-        transactionIdCount++;
-    }
 
 }
 

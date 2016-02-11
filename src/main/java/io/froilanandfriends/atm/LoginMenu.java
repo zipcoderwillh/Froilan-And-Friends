@@ -36,8 +36,16 @@ public class LoginMenu {
         Authenticator auth = Authenticator.getAuthenticator();
         boolean authenticated = auth.authenticate(userNameInput,pinInput);
         if(authenticated){
+
             UserManager um = UserManager.getUserManager();
-            um.setCurrentUser(um.getUser(userNameInput));
+            User authenticatedUser = um.getUser(userNameInput);
+            if(authenticatedUser.isFlagged()){
+                System.out.println("This account is flagged.  Please request administrator help to restore login privelages.");
+                MenuUtilities.delayedPrint(1500,"Returning to Login Menu");
+                MenuUtilities.delayedPrint(900);
+                loginMenu();
+            }
+            um.setCurrentUser(authenticatedUser);
             User currentUser = um.getCurrentUser();
             if(currentUser.isAdmin()){
                 AdminMenu.adminMenu();
