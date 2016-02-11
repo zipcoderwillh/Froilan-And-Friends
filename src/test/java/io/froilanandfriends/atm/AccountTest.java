@@ -2,13 +2,18 @@ package io.froilanandfriends.atm;
 
 import org.junit.Before;
 import org.junit.Test;
+import org.junit.BeforeClass;
 import static org.junit.Assert.*;
 
 /**
  * Created by johnb on 2/8/16.
  */
 public class AccountTest {
+    @BeforeClass
+    public static void setupUser() {
+        UserManager.getUserManager().setCurrentUser(null);
 
+    }
 
 
     @Test
@@ -21,7 +26,7 @@ public class AccountTest {
     @Test
     public void testStringGetId() throws Exception {
         //account object made from single string has intended ID
-        String inputString = "CHECKING, 123456, 2.24";
+        String inputString = "CHECKING, 123456, 2.24, 42";
         Account account = new BusinessAccount(inputString);
         assertEquals(123456, account.getId());
 }
@@ -59,7 +64,7 @@ public class AccountTest {
     @Test
     public void testGetId() throws Exception {
         Account a1 = new BusinessAccount();
-        assertNotEquals("a1's id sould not be 0",0,a1.getId());
+        assertNotEquals("a1's id should not be 0",0,a1.getId());
     }
 
 

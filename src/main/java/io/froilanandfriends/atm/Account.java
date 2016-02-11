@@ -20,10 +20,12 @@ public abstract class Account {
 
     //Standard Constructor - takes no args, initializes Account with subclass type setter, id with superclass id setter,
     //balance of zero, and first user in userids array as current users user id.
-    Account(){
+    public Account(){
         //Give this account a unique id based on the nanosecond
         this.id = System.nanoTime();
-        userIDs.add(UserManager.getUserManager().getCurrentUser().getUserID());
+        if (UserManager.getUserManager().getCurrentUser() != null) {
+            userIDs.add(UserManager.getUserManager().getCurrentUser().getUserID());
+        }
     }
     
 
@@ -41,7 +43,7 @@ public abstract class Account {
         this.id = Long.parseLong(accountFields[1].trim());
         this.balance = Double.parseDouble(accountFields[2].trim());
 
-        userIDs.add(0,Integer.parseInt(accountFields[3]));
+        userIDs.add(0,Integer.parseInt(accountFields[3].trim()));
 
         //Check size of input string lines - for every record after the fourth will be extra users in account.
         int extraUsers = accountFields.length - 3;
