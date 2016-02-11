@@ -43,14 +43,13 @@ public class TransactionManager {
         }
     }
 
-<<<<<<< HEAD
     public long setTransactionID(){ return allTransactions.size() + 1234567; }
 
-=======
+
     public static void setPATHNAME(String PATHNAME) {
         TransactionManager.PATHNAME = PATHNAME;
     }
->>>>>>> working
+
 
     /**
      loadTransactions() will call FileIO's readRecords method to pull up an array
