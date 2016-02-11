@@ -1,6 +1,8 @@
 package io.froilanandfriends.atm;
 
 import java.util.ArrayList;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public class LoginMenu {
 
@@ -76,21 +78,32 @@ public class LoginMenu {
         UserMenu.userMenu();
     }
 
-    public static String removeIllegalCharacters (String stringToEdit){
-        stringToEdit=stringToEdit.replace(",","");
-        stringToEdit=stringToEdit.replace("\n","");
-        return stringToEdit;
+    public static boolean findIllegalCharacters (String stringToEdit){
+        Pattern pattern = Pattern.compile("\\W|_| ");
+        Matcher m = pattern.matcher(stringToEdit);
+        return m.find();
     }
+
+    public static boolean validateEmail(String email) {
+        if(email.matches("^\\w+@\\w+\\.\\w+$")) {
+            return true;
+        }
+        return false;
+    }
+
     public static String promptUserName(){
         String userName;
         UserManager um = UserManager.getUserManager();
         while (true) {
 
             userName = MenuUtilities.promptForText("Enter Desired Username: ").toLowerCase();
-            userName = removeIllegalCharacters(userName);
+            if(findIllegalCharacters(userName)) {
+                System.out.println("Usernames can only contain alphanumeric characters and may not contain spaces.");
+                MenuUtilities.delayedPrint(800);
+            }
             //check username availability:
-            if(userName.indexOf(' ')>=0||userName.length()>8||userName==null||userName.isEmpty()){
-                System.out.println("Usernames can be a maximum of 8 characters and may not contain spaces.");
+            else if(userName.length()>8||userName==null||userName.isEmpty()){
+                System.out.println("Usernames can be a maximum of 8 characters.");
                 MenuUtilities.delayedPrint(800);
             }
             else if (um.getUser(userName) != null) {
@@ -118,7 +131,11 @@ public class LoginMenu {
         String firstName = "";
         while (true){
             firstName = MenuUtilities.promptForText("Enter your first name: ");
-            firstName = removeIllegalCharacters(firstName);
+            if(findIllegalCharacters(firstName)) {
+                System.out.println("Names can only contain alphanumeric characters and may not contain spaces.");
+                MenuUtilities.delayedPrint(800);
+                continue;
+            }
             String input = "";
             while (!input.equals("y")&&!input.equals("n")){
                 input = MenuUtilities.promptForText("Your first name is: "+firstName+", is that correct? (y/n)").toLowerCase();
@@ -133,7 +150,13 @@ public class LoginMenu {
         String lastName = "";
         while (true){
             lastName = MenuUtilities.promptForText("Enter your last name: ");
-            lastName = removeIllegalCharacters(lastName);
+
+            if(findIllegalCharacters(lastName)) {
+                System.out.println("Names can only contain alphanumeric characters and may not contain spaces.");
+                MenuUtilities.delayedPrint(800);
+                continue;
+            }
+
             String input = "";
             while (!input.equals("y")&&!input.equals("n")){
                 input = MenuUtilities.promptForText("Your last name is: "+lastName+", is that correct? (y/n)").toLowerCase();
@@ -148,7 +171,13 @@ public class LoginMenu {
         String email = "";
         while (true){
             email = MenuUtilities.promptForText("Enter your e-mail address: ");
-            email = removeIllegalCharacters(email);
+
+            if(!validateEmail(email)) {
+                System.out.println("Please enter a valid email address.");
+                MenuUtilities.delayedPrint(800);
+                continue;
+            }
+
             String input = "";
             while (!input.equals("y")&&!input.equals("n")){
                 input = MenuUtilities.promptForText("Your e-mail is: "+email+", is that correct? (y/n)").toLowerCase();
@@ -188,7 +217,13 @@ public class LoginMenu {
         String securityAnswer="";
         while (true){
             securityAnswer = MenuUtilities.promptForText("Enter your answer: ");
-            securityAnswer = removeIllegalCharacters(securityAnswer);
+
+            if(findIllegalCharacters(securityAnswer)) {
+                System.out.println("Answers can only contain alphanumeric characters and may not contain spaces.");
+                MenuUtilities.delayedPrint(800);
+                continue;
+            }
+
             String input = "";
             while (!input.equals("y")&&!input.equals("n")){
                 input = MenuUtilities.promptForText("Your answer is: "+securityAnswer+", is that correct? (y/n)").toLowerCase();
