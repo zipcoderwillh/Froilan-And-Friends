@@ -162,7 +162,7 @@ public class TransactionManager {
             //Loop through all transactions
             for(Transaction trans : allTransactions){
                 //If from account equals the users account number, add it to accountTransactions.
-                if(trans.getFromAccount() == currentAccountId)
+                if(trans.getFromAccount() == currentAccountId||trans.getToAccount()==currentAccountId)
                     accountTransactions.add(trans);
             }
         }
