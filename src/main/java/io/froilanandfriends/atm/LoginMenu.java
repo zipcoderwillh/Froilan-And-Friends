@@ -4,9 +4,15 @@ import java.util.ArrayList;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+/**
+ * This class handles interaction with the user during the login phase.
+ */
+
 public class LoginMenu {
 
-
+    /**
+     * Prompts the user to login or create a new profile. If login, calls {@link promptCredentials()}, if create, calls {@link createProfile()}.
+     */
     public static void loginMenu(){
         /*Login Menu:
          *       Prompts the user to login or create a new profile
@@ -25,6 +31,10 @@ public class LoginMenu {
         }
     }
 
+    /**
+     * Asks the user for their username and pin number, and calls {@link Authenticator} for verification. If
+     * authentication fails, returns to {@link loginMenu()}.
+     */
     public static void promptCredentials(){
         /*Asks the user for their username and pin #.  Sends to the Authenticator for verification.
          If failure, return to -> loginMenu()
@@ -102,11 +112,11 @@ public class LoginMenu {
         }
     }
 
+    /**
+     * Asks user for their account properties (first name, last name, security question, and email).
+     * Creates user from input, sets current user to created user, then calls {@link userMenu()}.
+     */
     public static void createProfile(){
-        /* Asks user for their attributes / account properties
-         Creates user from input
-         Sets current user to created user
-         Goes to -> userMenu()                     */
         MenuUtilities.clearScreen();
         UserManager um =UserManager.getUserManager();
 
@@ -125,18 +135,27 @@ public class LoginMenu {
         UserMenu.userMenu();
     }
 
-    // Returns false if string contains non-word character or space
+    /**
+     * Helper method to determine whether input string contains non-word characters or spaces.
+     */
     public static boolean findIllegalCharacters (String stringToEdit){
         Pattern p = Pattern.compile("\\W|_| |[0-9]");
         Matcher m = p.matcher(stringToEdit);
         return m.find();
     }
 
-    // Returns false if string is not a valid email format (xxx@xxx.xxx)
+    /**
+     * Helper method to determine whether a string is a valid email format (xxx@xxx.xxx).
+     */
     public static boolean validateEmail(String email) {
         return email.matches("^\\w+@\\w+\\.\\w+$");
     }
 
+    /**
+     * Prompts the user to enter a username and validates that it is not already taken and does not contain any
+     * non-word characters.
+     * @return The username submitted by the user, if validated.
+     */
     public static String promptUserName(){
         String userName;
         UserManager um = UserManager.getUserManager();
@@ -162,6 +181,11 @@ public class LoginMenu {
         }
         return userName;
     }
+
+    /**
+     * Prompts the user to enter a PIN number, and validates that it consists of four digits only.
+     * @return The PIN number submitted by the user, if validated.
+     */
     public static int promptPin(){
         int pin=0;
         while (pin<1000||pin>9999){
@@ -173,6 +197,11 @@ public class LoginMenu {
         }
         return pin;
     }
+
+    /**
+     * Prompts the user to enter a first name and validates that it does not contain any non-word characters.
+     * @return The first name submitted by the user, if validated.
+     */
     public static String promptFirstName(){
         String firstName = "";
         while (true){
@@ -192,6 +221,11 @@ public class LoginMenu {
         }
         return firstName;
     }
+
+    /**
+     * Prompts the user to enter a last name and validates that it does not contain any non-word characters.
+     * @return The last name submitted by the user, if validated.
+     */
     public static String promptLastName(){
         String lastName = "";
         while (true){
@@ -213,6 +247,11 @@ public class LoginMenu {
         }
         return lastName;
     }
+
+    /**
+     * Prompts the user to enter an email address and validates that it is in a valid format (xxx@xxx.xxx).
+     * @return The email address submitted by the user, if validated.
+     */
     public static String promptEmail(){
         String email = "";
         while (true){
@@ -234,6 +273,11 @@ public class LoginMenu {
         }
         return email;
     }
+
+    /**
+     * Prompts the user to choose a security question and submit an answer, and validates that it does not contain any non-word characters.
+     * @return The security answer submitted by the user, if validated.
+     */
     public static String promptSecQuestion(){
         int userAnswer = 0;
         String secQues1 = "What was your first pet's name?";

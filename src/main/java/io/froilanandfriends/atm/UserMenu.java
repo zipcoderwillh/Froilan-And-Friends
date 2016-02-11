@@ -2,13 +2,18 @@ package io.froilanandfriends.atm;
 
 import java.util.ArrayList;
 
+/**
+ * This class handles all interaction with non-admin users once they are logged in.
+ */
+
 public class UserMenu {
 
+    /**
+     * Gives the user a choice of all their accounts or to create a new account. If they choose to access an account,
+     * set current account to that account and call {@link accountMenu()}. If they choose to create new account,
+     * calls {@link createAccount()}.
+     */
     public static void userMenu(){
-        /* User-Level Menu (choose account):
-         *       Gives the user a choice of all their accounts or to create a new account
-         *           if they choose account, set current account to that account. go to -> accountMenu()
-         *           if create new account, go to -> createAccount()                                    */
         MenuUtilities.clearScreen();
         AccountManager am = AccountManager.getAccountManager();
         ArrayList<Account> userAccounts = am.getCurrentUsersAccounts();
@@ -29,7 +34,7 @@ public class UserMenu {
         if(userInput==-1){
             MenuUtilities.logout();
         }
-        if(userInput==0){
+        else if(userInput==0){
             createAccount();
         }
         else{
@@ -39,11 +44,11 @@ public class UserMenu {
         }
     }
 
+    /**
+     * Asks the user what account type they want to create (checking/savings/business), and creates an account
+     * of the chosen type. Sets current account to the created account and calls {@link accountMenu()}.
+     */
     public static void createAccount(){
-        /* Asks the user what account type they want to create (checking/savings/business)
-         *       Creates an account of the chosen type.
-         *           Set's current account to the created account.
-         *               Goes to -> accountMenu()                                                  */
         MenuUtilities.clearScreen();
         AccountManager am = AccountManager.getAccountManager();
         System.out.println("Account Types: \n Checking (c)\n Savings (s)\n Business (b) \n");

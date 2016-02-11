@@ -3,7 +3,10 @@ package io.froilanandfriends.atm;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.logging.Logger;
-
+/**
+ * <h1>Class AccountManager</h1>
+ * <p>Factory class managing and modifying all accounts</p>
+ */
 public class AccountManager {
 
 
@@ -12,16 +15,29 @@ public class AccountManager {
     private static String PATHNAME = "accountLog.csv";
     //Singleton Setup
     private static AccountManager current = new AccountManager();
+
+    /**
+     * Returns the singleton instance of AccountManager
+     * @return a singleton instance of AccountManager
+     */
     public static AccountManager getAccountManager(){
         return current;
     }
+    private AccountFactory factory = new AccountFactory();
 
+    /**
+     * Sets the file path for the account record file
+     * @param PATHNAME the pathname to the account record file
+     */
     public static void setPATHNAME(String PATHNAME) {
         AccountManager.PATHNAME = PATHNAME;
     }
 
-    /**** FILEIO  ***/
-    //load in accounts passed from IO
+    /**
+     * Reads in all account records from FILEPATH
+     * Calls FileIO.readRecords, passing in PATHNAME
+     * @throws Exception throws an exception if the file can't be read
+     */
     public void loadAccounts() throws Exception {
         String bigInputString = FileIO.readRecords(PATHNAME);
         String[] lineArray = bigInputString.split("\n");
@@ -29,7 +45,12 @@ public class AccountManager {
             createAccount(loadString);
         }
     }
-    // logs out the array of accounts, allAccounts, to a file specified by PATHNAME
+
+    /**
+     * logs all the accounts to the file at FILEPATH
+     *
+     * @throws Exception throws an exception if the file can't be written
+     */
     public void logAccounts() throws Exception {
         StringBuilder stringBuilder = new StringBuilder();
         for (Account account: allAccounts) {
@@ -59,23 +80,16 @@ public class AccountManager {
         String accountsToString = stringBuilder.toString();
         FileIO.logRecords(accountsToString, PATHNAME);
     }
-    /**** FILEIO ****/
-    //Account factory
+
+    /**
+     * Creates an account and sets it as the currently selected account
+     * relies on an AccountFactory for account creation
+     * rewrites the log once hte new account is created
+     * @param accountType the type of account that should be created
+     * @return the newly created account
+     */
     public Account createAccount(Account.AccountType accountType){
-        Account newAccount;
-        switch (accountType) {
-            case BUSINESS:
-                newAccount = new BusinessAccount();
-                break;
-            case CHECKING:
-                newAccount = new CheckingAccount();
-                break;
-            case SAVINGS:
-                newAccount = new SavingsAccount();
-                break;
-            default:
-                return null;
-        }
+        Account newAccount = factory.create(accountType);
         //add new account to the accounts list
         allAccounts.add(newAccount);
         //set currentAccount to the one we just made
@@ -92,32 +106,28 @@ public class AccountManager {
         return newAccount;
     }
 
+    /**
+     * Creates an account based on a string from a record file
+     * relies on an AccountFactory to create the account
+     * does not update the log file, as the created account was read in from the log
+     * @param loadString one line from the account record file
+     * @return returns the created account
+     */
     public Account createAccount(String loadString)
     {
-        Account newAccount;
-        switch (loadString.substring(0,loadString.indexOf(',')).toUpperCase())
-        {
-            case "SAVINGS":
-                newAccount = new SavingsAccount(loadString);
-                break;
-            case "CHECKING":
-                newAccount = new CheckingAccount(loadString);
-                break;
-            case "BUSINESS":
-                newAccount = new BusinessAccount(loadString);
-                break;
-            default:
-                return null;
-        }
-
+        Account newAccount = factory.createFromRecord(loadString);
         //add new account to the accounts list
         allAccounts.add(newAccount);
         //set currentAccount to the one we just made
         currentAccount = newAccount;
         return newAccount;
-
     }
 
+    /**
+     * Deletes an account with id accountIDtoDelete if it exists
+     * updates the log file once the account has been deleted
+     * @param accountIDtoDelete the account id to delete
+     */
     public void deleteAccount(long accountIDtoDelete){
         //loop through all accounts and remove the one with a matching id
         for(int i = 0; i < allAccounts.size(); i++) {
@@ -136,16 +146,28 @@ public class AccountManager {
             System.out.println("ERROR: Could not log accounts.");
         }
     }
+
+    /**
+     * switches this AccountManager's currentAccount to accountIDtoSwitchTo
+     * @param accountIDtoSwitchTo the account id to make the current account
+     */
     public void switchAccount(long accountIDtoSwitchTo){
         //set current account to one with the given id
         currentAccount = getAccount(accountIDtoSwitchTo);
     }
 
+    /**
+     * Sets this AccountManager's currentAccount to null
+     */
     public void clearCurrentAccount()
     {
         currentAccount = null;
     }
 
+    /**
+     * returns the id of this AccountManager's current account
+     * @return the current account
+     */
     public long getCurrentAccountID()
     {
         //return the id of the current account
@@ -161,6 +183,12 @@ public class AccountManager {
         //if nothing matches the account, return null;
         return acc;
     }
+
+    /**
+     * Withdraws the given amount from the current account
+     * logs the account record after the withdraw
+     * @param amountToWithdrawl the amount to withdraw
+     */
     public void withdrawl(double amountToWithdrawl){
         //remove given money from the current account
         currentAccount.withdraw(amountToWithdrawl);
@@ -173,6 +201,12 @@ public class AccountManager {
             System.out.println("ERROR: Could not log accounts.");
         }
     }
+
+    /**
+     * Deposits the given amount into the current account
+     * logs accounts after the money has been deposited
+     * @param amountToDeposit the amount to deposit
+     */
     public void deposit( double amountToDeposit){
         //add given money to the current account
         currentAccount.deposit(amountToDeposit);
@@ -185,6 +219,13 @@ public class AccountManager {
             System.out.println("ERROR: Could not log accounts.");
         }
     }
+
+    /**
+     * Transfers the given amount from the current account into an account matching the given id
+     * updates the account logs once the transfer has finished
+     * @param accountNumber the account id to transfer the funds INTO
+     * @param amountToTransfer the amouunt to transfer into account that matches the passed id
+     */
     public void transfer(long accountNumber, double amountToTransfer) {
         //if the target account number is wrong, do nothing
         if (getAccount(accountNumber) == null)
@@ -205,6 +246,10 @@ public class AccountManager {
         }
     }
 
+    /**
+     * returns a list of accounts that the current user is linked wth
+     * @return a list containing the current user's accounts
+     */
     public ArrayList<Account> getCurrentUsersAccounts(){
         UserManager um = UserManager.getUserManager();
         User currentUser = um.getCurrentUser();
@@ -222,23 +267,61 @@ public class AccountManager {
         return usersAccounts;
     }
 
+    /**
+     * returns all the accounts in the system
+     * @return a list containing all accounts
+     */
     public ArrayList<Account> getAllAccounts() {
         //return the whole list of accounts
         return allAccounts;
     }
 
+    /**
+     * returns the currently selected account
+     * @return the currently selected account
+     */
     public Account getCurrentAccount() {
         //return the current account
         return currentAccount;
     }
 
+    /**
+     * Adds the user that matches the given userID to the currently selected account
+     * logs accounts after adding the user
+     * @param userID the userID of the user to be linked with the account
+     */
     public void addUserToCurrentAccount(int userID) {
         currentAccount.getUserIDs().add(userID);
-    }
-    public void addUserToCurrentAccount(User user) {
-        addUserToCurrentAccount(user.getUserID());
+        try {
+            logAccounts();
+        }
+        catch (Exception e)
+        {
+            System.out.println("ERROR: Could not log accounts.");
+        }
     }
 
+    /**
+     * Adds the given user object to hte currently selected account
+     * logs accounts after adding the user
+     * @param user the user to add to the current account
+     */
+    public void addUserToCurrentAccount(User user) {
+        addUserToCurrentAccount(user.getUserID());
+        try {
+            logAccounts();
+        }
+        catch (Exception e)
+        {
+            System.out.println("ERROR: Could not log accounts.");
+        }
+    }
+
+    /**
+     * Removes the user matching the given id from the curreent account
+     * logs accounts after removing
+     * @param userID the userID of the user to rmeove from the current account
+     */
     public void removeUserFromCurrentAccount(int userID) {
         int toRemove = -1;
         for (int i = 0;i < currentAccount.getUserIDs().size();i++)
@@ -252,8 +335,28 @@ public class AccountManager {
         {
             currentAccount.getUserIDs().remove(toRemove);
         }
+        try {
+            logAccounts();
+        }
+        catch (Exception e)
+        {
+            System.out.println("ERROR: Could not log accounts.");
+        }
     }
+
+    /**
+     * Removes the passed User object from the current account
+     * logs accounts after removeing the user
+     * @param user the user to remove from the account
+     */
     public void removeUserFromCurrentAccount(User user) {
         removeUserFromCurrentAccount(user.getUserID());
+        try {
+            logAccounts();
+        }
+        catch (Exception e)
+        {
+            System.out.println("ERROR: Could not log accounts.");
+        }
     }
 }
