@@ -73,7 +73,7 @@ public class TransactionManagerTest {
          * when we print out
          **/
         TransactionManager manager = TransactionManager.getTransactionManager();
-        //                                        type      to      from    amount
+        //                                        type      from      to    amount
         manager.createTransaction(TransactionType.DEPOSIT, 1899888, 1888181, 80000);
         manager.createTransaction(TransactionType.DEPOSIT, 1899888, 1888181, 80000);
         manager.createTransaction(TransactionType.DEPOSIT, 1899888, 1888181, 80000);
