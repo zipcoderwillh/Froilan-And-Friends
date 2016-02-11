@@ -1,7 +1,8 @@
 package io.froilanandfriends.atm;
 
 /**
- * Created by johnb on 2/10/16.
+ * <h1>Class SavingsAccount</h1>
+ * <p>Type of account for savings accounts</p>
  */
 public class SavingsAccount extends Account {
     SavingsAccount(){

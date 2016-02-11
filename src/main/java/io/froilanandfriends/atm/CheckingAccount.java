@@ -1,7 +1,8 @@
 package io.froilanandfriends.atm;
 
 /**
- * Created by johnb on 2/10/16.
+ * <h1>Class CheckingAccount</h1>
+ * <p>Type of account for checking accounts</p>
  */
 public class CheckingAccount extends Account {
     CheckingAccount(){
