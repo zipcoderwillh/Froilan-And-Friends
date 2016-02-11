@@ -4,8 +4,15 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
+/**
+ * This class handles all user interactions when a user is logged in as an admin.
+ */
+
 public class AdminMenu {
 
+    /**
+     * Asks the administrator to choose an option, then calls the corresponding method menu.
+     */
     public static void adminMenu(){
         //Asks the administrator to choose an option, then calls the corresponding method menu.
         MenuUtilities.clearScreen();
@@ -144,6 +151,9 @@ public class AdminMenu {
         }
     }
 
+    /**
+     * Empties the deposit tray from ATM and calls {@link adminMenu()}
+     */
     public static void collectDeposits(){
         //Empties the deposit tray from ATM and returns to -> adminMenu()
         MenuUtilities.clearScreen();
@@ -157,6 +167,10 @@ public class AdminMenu {
         MenuUtilities.delayedPrint(1200);
         adminMenu();
     }
+
+    /**
+     * Prompts admin to enter number of each bill they want to stock.
+     */
     public static void restockWithdrawalTray(){
         /*Prompts admin to enter number of each bill they want to stock
          *      checks legality
@@ -182,6 +196,10 @@ public class AdminMenu {
             adminMenu();
         }
     }
+
+    /**
+     * Prints out the status of the withdrawal trays in the ATM then calls {@link adminMenu()}
+     */
     public static void withdrawalStatus(){
         //Prints out the status of the withdrawal trays in the ATM then returns to -> adminMenu()
         MenuUtilities.clearScreen();
@@ -198,6 +216,10 @@ public class AdminMenu {
         MenuUtilities.promptForReturn();
         adminMenu();
     }
+
+    /**
+     * Prints out the entire transaction history of the ATM, then calls {@link adminMenu()}
+     */
     public static void viewAllTransactions(){
         //Prints out the entire transaction history of the ATM, then returns to -> adminMenu()
         MenuUtilities.clearScreen();
@@ -210,6 +232,10 @@ public class AdminMenu {
         MenuUtilities.promptForReturn();
         AdminMenu.adminMenu();
     }
+
+    /**
+     * Prompts the admin user for a username to unflag.
+     */
     public static void unflagUser(){
         /* Prompts for a username to unflag
          *      Deflags if user is flagged, returns to -> adminMenu()*/
@@ -236,6 +262,10 @@ public class AdminMenu {
         MenuUtilities.delayedPrint(1400,"Returning to Admin Menu.");
         adminMenu();
     }
+
+    /**
+     * Prompts the admin for a username to flag for fraudulent activity.
+     */
     public static void flagUser(){
         /* Prompts for a username to flag
          *      flags if user isn't flagged, returns to -> adminMenu()*/
@@ -265,6 +295,10 @@ public class AdminMenu {
         MenuUtilities.delayedPrint(1400,"Returning to Admin Menu.");
         adminMenu();
     }
+
+    /**
+     * Shows the admin a list of all flagged users.
+     */
     public static void showFlaggedUsers(){
         MenuUtilities.clearScreen();
         System.out.println("Flagged Users: \n");
