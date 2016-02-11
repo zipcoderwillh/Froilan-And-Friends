@@ -13,7 +13,7 @@ public class MenuUtilities {
         am.clearCurrentAccount();
         um.clearUser();
         System.out.println("Logging out..");
-        delayedPrint(2000);
+        delayedPrint(1200);
 
         LoginMenu.loginMenu();
     }
