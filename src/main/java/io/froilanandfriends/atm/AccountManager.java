@@ -62,20 +62,8 @@ public class AccountManager {
     /**** FILEIO ****/
     //Account factory
     public Account createAccount(Account.AccountType accountType){
-        Account newAccount;
-        switch (accountType) {
-            case BUSINESS:
-                newAccount = new BusinessAccount();
-                break;
-            case CHECKING:
-                newAccount = new CheckingAccount();
-                break;
-            case SAVINGS:
-                newAccount = new SavingsAccount();
-                break;
-            default:
-                return null;
-        }
+        AccountFactory factory = new AccountFactory();
+        Account newAccount = factory.create(accountType);
         //add new account to the accounts list
         allAccounts.add(newAccount);
         //set currentAccount to the one we just made
@@ -94,22 +82,9 @@ public class AccountManager {
 
     public Account createAccount(String loadString)
     {
-        Account newAccount;
-        switch (loadString.substring(0,loadString.indexOf(',')).toUpperCase())
-        {
-            case "SAVINGS":
-                newAccount = new SavingsAccount(loadString);
-                break;
-            case "CHECKING":
-                newAccount = new CheckingAccount(loadString);
-                break;
-            case "BUSINESS":
-                newAccount = new BusinessAccount(loadString);
-                break;
-            default:
-                return null;
-        }
 
+        AccountFactory factory = new AccountFactory();
+        Account newAccount = factory.create(loadString);
         //add new account to the accounts list
         allAccounts.add(newAccount);
         //set currentAccount to the one we just made
