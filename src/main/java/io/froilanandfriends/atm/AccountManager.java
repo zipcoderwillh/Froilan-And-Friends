@@ -61,7 +61,7 @@ public class AccountManager {
     }
     /**** FILEIO ****/
     //Account factory
-    public Account createAccount(AccountType accountType){
+    public Account createAccount(Account.AccountType accountType){
         Account newAccount;
         switch (accountType) {
             case BUSINESS:

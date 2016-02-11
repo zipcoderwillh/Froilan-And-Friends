@@ -68,8 +68,10 @@ public abstract class Account {
     public ArrayList<Integer> getUserIDs() {
         return userIDs;
     }
+
+    public enum AccountType{
+        CHECKING,SAVINGS,BUSINESS
+    }
 }
 
-enum AccountType{
-    CHECKING,SAVINGS,BUSINESS
-}
+
