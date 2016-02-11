@@ -11,7 +11,7 @@ public class AdminMenu {
         MenuUtilities.clearScreen();
         System.out.println("                             Admin Menu  \n");
         System.out.println("Collect Deposits (c) - Restock Withdrawal Tray (r) - Withdrawal Tray Status (w)");
-        System.out.println(" View Transactions (v) -   Flag User (f)  -  Unflag User (u)  -   Logout (l) \n");
+        System.out.println(" View Transactions (v) - Flag User (f) - Show Flagged Users(s) - Unflag User (u) - Logout (l)\n");
         String userInput = "";
         while (true){
             userInput = MenuUtilities.promptForText("Enter Decision: ").toLowerCase();
@@ -36,6 +36,9 @@ public class AdminMenu {
             else if(userInput.equals("l")){
                 MenuUtilities.logout();
             }
+            else if(userInput.equals("s")){
+                showFlaggedUsers();
+            }
         }
     }
 
@@ -43,7 +46,10 @@ public class AdminMenu {
         //Empties the deposit tray from ATM and returns to -> adminMenu()
         MenuUtilities.clearScreen();
         ATM atm = ATM.getATM();
-        System.out.println("Please Retrieve Deposits..");
+        System.out.println("Current Deposit Balance: "+atm.getDepositValue());
+        if (atm.getDepositValue()>0){
+            MenuUtilities.delayedPrint(1200,"Please Retrieve Deposits..");
+        }
         atm.emptyDepositTray();
         MenuUtilities.delayedPrint(2000,"Returning to Admin Menu");
         MenuUtilities.delayedPrint(1200);
@@ -155,6 +161,16 @@ public class AdminMenu {
             }
         }
         MenuUtilities.delayedPrint(1400,"Returning to Admin Menu.");
+        adminMenu();
+    }
+    public static void showFlaggedUsers(){
+        MenuUtilities.clearScreen();
+        System.out.println("Flagged Users: \n");
+        ArrayList<User> flagged = UserManager.getUserManager().getFlaggedUsers();
+        for(User thisUser:flagged){
+            System.out.println(thisUser.getUserName() +" - "+ thisUser.getFirstName() +" "+thisUser.getLastName()+ " - " + thisUser.getEmail());
+        }
+        MenuUtilities.promptForReturn();
         adminMenu();
     }
 }
