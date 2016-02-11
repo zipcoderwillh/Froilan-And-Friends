@@ -47,7 +47,9 @@ public class AdminMenu {
         MenuUtilities.clearScreen();
         ATM atm = ATM.getATM();
         System.out.println("Current Deposit Balance: "+atm.getDepositValue());
-        MenuUtilities.delayedPrint(1200,"Please Retrieve Deposits..");
+        if (atm.getDepositValue()>0){
+            MenuUtilities.delayedPrint(1200,"Please Retrieve Deposits..");
+        }
         atm.emptyDepositTray();
         MenuUtilities.delayedPrint(2000,"Returning to Admin Menu");
         MenuUtilities.delayedPrint(1200);
