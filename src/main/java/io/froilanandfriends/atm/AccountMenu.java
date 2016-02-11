@@ -180,6 +180,8 @@ public class AccountMenu {
             }
         }
         if(amountToTransfer>0){
+            System.out.println("Transfer Successful.");
+            MenuUtilities.delayedPrint(1200);
             am.transfer(destinationAccount.getId(),amountToTransfer);
         }
         accountMenu();
