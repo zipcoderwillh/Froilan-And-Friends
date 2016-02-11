@@ -15,29 +15,30 @@ public class AdminMenu {
         String userInput = "";
         while (true){
             userInput = MenuUtilities.promptForText("Enter Decision: ").toLowerCase();
-            if(userInput.equals("c")){
-                collectDeposits();
+            char charInput =' ';
+            if(userInput!=null){
+                charInput=userInput.charAt(0);
             }
-            else if(userInput.equals("r")){
-                restockWithdrawalTray();
+            else{
+                charInput='!';
             }
-            else if(userInput.equals("w")){
-                withdrawalStatus();
-            }
-            else if(userInput.equals("v")){
-                viewAllTransactions();
-            }
-            else if(userInput.equals("u")){
-                unflagUser();
-            }
-            else if(userInput.equals("f")){
-                flagUser();
-            }
-            else if(userInput.equals("l")){
-                MenuUtilities.logout();
-            }
-            else if(userInput.equals("s")){
-                showFlaggedUsers();
+            switch (charInput){
+                case 'c':collectDeposits();
+                    break;
+                case 'r':restockWithdrawalTray();
+                    break;
+                case 'w':withdrawalStatus();
+                    break;
+                case 'v':viewAllTransactions();
+                    break;
+                case 'u':unflagUser();
+                    break;
+                case 'f':flagUser();
+                    break;
+                case 'l':MenuUtilities.logout();
+                    break;
+                case 's':showFlaggedUsers();
+                    break;
             }
         }
     }
