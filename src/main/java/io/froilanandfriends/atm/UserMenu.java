@@ -29,7 +29,7 @@ public class UserMenu {
         if(userInput==-1){
             MenuUtilities.logout();
         }
-        if(userInput==0){
+        else if(userInput==0){
             createAccount();
         }
         else{
