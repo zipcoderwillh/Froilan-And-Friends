@@ -17,29 +17,37 @@ public class TransactionManagerTest {
     public static final double EXPECTED_AMOUNT = 200.00;
     @Test
     public void testGetTransactionManager() throws Exception {
+
         TransactionManager manager = TransactionManager.getTransactionManager();
         assertNotNull(manager);
     }
 
     @Test
     public void testCreateTransaction() throws Exception {
+
+
+
         TransactionManager manager = TransactionManager.getTransactionManager();
+        manager.setPATHNAME("testTransactionLog.csv");
         manager.createTransaction(TransactionType.TRANSFER, 1, 2, 200.00);
 
         Transaction transaction = manager.getLastTransaction();
 
         assertEquals(EXPECTED_AMOUNT, transaction.getAmount(), .2);
-
+        manager.setPATHNAME("transactionsLog.csv");
     }
 
     @Test
     public void testCreateTransaction1() throws Exception {
         TransactionManager manager = TransactionManager.getTransactionManager();
+        manager.setPATHNAME("testTransactionLog.csv");
+
         manager.createTransaction(TransactionType.WITHDRAWL, 1, 200.00);
 
         Transaction transaction = manager.getLastTransaction();
 
         assertEquals(-1, transaction.getToAccount());
+        manager.setPATHNAME("transactionsLog.csv");
     }
 
     @Test
@@ -109,24 +117,33 @@ public class TransactionManagerTest {
     @Test
     public void testGetLastTransaction() throws Exception {
         TransactionManager manager = TransactionManager.getTransactionManager();
+
+        manager.setPATHNAME("testTransactionLog.csv");
+
         manager.createTransaction(TransactionType.WITHDRAWL, 1, 200.00);
 
         Transaction lastTrans = manager.getLastTransaction();
 
         assertEquals(EXPECTED_AMOUNT, lastTrans.getAmount(), .2);
+        manager.setPATHNAME("transactionsLog.csv");
     }
 
     @Test
     public void testGetAllTransactions() throws Exception {
         TransactionManager manager = TransactionManager.getTransactionManager();
+        manager.setPATHNAME("testTransactionLog.csv");
+
         manager.createTransaction(TransactionType.WITHDRAWL, 1, 200.00);
 
         assertNotNull(manager.getAllTransactions());
+        manager.setPATHNAME("transactionsLog.csv");
     }
 
     @Test
     public void testGetRangeTransactions() throws Exception {
         TransactionManager manager = TransactionManager.getTransactionManager();
+        manager.setPATHNAME("testTransactionLog.csv");
+
         manager.createTransaction(TransactionType.WITHDRAWL, 1, 200.00);
 
         Date from = new Date(1454945667);
@@ -136,11 +153,14 @@ public class TransactionManagerTest {
         for(Transaction trans : transactions){
             assertTrue(trans.getDate().getTime() >= from.getTime() && trans.getDate().getTime() <= to.getTime());
         }
+        manager.setPATHNAME("transactionsLog.csv");
     }
 
     @Test
     public void testGetSpecificTransaction() throws Exception {
         TransactionManager manager = TransactionManager.getTransactionManager();
+        manager.setPATHNAME("testTransactionLog.csv");
+
         manager.createTransaction(TransactionType.WITHDRAWL, 1, 200.00);
 
         Transaction transaction = manager.getLastTransaction();
@@ -148,6 +168,6 @@ public class TransactionManagerTest {
         Transaction actual = manager.getSpecificTransaction(transaction.getId());
 
         assertEquals(transaction, actual);
-
+        manager.setPATHNAME("transactionsLog.csv");
     }
 }

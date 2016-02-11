@@ -20,33 +20,29 @@ public class AccountMenu {
                 !userInput.equals("v")&&!userInput.equals("x")&&!userInput.equals("s")&&!userInput.equals("l")&&!userInput.equals("a")){
             userInput = MenuUtilities.promptForText("Enter Decision: ").toLowerCase();
         }
-        if(userInput.equals("c")){
-            checkBalance();
+        char userInputChar = userInput.charAt(0);
+        switch (userInputChar){
+            case 'c':checkBalance();
+                break;
+            case 'w':withdraw();
+                break;
+            case 'd':deposit();
+                break;
+            case 't':transfer();
+                break;
+            case 'v':viewTransactions();
+                break;
+            case 'a':addUser();
+                break;
+            case 'x':closeAccount();
+                break;
+            case 's':UserMenu.userMenu();
+                break;
+            case 'l':MenuUtilities.logout();
+                break;
+            default:MenuUtilities.logout();
         }
-        else if(userInput.equals("w")){
-            withdraw();
-        }
-        else if(userInput.equals("d")){
-            deposit();
-        }
-        else if(userInput.equals("t")){
-            transfer();
-        }
-        else if(userInput.equals("v")){
-            viewTransactions();
-        }
-        else if(userInput.equals("x")){
-            closeAccount();
-        }
-        else if(userInput.equals("s")){
-            UserMenu.userMenu();
-        }
-        else if(userInput.equals("l")){
-            MenuUtilities.logout();
-        }
-        else if(userInput.equals("a")){
-            addUser();
-        }
+
     }
 
     public static void withdraw(){
