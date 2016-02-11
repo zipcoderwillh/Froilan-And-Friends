@@ -12,8 +12,9 @@ public class AccountMenu {
         AccountManager am = AccountManager.getAccountManager();
         Account currentAcc = am.getCurrentAccount();
         System.out.println("      "+currentAcc.getAccountType()+" -- Acct #: "+currentAcc.getId()+"\n");
-        System.out.println("  Check Balance (c)   --    Withdraw (w)   --    Deposit (d)     -- Transfer (t) \n");
-        System.out.println("View Transactions (v) -- Close Account (x) -- Switch Account (s) --  Logout (l) \n\n");
+        System.out.println("  Check Balance (c)   --    Withdraw (w)   --    Deposit (d)     \n");
+        System.out.println("     Transfer (t)   --  View Transactions (v) --  Add User to Account (a)\n");
+        System.out.println("   Close Account (x) --  Switch Account (s)  --  Logout (l) \n");
         String userInput="";
         while (!userInput.equals("c")&&!userInput.equals("w")&&!userInput.equals("d")&&!userInput.equals("t")&&
                 !userInput.equals("v")&&!userInput.equals("x")&&!userInput.equals("s")&&!userInput.equals("l")){
@@ -42,6 +43,9 @@ public class AccountMenu {
         }
         else if(userInput.equals("l")){
             MenuUtilities.logout();
+        }
+        else if(userInput.equals("a")){
+            addUser();
         }
     }
 
@@ -231,6 +235,27 @@ public class AccountMenu {
         System.out.println("Current Balance: "+currAccount.getBalance());
         MenuUtilities.promptForReturn();
         accountMenu();
+    }
+    public static void addUser(){
+        MenuUtilities.clearScreen();
+        AccountManager am = AccountManager.getAccountManager();
+        UserManager um = UserManager.getUserManager();
+        Account currAccount = am.getCurrentAccount();
+        String usernameToAdd="";
+        usernameToAdd=MenuUtilities.promptForText("Enter Username to Add to Your Account");
+        User userToAdd = um.getUser(usernameToAdd);
+        if(userToAdd==null){
+            System.out.println("Not a valid username.");
+            MenuUtilities.delayedPrint(1500);
+            accountMenu();
+        }
+        else{
+            am.addUserToCurrentAccount(userToAdd);
+            System.out.println(usernameToAdd+" successfully added to this account.");
+            MenuUtilities.delayedPrint(1400);
+            accountMenu();
+        }
+
     }
 }
 
