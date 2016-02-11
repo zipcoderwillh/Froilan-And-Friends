@@ -25,7 +25,8 @@ public class UserManagerTest {
         UserManager userManager = UserManager.getUserManager();
         UserManager.setPATHNAME("testLoadUserLog.csv");
         userManager.addUser("nwebb89", "Nick", "Webb", "TestEmail@gmail.com", 4477, "What is your dogs name?","Tucker");
-        assertTrue(userManager.getAllUsers().get(0).getFirstName().equals("Nick"));
+        User mostRecentUser = userManager.getAllUsers().get(userManager.getAllUsers().size()-1);
+        assertTrue(mostRecentUser.getFirstName().equals("Nick"));
         UserManager.setPATHNAME("userLog.csv");
     }
 
@@ -38,7 +39,7 @@ public class UserManagerTest {
         userManager.setCurrentUser(userManager.getAllUsers().get(0));
         userManager.removeCurrentUser(userManager.getCurrentUser());
         userManager.setCurrentUser(userManager.getAllUsers().get(0));
-        assertTrue(userManager.getAllUsers().get(0).getFirstName().equals("Test"));
+        assertTrue(userManager.getAllUsers().get(userManager.getAllUsers().size()-1).getFirstName().equals("Test"));
         UserManager.setPATHNAME("userLog.csv");
     }
 
@@ -63,8 +64,11 @@ public class UserManagerTest {
         UserManager.setPATHNAME("testLoadUserLog.csv");
         userManager.addUser("nwebb89", "Nick", "Webb", "TestEmail@gmail.com", 4477, "What is your dogs name?","Tucker");
         userManager.addUser("testman", "Test", "Man", "tester@yahoo.com",5847 , "Where are you from?", "testville");
-        User tester = userManager.getUser("nwebb89");
-        assertEquals("tester should be our first user", tester, userManager.getAllUsers().get(0));
+
+        userManager.setCurrentUser(userManager.getAllUsers().get(userManager.getAllUsers().size()-1));
+        User testUser = userManager.getAllUsers().get(userManager.getAllUsers().size()-1);
+
+        assertEquals("tester should be our first user", testUser , userManager.getCurrentUser());
         UserManager.setPATHNAME("userLog.csv");
     }
 
@@ -155,7 +159,10 @@ public class UserManagerTest {
         UserManager.setPATHNAME("testLoadUserLog.csv");
         userManager.addUser("nwebb89", "Nick", "Webb", "TestEmail@gmail.com", 4477, "What is your dogs name?","Tucker");
         userManager.addUser("testman", "Test", "Man", "tester@yahoo.com", 5874, "Where are you from?", "testville");
-        userManager.setCurrentUser(userManager.getAllUsers().get(0));
+
+        //Testing to specify user for info return. In this case, second to last user added.
+        userManager.setCurrentUser(userManager.getAllUsers().get(userManager.getAllUsers().size()-2));
+
         assertEquals("First names should match", "Nick", userManager.getCurrentUser().getFirstName());
         assertEquals("Last names should match", "Webb", userManager.getCurrentUser().getLastName());
         UserManager.setPATHNAME("userLog.csv");
@@ -168,9 +175,9 @@ public class UserManagerTest {
         UserManager.setPATHNAME("testLoadUserLog.csv");
         userManager.addUser("nwebb89", "Nick", "Webb", "TestEmail@gmail.com", 4477, "What is your dogs name?","Tucker");
         userManager.addUser("testman", "Test", "Man", "tester@yahoo.com", 5874, "Where are you from?", "testville");
-        userManager.setCurrentUser(userManager.getAllUsers().get(0));
+        userManager.setCurrentUser(userManager.getAllUsers().get(userManager.getAllUsers().size()-2));
         assertEquals("Security question should match", "What is your dogs name?", userManager.getCurrentUser().getSecurityQuestion());
-        assertEquals("secruity answer should match", "Tucker", userManager.getCurrentUser().getSecurityAnswer());
+        assertEquals("Security answer should match", "Tucker", userManager.getCurrentUser().getSecurityAnswer());
         assertNotEquals("Current users question shouldn't be second users", "Where are you from", userManager.getCurrentUser().getSecurityQuestion());
         assertNotEquals("Current users answer shouldn't be second users", "testville", userManager.getCurrentUser().getSecurityAnswer());
         UserManager.setPATHNAME("userLog.csv");
