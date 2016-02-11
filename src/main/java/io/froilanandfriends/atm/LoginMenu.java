@@ -88,7 +88,7 @@ public class LoginMenu {
 
     // Returns false if string contains non-word character or space
     public static boolean findIllegalCharacters (String stringToEdit){
-        Pattern p = Pattern.compile("\\W|_| ");
+        Pattern p = Pattern.compile("\\W|_| |[0-9]");
         Matcher m = p.matcher(stringToEdit);
         return m.find();
     }
@@ -105,7 +105,7 @@ public class LoginMenu {
 
             userName = MenuUtilities.promptForText("Enter Desired Username: ").toLowerCase();
             if(findIllegalCharacters(userName)) {
-                System.out.println("Usernames can only contain alphanumeric characters and may not contain spaces.");
+                System.out.println("Usernames can only contain alphabetic characters and may not contain spaces.");
                 MenuUtilities.delayedPrint(800);
             }
             //check username availability:
@@ -139,7 +139,7 @@ public class LoginMenu {
         while (true){
             firstName = MenuUtilities.promptForText("Enter your first name: ");
             if(findIllegalCharacters(firstName)) {
-                System.out.println("Names can only contain alphanumeric characters and may not contain spaces.");
+                System.out.println("Names can only contain alphabetic characters and may not contain spaces.");
                 MenuUtilities.delayedPrint(800);
                 continue;
             }
@@ -159,7 +159,7 @@ public class LoginMenu {
             lastName = MenuUtilities.promptForText("Enter your last name: ");
 
             if(findIllegalCharacters(lastName)) {
-                System.out.println("Names can only contain alphanumeric characters and may not contain spaces.");
+                System.out.println("Names can only contain alphabetic characters and may not contain spaces.");
                 MenuUtilities.delayedPrint(800);
                 continue;
             }
@@ -226,7 +226,7 @@ public class LoginMenu {
             securityAnswer = MenuUtilities.promptForText("Enter your answer: ");
 
             if(findIllegalCharacters(securityAnswer)) {
-                System.out.println("Answers can only contain alphanumeric characters and may not contain spaces.");
+                System.out.println("Answers can only contain alphabetic characters and may not contain spaces.");
                 MenuUtilities.delayedPrint(800);
                 continue;
             }
