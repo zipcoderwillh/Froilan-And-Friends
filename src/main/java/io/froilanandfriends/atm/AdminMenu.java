@@ -139,6 +139,9 @@ public class AdminMenu {
         if(user==null){
             System.out.println("No such username.");
         }
+        else if(user == um.getCurrentUser()){
+            System.out.println("Administrators may not flag their own accounts.");
+        }
         else{
             boolean flagged = user.isFlagged();
             if(flagged){
