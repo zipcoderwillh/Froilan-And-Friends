@@ -44,23 +44,27 @@ public class TransactionManagerTest {
 
     @Test
     public void testLoadTransactions() throws Exception {
-        /****
-         loadTransactions looks in the file transactionsLog.csv
-         and makes a transaction object with each line of the file, and stores each in
-         manager's transactions array
-         The test runs successfully when the to-account # we read from line 1 is the same
-         as the to-account of transaction object at index 0 if the array. There is something a bit
-         wonky right now because one of the factory's in transactionManager makes the accounts in an order
-         different than normal.
-         ****/
+        /**
+         we set the PATHNAME to another file and write in a string formatted the same
+         way any transaction string in the usual log file would be. If load transaction
+         is successful there will be a transaction object made with the details supplied in
+         that string, and it will be the last transaction in the  allTransaction array. Test works
+         like a charm
+         **/
         TransactionManager manager = TransactionManager.getTransactionManager();
-        manager.createTransaction(TransactionType.DEPOSIT, 22673, 1888181, 80000);
+        manager.setPATHNAME("testTransactionLog.csv");
         manager.loadTransactions();
 
 
 
         Transaction transaction =  manager.getLastTransaction();
-        assertEquals(22673, transaction.getFromAccount());
+        assertEquals(20066, transaction.getFromAccount());
+        assertTrue("WITHDRAWL".equals(transaction.getTransactionType().toString()));
+        assertEquals(20233, transaction.getToAccount());
+        assertEquals(8000.0, transaction.getAmount(), 0.01);
+        assertTrue("Wed Feb 10 14:41:27 EST 2016".equals(transaction.getDate().toString()));
+        assertEquals(12, transaction.getId());
+        manager.setPATHNAME("transactionsLog.csv");
 
 
     }
@@ -74,20 +78,32 @@ public class TransactionManagerTest {
          **/
         TransactionManager manager = TransactionManager.getTransactionManager();
         //                                        type      from      to    amount
+        manager.setPATHNAME("testTransactionLog.csv");
         manager.createTransaction(TransactionType.DEPOSIT, 1899888, 1888181, 80000);
         manager.createTransaction(TransactionType.DEPOSIT, 1899888, 1888181, 80000);
         manager.createTransaction(TransactionType.DEPOSIT, 1899888, 1888181, 80000);
         manager.logTransactions();
 
-        File file = new File("transactionsLog.csv");
+        File file = new File("testTransactionLog.csv");
 
         assertTrue("File does not exist :)",file.exists());
         BufferedReader br = new BufferedReader(new FileReader(file));
+        StringBuilder stringBuilder = new StringBuilder();
         String line;
         while((line = br.readLine()) != null){
-            System.out.println(line);
-        }
+            stringBuilder.append(line + "\n");
 
+        }
+        String bigString = stringBuilder.toString().trim();
+
+        String[] targetArr = bigString.split("\n");
+        int last = targetArr.length - 1;
+        String[] lastArr = targetArr[last].split(",");
+        assertTrue(lastArr[0],lastArr[0].equals("DEPOSIT"));
+        assertTrue(lastArr[1].equals("1899888"));
+        assertTrue(lastArr[2].equals("1888181"));
+        assertTrue(lastArr[3].equals("80000.0"));
+        manager.setPATHNAME("transactionsLog.csv");
     }
 
     @Test
