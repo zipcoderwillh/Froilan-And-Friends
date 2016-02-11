@@ -25,8 +25,8 @@ public class AccountManager {
     public void loadAccounts() throws Exception {
         String bigInputString = FileIO.readRecords(PATHNAME);
         String[] lineArray = bigInputString.split("\n");
-        for (String accountLine: lineArray) {
-            createAccount(accountLine);
+        for (String loadString: lineArray) {
+            createAccount(loadString);
         }
     }
     // logs out the array of accounts, allAccounts, to a file specified by PATHNAME
@@ -35,10 +35,26 @@ public class AccountManager {
         for (Account account: allAccounts) {
             String accountType = account.getAccountType().toString() + ",";
             String accountID = Long.toString(account.getId())+",";
-            String accountBalance = Double.toString(account.getBalance()) + "\n";
+            String accountBalance = Double.toString(account.getBalance()) + ",";
+            String userID = account.getUserIDs().get(0).toString();
             stringBuilder.append(accountType);
             stringBuilder.append(accountID);
             stringBuilder.append(accountBalance);
+
+            //If only one user ID exists,
+            if(account.getUserIDs().size() == 1 ){
+                stringBuilder.append(userID).append("\n");
+            } else {
+                stringBuilder.append(userID).append(",");
+                int extraUsers = account.userIDs.size() - 4;
+                for (int i = 1; i < extraUsers-1; i++) {
+                    stringBuilder.append(account.userIDs.get(i).toString()).append(",");
+                }
+                stringBuilder.append(account.userIDs.get(account.userIDs.size()-1)).append("\n");
+            }
+
+
+
         }
         String accountsToString = stringBuilder.toString();
         FileIO.logRecords(accountsToString, PATHNAME);
@@ -77,19 +93,19 @@ public class AccountManager {
         return newAccount;
     }
 
-    public Account createAccount(String accountString)
+    public Account createAccount(String loadString)
     {
         Account newAccount;
-        switch (accountString.substring(0,accountString.indexOf(',')).toUpperCase())
+        switch (loadString.substring(0,loadString.indexOf(',')).toUpperCase())
         {
             case "SAVINGS":
-                newAccount = new BusinessAccount(accountString);
+                newAccount = new BusinessAccount(loadString);
                 break;
             case "CHECKING":
-                newAccount = new CheckingAccount(accountString);
+                newAccount = new CheckingAccount(loadString);
                 break;
             case "BUSINESS":
-                newAccount = new BusinessAccount(accountString);
+                newAccount = new BusinessAccount(loadString);
                 break;
             default:
                 return null;

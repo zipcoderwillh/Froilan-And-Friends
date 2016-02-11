@@ -21,9 +21,13 @@ public class UserMenu {
             }
         }
         System.out.println("\n(0) - Create New Account \n");
-        int userInput = -1;
-        while (userInput!=0&&(userInput<0||userInput>userAccounts.size())){
+        System.out.println("(-1) - Logout");
+        int userInput = -2;
+        while (userInput!=0&&(userInput<-1||userInput>userAccounts.size())){
             userInput=MenuUtilities.promptForInt("Choose an account option.");
+        }
+        if(userInput==-1){
+            MenuUtilities.logout();
         }
         if(userInput==0){
             createAccount();
