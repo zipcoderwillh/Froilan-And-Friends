@@ -250,7 +250,10 @@ public class UserInterface {
                 break;
             }
         }
-        um.addUser(userName,firstName,lastName,email,pin,securityQuestion,securityAnswer);
+        try {
+            um.addUser(userName,firstName,lastName,email,pin,securityQuestion,securityAnswer);
+        } catch (Exception e){}
+
         um.setCurrentUser(um.getUser(userName));
         userMenu();
     }

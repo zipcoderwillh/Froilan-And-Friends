@@ -122,7 +122,11 @@ public class AccountMenu {
         ATM atm = ATM.getATM();
         MenuUtilities.clearScreen();
         AccountManager am = AccountManager.getAccountManager();
-        int depositAmount=MenuUtilities.promptForPositiveInt("How much are you depositing? ");
+        int depositAmount=MenuUtilities.promptForPositiveInt("How much are you depositing? Press 1 to return to the Account Menu.");
+
+        if(depositAmount==1){
+            System.out.println("Transaction Cancelled.  Returning to Account Menu.");
+        }
 
         boolean depositSuccess = atm.deposit(depositAmount);
         if(!depositSuccess){
