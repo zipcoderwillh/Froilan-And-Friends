@@ -52,7 +52,7 @@ public class TransactionManagerTest {
          like a charm
          **/
         TransactionManager manager = TransactionManager.getTransactionManager();
-        manager.setPATHNAME("testTransactionLog.csv");
+        manager.setPATHNAME("testLoadTransactionLog.csv");
         manager.loadTransactions();
 
 
@@ -62,8 +62,8 @@ public class TransactionManagerTest {
         assertTrue("DEPOSIT".equals(transaction.getTransactionType().toString()));
         assertEquals(1888181, transaction.getToAccount());
         assertEquals(80000.0, transaction.getAmount(), 0.01);
-        assertTrue("Thu Feb 11 11:08:40 EST 2016".equals(transaction.getDate().toString()));
-        assertEquals(1234595, transaction.getId());
+        assertTrue("Thu Feb 11 11:24:45 EST 2016".equals(transaction.getDate().toString()));
+        assertEquals(1234569, transaction.getId());
         manager.setPATHNAME("transactionsLog.csv");
 
 
