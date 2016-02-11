@@ -80,7 +80,7 @@ public class LoginMenu {
 
     // Returns false if string contains non-word character or space
     public static boolean findIllegalCharacters (String stringToEdit){
-        Pattern p = Pattern.compile("\\W|_| ");
+        Pattern p = Pattern.compile("\\W|_| |[0-9]");
         Matcher m = p.matcher(stringToEdit);
         return m.find();
     }

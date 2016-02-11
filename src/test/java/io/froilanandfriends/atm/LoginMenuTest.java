@@ -14,6 +14,7 @@ public class LoginMenuTest {
         assertTrue(LoginMenu.findIllegalCharacters("tom's"));
         assertTrue(LoginMenu.findIllegalCharacters("mord.ecai!"));
         assertTrue(LoginMenu.findIllegalCharacters("skill@@k"));
+        assertTrue(LoginMenu.findIllegalCharacters("skill0k"));
     }
 
     @Test
