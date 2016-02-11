@@ -5,7 +5,7 @@ import java.lang.StringBuilder;
 public class UserManager {
     private User currentUser;
     private ArrayList<User> allUsers = new ArrayList<User>();
-    private static final String PATHNAME = "userLog.csv";
+    private static String PATHNAME = "userLog.csv";
 
     //Singleton Setup
     private static UserManager current = new UserManager();
@@ -34,8 +34,8 @@ public class UserManager {
             stringBuilder.append(x.getPin()).append(",");
             stringBuilder.append(x.getSecurityQuestion()).append(",");
             stringBuilder.append(x.getSecurityAnswer()).append(",");
-            stringBuilder.append(x.isAdmin()).append(",");
-            stringBuilder.append(x.isFlagged());
+            stringBuilder.append(x.isFlagged()).append(",");
+            stringBuilder.append(x.isAdmin());
             stringBuilder.append("\n");
 
         }
@@ -46,13 +46,17 @@ public class UserManager {
         currentUser = null;
     }
 
-
-    public void flagUser(User userToFlag){ //flags a user
-        userToFlag.setFlagged();
+    public static void setPATHNAME(String PATHNAME) {
+        UserManager.PATHNAME = PATHNAME;
     }
-    public void unFlagUser(User UserToUnFlag){ //removes flag from user
-        UserToUnFlag.removeFlagged();
 
+    public void flagUser(User userToFlag) throws Exception { //flags a user
+        userToFlag.setFlagged();
+        logUsers();
+    }
+    public void unFlagUser(User UserToUnFlag) throws Exception{ //removes flag from user
+        UserToUnFlag.removeFlagged();
+        logUsers();
     }
 
     public User getCurrentUser() {
@@ -91,7 +95,11 @@ public class UserManager {
     public void addUser(String userName, String firstName, String lastName, String email, int pin, String securityQuestion, String secruityAnswer) throws Exception {
         User newUser = new User(userName, firstName, lastName, email, pin, securityQuestion, secruityAnswer);
         allUsers.add(newUser);
+
+
+
         logUsers();
+
     }
     //will remove specific user from list
     public void removeCurrentUser(User u){

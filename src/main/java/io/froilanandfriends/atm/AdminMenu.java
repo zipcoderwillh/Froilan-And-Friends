@@ -11,7 +11,7 @@ public class AdminMenu {
         MenuUtilities.clearScreen();
         System.out.println("                             Admin Menu  \n");
         System.out.println("Collect Deposits (c) - Restock Withdrawal Tray (r) - Withdrawal Tray Status (w)");
-        System.out.println(" View Transactions (v) -    Unflag User (u)    -      Logout (l) \n");
+        System.out.println(" View Transactions (v) -   Flag User (f)  -  Unflag User (u)  -   Logout (l) \n");
         String userInput = "";
         while (true){
             userInput = MenuUtilities.promptForText("Enter Decision: ").toLowerCase();
@@ -29,6 +29,9 @@ public class AdminMenu {
             }
             else if(userInput.equals("u")){
                 unflagUser();
+            }
+            else if(userInput.equals("f")){
+                flagUser();
             }
             else if(userInput.equals("l")){
                 MenuUtilities.logout();
@@ -116,13 +119,40 @@ public class AdminMenu {
                 System.out.println("User was not flagged.");
             }
             else{
-                user.removeFlagged();
+                try {
+                    UserManager.getUserManager().unFlagUser(user);
+                } catch (Exception e){}
                 System.out.println("User was unflagged.");
             }
         }
         MenuUtilities.delayedPrint(1400,"Returning to Admin Menu.");
         adminMenu();
     }
-
+    public static void flagUser(){
+        /* Prompts for a username to flag
+         *      flags if user isn't flagged, returns to -> adminMenu()*/
+        MenuUtilities.clearScreen();
+        UserManager um = UserManager.getUserManager();
+        Authenticator am = Authenticator.getAuthenticator();
+        String userName = MenuUtilities.promptForText("Enter the user's username:");
+        User user = am.validateUser(userName);
+        if(user==null){
+            System.out.println("No such username.");
+        }
+        else{
+            boolean flagged = user.isFlagged();
+            if(flagged){
+                System.out.println("User was already flagged.");
+            }
+            else{
+                try {
+                    UserManager.getUserManager().flagUser(user);
+                } catch (Exception e){}
+                System.out.println("User was flagged.");
+            }
+        }
+        MenuUtilities.delayedPrint(1400,"Returning to Admin Menu.");
+        adminMenu();
+    }
 }
 

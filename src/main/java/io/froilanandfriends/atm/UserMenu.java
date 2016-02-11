@@ -21,9 +21,13 @@ public class UserMenu {
             }
         }
         System.out.println("\n(0) - Create New Account \n");
-        int userInput = -1;
-        while (userInput!=0&&(userInput<0||userInput>userAccounts.size())){
+        System.out.println("(-1) - Logout");
+        int userInput = -2;
+        while (userInput!=0&&(userInput<-1||userInput>userAccounts.size())){
             userInput=MenuUtilities.promptForInt("Choose an account option.");
+        }
+        if(userInput==-1){
+            MenuUtilities.logout();
         }
         if(userInput==0){
             createAccount();
@@ -47,15 +51,15 @@ public class UserMenu {
         while (userInput.length()!=1||(userInput.charAt(0)!='c'&&userInput.charAt(0)!='s'&&userInput.charAt(0)!='b')){
             userInput=MenuUtilities.promptForText("Enter a valid account type: ").toLowerCase();
         }
-        AccountType typeToCreate;
+        Account.AccountType typeToCreate;
         if(userInput.equals("c")){
-            am.createAccount(AccountType.CHECKING);
+            am.createAccount(Account.AccountType.CHECKING);
         }
         else if(userInput.equals("s")){
-            am.createAccount(AccountType.SAVINGS);
+            am.createAccount(Account.AccountType.SAVINGS);
         }
         else {
-            am.createAccount(AccountType.BUSINESS);
+            am.createAccount(Account.AccountType.BUSINESS);
         }
         ArrayList<Account> allAccounts = am.getAllAccounts();
         am.switchAccount(allAccounts.get(allAccounts.size()-1).getId());

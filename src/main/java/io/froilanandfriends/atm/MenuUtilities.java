@@ -12,8 +12,6 @@ public class MenuUtilities {
         //null current fields
         am.clearCurrentAccount();
         um.clearUser();
-        System.out.println("Logging out..");
-        delayedPrint(2000);
 
         LoginMenu.loginMenu();
     }
