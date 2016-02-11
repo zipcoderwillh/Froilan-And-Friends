@@ -211,11 +211,29 @@ public class AccountMenu {
         MenuUtilities.clearScreen();
         AccountManager am = AccountManager.getAccountManager();
         Account currentAccount = am.getCurrentAccount();
+        if(currentAccount.getBalance()!=0){
+            System.out.println("You must withdraw all funds before attempting to close your account.");
+            MenuUtilities.delayedPrint(1500,"Returning to Account Menu");
+            accountMenu();
+        }
         String userInput="";
         while (!userInput.equals("y")&&!userInput.equals("n") ){
             userInput=MenuUtilities.promptForText("Are you sure you want to close this account? (y/n)").toLowerCase();
         }
         if(userInput.equals("y")){
+            int pinInput = 0;
+            String userName = UserManager.getUserManager().getCurrentUser().getUserName();
+            while (pinInput<1000||pinInput>9999){
+                pinInput=MenuUtilities.promptForPositiveInt("Enter your pin: ");
+                boolean pinSuccess = Authenticator.getAuthenticator().authenticate(userName,pinInput);
+                if(!pinSuccess){
+                    System.out.println("Incorrect pin. This account has been flagged.");
+                    MenuUtilities.delayedPrint(1400,"Returning to Login Menu");
+                    MenuUtilities.delayedPrint(800);
+                    UserManager.getUserManager().getCurrentUser().setFlagged();
+                    MenuUtilities.logout();
+                }
+            }
             am.deleteAccount(currentAccount.getId());
             System.out.println("Account Closed.");
             MenuUtilities.delayedPrint(2000);
