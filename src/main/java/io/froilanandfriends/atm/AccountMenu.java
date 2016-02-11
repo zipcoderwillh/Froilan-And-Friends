@@ -126,17 +126,21 @@ public class AccountMenu {
 
         if(depositAmount==1){
             System.out.println("Transaction Cancelled.  Returning to Account Menu.");
+            MenuUtilities.delayedPrint(1500);
+            accountMenu();
         }
 
         boolean depositSuccess = atm.deposit(depositAmount);
         if(!depositSuccess){
             System.out.println("Apologies!  The ATM cannot accept that number of bills at this time.  Come back soon!");
+            MenuUtilities.delayedPrint(1500);
             accountMenu();
         }
         else {
             double depositDouble = (double) depositAmount;
             am.deposit(depositDouble);
             System.out.println("$"+depositAmount+" deposited into your account.");
+            MenuUtilities.delayedPrint(1500);
             accountMenu();
         }
     }
@@ -176,6 +180,8 @@ public class AccountMenu {
             }
         }
         if(amountToTransfer>0){
+            System.out.println("Transfer Successful.");
+            MenuUtilities.delayedPrint(1200);
             am.transfer(destinationAccount.getId(),amountToTransfer);
         }
         accountMenu();
@@ -203,7 +209,7 @@ public class AccountMenu {
         Account currentAccount = am.getCurrentAccount();
         String userInput="";
         while (!userInput.equals("y")&&!userInput.equals("n") ){
-            MenuUtilities.promptForText("Are you sure? (y/n)").toLowerCase();
+            userInput=MenuUtilities.promptForText("Are you sure you want to close this account? (y/n)").toLowerCase();
         }
         if(userInput.equals("y")){
             am.deleteAccount(currentAccount.getId());
