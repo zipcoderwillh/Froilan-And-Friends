@@ -92,12 +92,9 @@ public class UserManager {
     }
 
     //adds a user to the allusers list
-    public void addUser(String userName, String firstName, String lastName, String email, int pin, String securityQuestion, String secruityAnswer) throws Exception {
-        User newUser = new User(userName, firstName, lastName, email, pin, securityQuestion, secruityAnswer);
+    public void addUser(String userName, String firstName, String lastName, String email, int pin, String securityQuestion, String securityAnswer) throws Exception {
+        User newUser = new User(userName, firstName, lastName, email, pin, securityQuestion, securityAnswer);
         allUsers.add(newUser);
-
-
-
         logUsers();
 
     }

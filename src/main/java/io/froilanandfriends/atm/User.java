@@ -45,13 +45,16 @@ public class User {
 
     public void setFlagged(){
         flagged = true;
+
     }
 
-    public void removeFlagged(){
+    public void removeFlagged() {
         flagged = false;
+
     }
-    public void setPin(int pin) {
+    public void setPin(int pin)   {
         this.pin = pin;
+
     }
 
     public int getPin(){
@@ -59,10 +62,12 @@ public class User {
     }
     public void setAsAdmin(){
         isAdmin = true;
+
     }
 
-    public void removeAdminStatus(){
+    public void removeAdminStatus()  {
         isAdmin = false;
+
     }
 
     public boolean isAdmin() {
