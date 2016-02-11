@@ -78,17 +78,16 @@ public class LoginMenu {
         UserMenu.userMenu();
     }
 
+    // Returns false if string contains non-word character or space
     public static boolean findIllegalCharacters (String stringToEdit){
-        Pattern pattern = Pattern.compile("\\W|_| ");
-        Matcher m = pattern.matcher(stringToEdit);
+        Pattern p = Pattern.compile("\\W|_| ");
+        Matcher m = p.matcher(stringToEdit);
         return m.find();
     }
 
+    // Returns false if string is not a valid email format (xxx@xxx.xxx)
     public static boolean validateEmail(String email) {
-        if(email.matches("^\\w+@\\w+\\.\\w+$")) {
-            return true;
-        }
-        return false;
+        return email.matches("^\\w+@\\w+\\.\\w+$");
     }
 
     public static String promptUserName(){
