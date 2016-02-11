@@ -207,12 +207,13 @@ public class UserManagerTest {
 
         UserManager manager = new UserManager();
         UserManager.setPATHNAME("testLoadUserLog.csv");
+        manager.loadUsers();
         manager.addUser("nwebb89", "Nick", "Webb", "TestEmail@gmail.com", 4477, "What is your dogs name?","Tucker");
         manager.addUser("testman", "Test", "Man", "tester@yahoo.com", 5874, "Where are you from?", "testville");
-        manager.loadUsers();
+
         int last = manager.getAllUsers().size() - 1;
         User user =  manager.getAllUsers().get(last);
-        Assert.assertEquals(42,user.getUserID() );
+        Assert.assertEquals(42+manager.getAllUsers().size(),user.getUserID() );
         UserManager.setPATHNAME("userLog.csv");
     }
 
