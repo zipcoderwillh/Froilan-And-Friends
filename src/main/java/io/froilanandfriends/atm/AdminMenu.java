@@ -119,7 +119,9 @@ public class AdminMenu {
                 System.out.println("User was not flagged.");
             }
             else{
-                user.removeFlagged();
+                try {
+                    UserManager.getUserManager().unFlagUser(user);
+                } catch (Exception e){}
                 System.out.println("User was unflagged.");
             }
         }
@@ -143,7 +145,9 @@ public class AdminMenu {
                 System.out.println("User was already flagged.");
             }
             else{
-                user.setFlagged();
+                try {
+                    UserManager.getUserManager().flagUser(user);
+                } catch (Exception e){}
                 System.out.println("User was flagged.");
             }
         }

@@ -37,6 +37,7 @@ public class LoginMenu {
             MenuUtilities.delayedPrint(1700,"Login with Administrator account.\n");
             MenuUtilities.delayedPrint(1000);
         }
+        String lastAttempt="error!!!!!!@promptCredentials";
         loginPrompt:
         while (true) {
             String userNameInput = MenuUtilities.promptForText("Enter Username: ");
@@ -73,11 +74,28 @@ public class LoginMenu {
             }
             else{
                 System.out.println("Login failed.");
-                MenuUtilities.delayedPrint(2000);
+                MenuUtilities.delayedPrint(1000);
                 if (firstOn){
                     continue loginPrompt;
                 }
                 else {
+                    if (lastAttempt.equals(userNameInput)){
+                        User toFlag = Authenticator.getAuthenticator().validateUser(userNameInput);
+                        if(toFlag!=null){
+                            try {
+                                UserManager.getUserManager().flagUser(toFlag);
+                            } catch (Exception e){}
+
+                            System.out.println("This account has been flagged due to suspicious activity.");
+                            MenuUtilities.delayedPrint(2000);
+                            loginMenu();
+                        }
+                    }
+                    String userIn = MenuUtilities.promptForText("Try again? (y/n)").toLowerCase();
+                    if (userIn.equals("y")||userIn.equals("yes")){
+                        lastAttempt = userNameInput;
+                        continue loginPrompt;
+                    }
                     loginMenu();
                 }
             }

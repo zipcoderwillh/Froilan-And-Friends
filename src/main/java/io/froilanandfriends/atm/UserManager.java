@@ -34,8 +34,8 @@ public class UserManager {
             stringBuilder.append(x.getPin()).append(",");
             stringBuilder.append(x.getSecurityQuestion()).append(",");
             stringBuilder.append(x.getSecurityAnswer()).append(",");
-            stringBuilder.append(x.isAdmin()).append(",");
-            stringBuilder.append(x.isFlagged());
+            stringBuilder.append(x.isFlagged()).append(",");
+            stringBuilder.append(x.isAdmin());
             stringBuilder.append("\n");
 
         }
@@ -50,12 +50,13 @@ public class UserManager {
         UserManager.PATHNAME = PATHNAME;
     }
 
-    public void flagUser(User userToFlag){ //flags a user
+    public void flagUser(User userToFlag) throws Exception { //flags a user
         userToFlag.setFlagged();
+        logUsers();
     }
-    public void unFlagUser(User UserToUnFlag){ //removes flag from user
+    public void unFlagUser(User UserToUnFlag) throws Exception{ //removes flag from user
         UserToUnFlag.removeFlagged();
-
+        logUsers();
     }
 
     public User getCurrentUser() {
