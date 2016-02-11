@@ -133,11 +133,13 @@ public class AccountMenu {
         boolean depositSuccess = atm.deposit(depositAmount);
         if(!depositSuccess){
             System.out.println("Apologies!  The ATM cannot accept that number of bills at this time.  Come back soon!");
+            MenuUtilities.delayedPrint(1500);
             accountMenu();
         }
         else {
             double depositDouble = (double) depositAmount;
             am.deposit(depositDouble);
+            MenuUtilities.delayedPrint(1500);
             System.out.println("$"+depositAmount+" deposited into your account.");
             accountMenu();
         }
