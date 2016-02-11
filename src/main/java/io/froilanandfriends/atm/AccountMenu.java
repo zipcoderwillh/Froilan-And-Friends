@@ -126,6 +126,7 @@ public class AccountMenu {
 
         if(depositAmount==1){
             System.out.println("Transaction Cancelled.  Returning to Account Menu.");
+            accountMenu();
         }
 
         boolean depositSuccess = atm.deposit(depositAmount);
