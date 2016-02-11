@@ -7,7 +7,7 @@ import java.util.Date;
 
 public class TransactionManager {
 
-    private static final String PATHNAME = "transactionsLog.csv";
+    private static String PATHNAME = "transactionsLog.csv";
     private static ArrayList<Transaction> allTransactions = new ArrayList<Transaction>();
 
     //Singleton Setup
@@ -18,9 +18,10 @@ public class TransactionManager {
         return current;
     }
 
-
+    //Calls transaction constructor 2.
     public void createTransaction(TransactionType type, long fromAccount,long toAccount , double amount){
-        Transaction transaction = new Transaction(type, fromAccount, toAccount, amount);
+        long id = setTransactionID();
+        Transaction transaction = new Transaction(type, fromAccount, toAccount, amount, id);
         allTransactions.add(transaction);
         try{
             logTransactions();
@@ -30,9 +31,10 @@ public class TransactionManager {
 
     }
 
-    //Overload for no to account. i.e Withdrawls
+    //Calls transaction constructor 3. Overload for no to account. i.e Withdrawls.
     public void createTransaction(TransactionType type, long fromAccount, double amount){
-        Transaction transaction = new Transaction(type, fromAccount, amount);
+        long id = setTransactionID();
+        Transaction transaction = new Transaction(type, fromAccount, amount, id);
         allTransactions.add(transaction);
         try{
             logTransactions();
@@ -40,6 +42,14 @@ public class TransactionManager {
 
         }
     }
+
+    public long setTransactionID(){ return allTransactions.size() + 1234567; }
+
+
+    public static void setPATHNAME(String PATHNAME) {
+        TransactionManager.PATHNAME = PATHNAME;
+    }
+
 
     /**
      loadTransactions() will call FileIO's readRecords method to pull up an array
@@ -73,7 +83,7 @@ public class TransactionManager {
             long id = Long.parseLong(lineArr[5]);
 
 
-
+            //Calls transaction constructor 1.
             Transaction transaction = new Transaction(type, from, to, amount, date, id);
             allTransactions.add(transaction);
 
@@ -140,20 +150,19 @@ public class TransactionManager {
         //Get an account manager.
         AccountManager manager = AccountManager.getAccountManager();
 
-        //TODO: Change to get current account. Method not yet implemented
         //Find the account requested.
         Account account = manager.getCurrentAccount();
 
 
         //Create container for Transactions
         ArrayList<Transaction> accountTransactions = new ArrayList<Transaction>();
-
+        long currentAccountId = account.getId();
         //If account is found
         if(account != null){
             //Loop through all transactions
             for(Transaction trans : allTransactions){
                 //If from account equals the users account number, add it to accountTransactions.
-                if(trans.getFromAccount() == account.getId())
+                if(trans.getFromAccount() == currentAccountId||trans.getToAccount()==currentAccountId)
                     accountTransactions.add(trans);
             }
         }

@@ -12,11 +12,12 @@ public class AccountMenu {
         AccountManager am = AccountManager.getAccountManager();
         Account currentAcc = am.getCurrentAccount();
         System.out.println("      "+currentAcc.getAccountType()+" -- Acct #: "+currentAcc.getId()+"\n");
-        System.out.println("  Check Balance (c)   --    Withdraw (w)   --    Deposit (d)     -- Transfer (t) \n");
-        System.out.println("View Transactions (v) -- Close Account (x) -- Switch Account (s) --  Logout (l) \n\n");
+        System.out.println("  Check Balance (c)   --    Withdraw (w)   --    Deposit (d)     \n");
+        System.out.println("     Transfer (t)   --  View Transactions (v) --  Add User to Account (a)\n");
+        System.out.println("   Close Account (x) --  Switch Account (s)  --  Logout (l) \n");
         String userInput="";
         while (!userInput.equals("c")&&!userInput.equals("w")&&!userInput.equals("d")&&!userInput.equals("t")&&
-                !userInput.equals("v")&&!userInput.equals("x")&&!userInput.equals("s")&&!userInput.equals("l")){
+                !userInput.equals("v")&&!userInput.equals("x")&&!userInput.equals("s")&&!userInput.equals("l")&&!userInput.equals("a")){
             userInput = MenuUtilities.promptForText("Enter Decision: ").toLowerCase();
         }
         if(userInput.equals("c")){
@@ -42,6 +43,9 @@ public class AccountMenu {
         }
         else if(userInput.equals("l")){
             MenuUtilities.logout();
+        }
+        else if(userInput.equals("a")){
+            addUser();
         }
     }
 
@@ -75,14 +79,22 @@ public class AccountMenu {
             }
             else {
                 am.withdrawl(currBalance);
+                System.out.println("Your check will be in the mail within 3 business days.");
+                MenuUtilities.delayedPrint(1500);
                 accountMenu();
             }
         }
         else if(currBalance>=10.0) {
             boolean gettingAmount = true;
             while (gettingAmount) {
-                userWithdraw = MenuUtilities.promptForPositiveInt("What amount would you like to withdraw? ($10 increments)");
-                if (userWithdraw > currBalance) {
+                userWithdraw = MenuUtilities.promptForPositiveInt("What amount would you like to withdraw? ($10 increments)  Enter 1 to cancel the transaction.");
+                if (userWithdraw==1){
+                    System.out.println("Transaction cancelled.  Returning to Account Menu");
+                    MenuUtilities.delayedPrint(1000);
+                    accountMenu();
+                    break;
+                }
+                else if (userWithdraw > currBalance) {
                     System.out.println("Insufficient funds.  Enter a lower amount.");
                 } else if (userWithdraw % 10 != 0) {
                     System.out.println("Your withdrawal must be in $10 increments.");
@@ -114,18 +126,25 @@ public class AccountMenu {
         ATM atm = ATM.getATM();
         MenuUtilities.clearScreen();
         AccountManager am = AccountManager.getAccountManager();
-        int depositAmount=MenuUtilities.promptForPositiveInt("How much are you depositing? ");
-        int numBills = MenuUtilities.promptForPositiveInt("Enter the number of bills you are depositing.");
+        int depositAmount=MenuUtilities.promptForPositiveInt("How much are you depositing? Press 1 to return to the Account Menu.");
 
-        boolean depositSuccess = atm.deposit(numBills,depositAmount);
+        if(depositAmount==1){
+            System.out.println("Transaction Cancelled.  Returning to Account Menu.");
+            MenuUtilities.delayedPrint(1500);
+            accountMenu();
+        }
+
+        boolean depositSuccess = atm.deposit(depositAmount);
         if(!depositSuccess){
             System.out.println("Apologies!  The ATM cannot accept that number of bills at this time.  Come back soon!");
+            MenuUtilities.delayedPrint(1500);
             accountMenu();
         }
         else {
             double depositDouble = (double) depositAmount;
             am.deposit(depositDouble);
             System.out.println("$"+depositAmount+" deposited into your account.");
+            MenuUtilities.delayedPrint(1500);
             accountMenu();
         }
     }
@@ -144,9 +163,9 @@ public class AccountMenu {
             MenuUtilities.delayedPrint(1400);
             accountMenu();
         }
-        int idToTransfer = 0;
+        long idToTransfer = 0;
         double amountToTransfer=0;
-        idToTransfer=MenuUtilities.promptForPositiveInt("Enter Account Number to transfer funds to: ");
+        idToTransfer=MenuUtilities.promptForPositiveLong("Enter Account Number to transfer funds to: ");
         Account destinationAccount = am.getAccount(idToTransfer);
         if(destinationAccount==null){
             System.out.println("Not a valid account number.");
@@ -165,8 +184,9 @@ public class AccountMenu {
             }
         }
         if(amountToTransfer>0){
-            currAccount.withdraw(amountToTransfer);
-            destinationAccount.deposit(amountToTransfer);
+            System.out.println("Transfer Successful.");
+            MenuUtilities.delayedPrint(1200);
+            am.transfer(destinationAccount.getId(),amountToTransfer);
         }
         accountMenu();
     }
@@ -180,7 +200,7 @@ public class AccountMenu {
         for(Transaction t:userTrans){
             System.out.println(t.getDate()+ " - "+t.getTransactionType()+" - "+t.getAmount());
         }
-        MenuUtilities.promptForText("Press RETURN when finished.");
+        MenuUtilities.promptForReturn();
         accountMenu();
     }
 
@@ -191,11 +211,29 @@ public class AccountMenu {
         MenuUtilities.clearScreen();
         AccountManager am = AccountManager.getAccountManager();
         Account currentAccount = am.getCurrentAccount();
+        if(currentAccount.getBalance()!=0){
+            System.out.println("You must withdraw all funds before attempting to close your account.");
+            MenuUtilities.delayedPrint(1500,"Returning to Account Menu");
+            accountMenu();
+        }
         String userInput="";
         while (!userInput.equals("y")&&!userInput.equals("n") ){
-            MenuUtilities.promptForText("Are you sure? (y/n)").toLowerCase();
+            userInput=MenuUtilities.promptForText("Are you sure you want to close this account? (y/n)").toLowerCase();
         }
         if(userInput.equals("y")){
+            int pinInput = 0;
+            String userName = UserManager.getUserManager().getCurrentUser().getUserName();
+            while (pinInput<1000||pinInput>9999){
+                pinInput=MenuUtilities.promptForPositiveInt("Enter your pin: ");
+                boolean pinSuccess = Authenticator.getAuthenticator().authenticate(userName,pinInput);
+                if(!pinSuccess){
+                    System.out.println("Incorrect pin. This account has been flagged.");
+                    MenuUtilities.delayedPrint(1400,"Returning to Login Menu");
+                    MenuUtilities.delayedPrint(800);
+                    UserManager.getUserManager().getCurrentUser().setFlagged();
+                    MenuUtilities.logout();
+                }
+            }
             am.deleteAccount(currentAccount.getId());
             System.out.println("Account Closed.");
             MenuUtilities.delayedPrint(2000);
@@ -213,8 +251,29 @@ public class AccountMenu {
         Account currAccount = am.getCurrentAccount();
         System.out.println(currAccount.getAccountType()+ " no. "+currAccount.getId()+"\n\n");
         System.out.println("Current Balance: "+currAccount.getBalance());
-        MenuUtilities.promptForText("Press RETURN when finished.");
+        MenuUtilities.promptForReturn();
         accountMenu();
+    }
+    public static void addUser(){
+        MenuUtilities.clearScreen();
+        AccountManager am = AccountManager.getAccountManager();
+        UserManager um = UserManager.getUserManager();
+        Account currAccount = am.getCurrentAccount();
+        String usernameToAdd="";
+        usernameToAdd=MenuUtilities.promptForText("Enter Username to Add to Your Account");
+        User userToAdd = um.getUser(usernameToAdd);
+        if(userToAdd==null){
+            System.out.println("Not a valid username.");
+            MenuUtilities.delayedPrint(1500);
+            accountMenu();
+        }
+        else{
+            am.addUserToCurrentAccount(userToAdd);
+            System.out.println(usernameToAdd+" successfully added to this account.");
+            MenuUtilities.delayedPrint(1400);
+            accountMenu();
+        }
+
     }
 }
 

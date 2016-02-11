@@ -12,8 +12,6 @@ public class MenuUtilities {
         //null current fields
         am.clearCurrentAccount();
         um.clearUser();
-        System.out.println("Logging out..");
-        delayedPrint(2000);
 
         LoginMenu.loginMenu();
     }
@@ -35,8 +33,19 @@ public class MenuUtilities {
     public static String promptForText(String textToDisplay) {
         Scanner input = new Scanner(System.in);
         System.out.println(textToDisplay);
-        String userAnswer = input.nextLine();
+        String userAnswer = "";
+        while (userAnswer.isEmpty()) {
+            while (!input.hasNextLine()) {
+                input.next();
+            }
+            userAnswer = input.nextLine();
+        }
         return userAnswer;
+    }
+    public static void promptForReturn(){
+        Scanner input = new Scanner(System.in);
+        System.out.println("Press RETURN when finished.");
+        String userAnswer = input.nextLine();
     }
     public static double promptForDouble(String textToDisplay){
         Scanner input = new Scanner(System.in);
@@ -87,6 +96,22 @@ public class MenuUtilities {
                 input.next();
             }
             userAnswer=input.nextInt();
+        }
+        return userAnswer;
+    }
+    public static long promptForPositiveLong(String textToDisplay){
+        Scanner input = new Scanner(System.in);
+        System.out.println(textToDisplay);
+        while(!input.hasNextLong()) {
+            input.next();
+        }
+        Long userAnswer=input.nextLong();
+        while (userAnswer<=0){
+            System.out.println("Please enter a positive value.");
+            while(!input.hasNextLong()) {
+                input.next();
+            }
+            userAnswer=input.nextLong();
         }
         return userAnswer;
     }

@@ -13,7 +13,7 @@ public class AccountTest {
     @Test
     public void testStringGetId() throws Exception {
         //account object made from single string has intended ID
-        String inputString = "CHECKING, 123456, 2.24";
+        String inputString = "CHECKING, 123456, 2.24, 42";
         Account account = new BusinessAccount(inputString);
         assertEquals(123456, account.getId());
 }
@@ -41,17 +41,17 @@ public class AccountTest {
     @Test
     public void testGetAccountType() throws Exception {
         Account a1 = new SavingsAccount();
-        assertEquals("Account1 type should be SAVINGS",AccountType.SAVINGS,a1.getAccountType());
+        assertEquals("Account1 type should be SAVINGS",Account.AccountType.SAVINGS,a1.getAccountType());
         Account a2 = new CheckingAccount();
-        assertEquals("Account2 type should be CHECKING",AccountType.CHECKING,a2.getAccountType());
+        assertEquals("Account2 type should be CHECKING",Account.AccountType.CHECKING,a2.getAccountType());
         Account a3 = new BusinessAccount();
-        assertEquals("Account3 type should be BUSINESS",AccountType.BUSINESS,a3.getAccountType());
+        assertEquals("Account3 type should be BUSINESS",Account.AccountType.BUSINESS,a3.getAccountType());
     }
 
     @Test
     public void testGetId() throws Exception {
         Account a1 = new BusinessAccount();
-        assertNotEquals("a1's id sould not be 0",0,a1.getId());
+        assertNotEquals("a1's id should not be 0",0,a1.getId());
     }
 
 

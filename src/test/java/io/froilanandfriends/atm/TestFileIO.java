@@ -11,15 +11,16 @@ public class TestFileIO {
 
     @Test
     public void testFileIO_setRecords_stringReturn() throws Exception {
-        assertTrue(FileIO.readRecords("testRecords.csv") instanceof String);
+        assertTrue(FileIO.readRecords("testLog.csv") instanceof String);
     }
 
     //Test if string returned by .setRecords() matches expected return value.
     @Test
     public void testFileIO_setRecords_stringOutput() throws Exception {
-        assertTrue(FileIO.readRecords("testRecords.csv").equals(
-                "Object,Attribute1,Attribute2,Attribute3,Attribute4,Attribute5,Attribute6 " + "\n" +
-                        "Object-2,Attribute1-2,Attribute2-2,Attribute3-2,Attribute4-2,Attribute5-2,Attribute6-2"));
+
+        String testString = "Object,Attribute1,Attribute2,Attribute3,Attribute4,Attribute5,Attribute6" +"\n" +
+                "Object-2,Attribute1-2,Attribute2-2,Attribute3-2,Attribute4-2,Attribute5-2,Attribute6-2";
+        assertTrue(FileIO.readRecords("testLog.csv").equals(testString));
     }
 
     @Test
@@ -42,7 +43,7 @@ public class TestFileIO {
         //Check that logger logged test string properly.
         String expectedResult =  "Object,Attribute1,Attribute2,Attribute3,Attribute4,Attribute5,Attribute6" +"\n" +
                 "Object-2,Attribute1-2,Attribute2-2,Attribute3-2,Attribute4-2,Attribute5-2,Attribute6-2";
-        assertTrue(expectedResult.equals(stringBuilder.toString()));
+        assertTrue(expectedResult.equals(stringBuilder.toString().trim()));
 
 
     }

@@ -1,6 +1,8 @@
 package io.froilanandfriends.atm;
 
 import java.util.ArrayList;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public class LoginMenu {
 
@@ -28,28 +30,75 @@ public class LoginMenu {
          If failure, return to -> loginMenu()
          If success, set currentUser, go to -> userMenu()                */
         MenuUtilities.clearScreen();
-        String userNameInput = MenuUtilities.promptForText("Enter Username: ");
-        int pinInput=0;
-        while(pinInput<1000||(pinInput>9999&&pinInput<1000000)||pinInput>9999999){ //while not 4 or 7 digits
-            pinInput = MenuUtilities.promptForPositiveInt("Enter Pin: ");
+        ATM atm = ATM.getATM();
+        boolean firstOn = atm.isFirstOn();
+        if (firstOn){
+            System.out.println("ATM BOOTUP PROCESS..");
+            MenuUtilities.delayedPrint(1700,"Login with Administrator account.\n");
+            MenuUtilities.delayedPrint(1000);
         }
-        Authenticator auth = Authenticator.getAuthenticator();
-        boolean authenticated = auth.authenticate(userNameInput,pinInput);
-        if(authenticated){
-            UserManager um = UserManager.getUserManager();
-            um.setCurrentUser(um.getUser(userNameInput));
-            User currentUser = um.getCurrentUser();
-            if(currentUser.isAdmin()){
-                AdminMenu.adminMenu();
+        String lastAttempt="error!!!!!!@promptCredentials";
+        loginPrompt:
+        while (true) {
+            String userNameInput = MenuUtilities.promptForText("Enter Username: ");
+            int pinInput=0;
+            while(pinInput<1000||(pinInput>9999&&pinInput<1000000)||pinInput>9999999){ //while not 4 or 7 digits
+                pinInput = MenuUtilities.promptForPositiveInt("Enter Pin: ");
             }
-            else {
-                UserMenu.userMenu();
+            Authenticator auth = Authenticator.getAuthenticator();
+            boolean authenticated = auth.authenticate(userNameInput,pinInput);
+            if(authenticated){
+
+                UserManager um = UserManager.getUserManager();
+                User authenticatedUser = um.getUser(userNameInput);
+                if (firstOn&&!authenticatedUser.isAdmin()){
+                    System.out.println("Please login on an administrator account.");
+                    MenuUtilities.delayedPrint(1200);
+                    continue loginPrompt;
+                }
+                if(authenticatedUser.isFlagged()&&!firstOn){
+                    System.out.println("This account is flagged.  Please request administrator help to restore login privileges.");
+                    MenuUtilities.delayedPrint(1500,"Returning to Login Menu");
+                    MenuUtilities.delayedPrint(900);
+                    loginMenu();
+                }
+                um.setCurrentUser(authenticatedUser);
+                User currentUser = um.getCurrentUser();
+                if(currentUser.isAdmin()){
+                    atm.setFirstOn(false);
+                    AdminMenu.adminMenu();
+                }
+                else if (!firstOn) {
+                    UserMenu.userMenu();
+                }
             }
-        }
-        else{
-            System.out.println("Login failed.");
-            MenuUtilities.delayedPrint(2000);
-            loginMenu();
+            else{
+                System.out.println("Login failed.");
+                MenuUtilities.delayedPrint(1000);
+                if (firstOn){
+                    continue loginPrompt;
+                }
+                else {
+                    if (lastAttempt.equals(userNameInput)){
+                        User toFlag = Authenticator.getAuthenticator().validateUser(userNameInput);
+                        if(toFlag!=null){
+                            try {
+                                UserManager.getUserManager().flagUser(toFlag);
+                            } catch (Exception e){}
+
+                            System.out.println("This account has been flagged due to suspicious activity.");
+                            MenuUtilities.delayedPrint(2000);
+                            loginMenu();
+                        }
+                    }
+                    String userIn = MenuUtilities.promptForText("Try again? (y/n)").toLowerCase();
+                    if (userIn.equals("y")||userIn.equals("yes")){
+                        lastAttempt = userNameInput;
+                        continue loginPrompt;
+                    }
+                    loginMenu();
+                }
+            }
         }
     }
 
@@ -68,27 +117,39 @@ public class LoginMenu {
         String email = promptEmail();
         String securityQuestion = promptSecQuestion();
         String securityAnswer = promptSecAnswer();
+        try {
+            um.addUser(userName,firstName,lastName,email,pin,securityQuestion,securityAnswer);
+        } catch (Exception e){}
 
-        um.addUser(userName,firstName,lastName,email,pin,securityQuestion,securityAnswer);
         um.setCurrentUser(um.getUser(userName));
         UserMenu.userMenu();
     }
 
-    public static String removeIllegalCharacters (String stringToEdit){
-        stringToEdit=stringToEdit.replace(",","");
-        stringToEdit=stringToEdit.replace("\n","");
-        return stringToEdit;
+    // Returns false if string contains non-word character or space
+    public static boolean findIllegalCharacters (String stringToEdit){
+        Pattern p = Pattern.compile("\\W|_| |[0-9]");
+        Matcher m = p.matcher(stringToEdit);
+        return m.find();
     }
+
+    // Returns false if string is not a valid email format (xxx@xxx.xxx)
+    public static boolean validateEmail(String email) {
+        return email.matches("^\\w+@\\w+\\.\\w+$");
+    }
+
     public static String promptUserName(){
         String userName;
         UserManager um = UserManager.getUserManager();
         while (true) {
 
             userName = MenuUtilities.promptForText("Enter Desired Username: ").toLowerCase();
-            userName = removeIllegalCharacters(userName);
+            if(findIllegalCharacters(userName)) {
+                System.out.println("Usernames can only contain alphabetic characters and may not contain spaces.");
+                MenuUtilities.delayedPrint(800);
+            }
             //check username availability:
-            if(userName.indexOf(' ')>=0||userName.length()>8){
-                System.out.println("Usernames can be a maximum of 8 characters and may not contain spaces.");
+            else if(userName.length()>8||userName==null||userName.isEmpty()){
+                System.out.println("Usernames can be a maximum of 8 characters.");
                 MenuUtilities.delayedPrint(800);
             }
             else if (um.getUser(userName) != null) {
@@ -116,7 +177,11 @@ public class LoginMenu {
         String firstName = "";
         while (true){
             firstName = MenuUtilities.promptForText("Enter your first name: ");
-            firstName = removeIllegalCharacters(firstName);
+            if(findIllegalCharacters(firstName)) {
+                System.out.println("Names can only contain alphabetic characters and may not contain spaces.");
+                MenuUtilities.delayedPrint(800);
+                continue;
+            }
             String input = "";
             while (!input.equals("y")&&!input.equals("n")){
                 input = MenuUtilities.promptForText("Your first name is: "+firstName+", is that correct? (y/n)").toLowerCase();
@@ -131,7 +196,13 @@ public class LoginMenu {
         String lastName = "";
         while (true){
             lastName = MenuUtilities.promptForText("Enter your last name: ");
-            lastName = removeIllegalCharacters(lastName);
+
+            if(findIllegalCharacters(lastName)) {
+                System.out.println("Names can only contain alphabetic characters and may not contain spaces.");
+                MenuUtilities.delayedPrint(800);
+                continue;
+            }
+
             String input = "";
             while (!input.equals("y")&&!input.equals("n")){
                 input = MenuUtilities.promptForText("Your last name is: "+lastName+", is that correct? (y/n)").toLowerCase();
@@ -146,7 +217,13 @@ public class LoginMenu {
         String email = "";
         while (true){
             email = MenuUtilities.promptForText("Enter your e-mail address: ");
-            email = removeIllegalCharacters(email);
+
+            if(!validateEmail(email)) {
+                System.out.println("Please enter a valid email address.");
+                MenuUtilities.delayedPrint(800);
+                continue;
+            }
+
             String input = "";
             while (!input.equals("y")&&!input.equals("n")){
                 input = MenuUtilities.promptForText("Your e-mail is: "+email+", is that correct? (y/n)").toLowerCase();
@@ -186,7 +263,13 @@ public class LoginMenu {
         String securityAnswer="";
         while (true){
             securityAnswer = MenuUtilities.promptForText("Enter your answer: ");
-            securityAnswer = removeIllegalCharacters(securityAnswer);
+
+            if(findIllegalCharacters(securityAnswer)) {
+                System.out.println("Answers can only contain alphabetic characters and may not contain spaces.");
+                MenuUtilities.delayedPrint(800);
+                continue;
+            }
+
             String input = "";
             while (!input.equals("y")&&!input.equals("n")){
                 input = MenuUtilities.promptForText("Your answer is: "+securityAnswer+", is that correct? (y/n)").toLowerCase();

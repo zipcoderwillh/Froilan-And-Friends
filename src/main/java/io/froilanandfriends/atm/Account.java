@@ -9,11 +9,19 @@ public abstract class Account {
     protected long id;
     protected double balance;
     protected ArrayList<Integer> userIDs = new ArrayList<Integer>();
-    Account(){
+
+    //Standard Constructor - takes no args, initializes Account with subclass type setter, id with superclass id setter,
+    //balance of zero, and first user in userids array as current users user id.
+    public Account(){
         //Give this account a unique id based on the nanosecond
         this.id = System.nanoTime();
+        if (UserManager.getUserManager().getCurrentUser() != null) {
+            userIDs.add(UserManager.getUserManager().getCurrentUser().getUserID());
+        }
     }
-    //secondary constructor for strings read in from file
+    
+
+    //Secondary constructor for strings read in from load file.
     Account(String bigString){
         String[] accountFields = bigString.split(",");
         String acctType = accountFields[0].toLowerCase();
@@ -26,8 +34,18 @@ public abstract class Account {
         }
         this.id = Long.parseLong(accountFields[1].trim());
         this.balance = Double.parseDouble(accountFields[2].trim());
-    }
 
+        userIDs.add(0,Integer.parseInt(accountFields[3].trim()));
+
+        //Check size of input string lines - for every record after the fourth will be extra users in account.
+        int extraUsers = accountFields.length - 4;
+        for(int i = 1; i<extraUsers; i++ ){
+            userIDs.add(i,Integer.parseInt(accountFields[i+3]));
+        }
+
+
+    }
+    public void addUserID(int userID){userIDs.add(userID);}
     //remove money from this account
     public void withdraw(double amountToWithdraw){
         balance-=amountToWithdraw;
@@ -52,8 +70,10 @@ public abstract class Account {
     public ArrayList<Integer> getUserIDs() {
         return userIDs;
     }
+
+    public enum AccountType{
+        CHECKING,SAVINGS,BUSINESS
+    }
 }
 
-enum AccountType{
-    CHECKING,SAVINGS,BUSINESS
-}
+
