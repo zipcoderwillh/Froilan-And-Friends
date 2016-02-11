@@ -58,12 +58,12 @@ public class TransactionManagerTest {
 
 
         Transaction transaction =  manager.getLastTransaction();
-        assertEquals(20066, transaction.getFromAccount());
-        assertTrue("WITHDRAWL".equals(transaction.getTransactionType().toString()));
-        assertEquals(20233, transaction.getToAccount());
-        assertEquals(8000.0, transaction.getAmount(), 0.01);
-        assertTrue("Wed Feb 10 14:41:27 EST 2016".equals(transaction.getDate().toString()));
-        assertEquals(12, transaction.getId());
+        assertEquals(1899888, transaction.getFromAccount());
+        assertTrue("DEPOSIT".equals(transaction.getTransactionType().toString()));
+        assertEquals(1888181, transaction.getToAccount());
+        assertEquals(80000.0, transaction.getAmount(), 0.01);
+        assertTrue("Thu Feb 11 11:08:40 EST 2016".equals(transaction.getDate().toString()));
+        assertEquals(1234595, transaction.getId());
         manager.setPATHNAME("transactionsLog.csv");
 
 
