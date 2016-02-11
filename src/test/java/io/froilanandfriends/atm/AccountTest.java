@@ -41,11 +41,11 @@ public class AccountTest {
     @Test
     public void testGetAccountType() throws Exception {
         Account a1 = new SavingsAccount();
-        assertEquals("Account1 type should be SAVINGS",AccountType.SAVINGS,a1.getAccountType());
+        assertEquals("Account1 type should be SAVINGS",Account.AccountType.SAVINGS,a1.getAccountType());
         Account a2 = new CheckingAccount();
-        assertEquals("Account2 type should be CHECKING",AccountType.CHECKING,a2.getAccountType());
+        assertEquals("Account2 type should be CHECKING",Account.AccountType.CHECKING,a2.getAccountType());
         Account a3 = new BusinessAccount();
-        assertEquals("Account3 type should be BUSINESS",AccountType.BUSINESS,a3.getAccountType());
+        assertEquals("Account3 type should be BUSINESS",Account.AccountType.BUSINESS,a3.getAccountType());
     }
 
     @Test
