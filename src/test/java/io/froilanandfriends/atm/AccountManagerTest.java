@@ -43,7 +43,7 @@ public class AccountManagerTest {
          like a charm
          **/
          AccountManager manager = AccountManager.getAccountManager();
-         manager.setPATHNAME("testAccountsLog.csv");
+         manager.setPATHNAME("testLoadAccounts.csv");
          manager.loadAccounts();
 
 
@@ -52,10 +52,9 @@ public class AccountManagerTest {
 
          //assertTrue("BUSINESS".equals(account.getAccountType().toString()));
 
-         assertTrue("33251523801338".equals(account.getId() + ""));
-
+         assertEquals("last account in accountManager should have an id of 84645914125183",86793680569076L,account.getId());
+         assertEquals("last account in accountManager should have a balance of 2000.00",2000.0d,account.getBalance(),0.01d);
          manager.setPATHNAME("accountLog.csv");
-
 
     }
 
@@ -65,7 +64,6 @@ public class AccountManagerTest {
         //test to see if the file logAccounts is creating to write to
         //exists. it does. tested if the file is as many lines as we intended it
         //to be.
-
         accountManager.setPATHNAME("testAccountsLog.csv");
         userManager.addUser("dong", "s", "t", "e", 1234, "k", "l" );
         User user = userManager.getUser("dong");
@@ -75,9 +73,7 @@ public class AccountManagerTest {
         long accountID = accountManager.getCurrentAccountID();
         accountManager.logAccounts();
         File file = new File("testAccountsLog.csv");
-
         BufferedReader br = new BufferedReader(new FileReader("testAccountsLog.csv"));
-
         StringBuilder stringBuilder = new StringBuilder();
         String line;
         while ((line = br.readLine()) != null) {
@@ -85,21 +81,14 @@ public class AccountManagerTest {
 
         }
         String bigString = stringBuilder.toString().trim();
-
         String[] targetArr = bigString.split("\n");
-
         int last = targetArr.length - 1;
-
         String[] lastArr = targetArr[last].split(",");
-
         assertTrue(lastArr[0], lastArr[0].equals("BUSINESS"));
         System.out.println(userID);
         assertTrue(lastArr[1].equals(accountID + ""));
         assertTrue(lastArr[2].equals("0.0"));
-
-
         br.close();
-
         accountManager.setPATHNAME("accountLog.csv");
     }
 
