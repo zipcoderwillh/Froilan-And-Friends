@@ -115,7 +115,6 @@ public class AccountMenu {
         MenuUtilities.clearScreen();
         AccountManager am = AccountManager.getAccountManager();
         int depositAmount=MenuUtilities.promptForPositiveInt("How much are you depositing? ");
-        int numBills = MenuUtilities.promptForPositiveInt("Enter the number of bills you are depositing.");
 
         boolean depositSuccess = atm.deposit(depositAmount);
         if(!depositSuccess){
@@ -144,9 +143,9 @@ public class AccountMenu {
             MenuUtilities.delayedPrint(1400);
             accountMenu();
         }
-        int idToTransfer = 0;
+        long idToTransfer = 0;
         double amountToTransfer=0;
-        idToTransfer=MenuUtilities.promptForPositiveInt("Enter Account Number to transfer funds to: ");
+        idToTransfer=MenuUtilities.promptForPositiveLong("Enter Account Number to transfer funds to: ");
         Account destinationAccount = am.getAccount(idToTransfer);
         if(destinationAccount==null){
             System.out.println("Not a valid account number.");
@@ -165,8 +164,7 @@ public class AccountMenu {
             }
         }
         if(amountToTransfer>0){
-            currAccount.withdraw(amountToTransfer);
-            destinationAccount.deposit(amountToTransfer);
+            am.transfer(destinationAccount.getId(),amountToTransfer);
         }
         accountMenu();
     }
@@ -180,7 +178,7 @@ public class AccountMenu {
         for(Transaction t:userTrans){
             System.out.println(t.getDate()+ " - "+t.getTransactionType()+" - "+t.getAmount());
         }
-        MenuUtilities.promptForText("Press RETURN when finished.");
+        MenuUtilities.promptForReturn();
         accountMenu();
     }
 
@@ -213,7 +211,7 @@ public class AccountMenu {
         Account currAccount = am.getCurrentAccount();
         System.out.println(currAccount.getAccountType()+ " no. "+currAccount.getId()+"\n\n");
         System.out.println("Current Balance: "+currAccount.getBalance());
-        MenuUtilities.promptForText("Press RETURN when finished.");
+        MenuUtilities.promptForReturn();
         accountMenu();
     }
 }

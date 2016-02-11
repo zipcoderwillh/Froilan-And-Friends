@@ -5,7 +5,8 @@ package io.froilanandfriends.atm;
 public class User {
     private boolean isAdmin = false;
     private boolean flagged = false;
-    private int userID= 54542,pin;
+    UserManager um = UserManager.getUserManager();
+    private int userID = um.getAllUsers().size(),pin;
     private String userName, firstName, lastName, email, securityQuestion, securityAnswer;
 
     boolean authenticate(int pin){

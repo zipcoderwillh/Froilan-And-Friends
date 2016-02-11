@@ -16,20 +16,20 @@ public class UserMenu {
             System.out.println("Select Account: ");
             for(int x=0;x<userAccounts.size();x++){
                 Account thisAccount = userAccounts.get(x);
-                String charSelection = Integer.toString(x+97);
-                System.out.println("("+charSelection+") - "+thisAccount.getAccountType()+" -- Acct. No.: "+thisAccount.getId());
+                int accountSelector = x+1;
+                System.out.println("("+accountSelector+") - "+thisAccount.getAccountType()+" -- Acct. No.: "+thisAccount.getId());
             }
         }
         System.out.println("\n(0) - Create New Account \n");
-        String userInput = "error";
-        while (!userInput.equals("0")&&(userInput.length()>1||userInput.charAt(0)<'a'||userInput.charAt(0)>(96+userAccounts.size()))){
-            userInput=MenuUtilities.promptForText("Choose an account option.").toLowerCase();
+        int userInput = -1;
+        while (userInput!=0&&(userInput<0||userInput>userAccounts.size())){
+            userInput=MenuUtilities.promptForInt("Choose an account option.");
         }
-        if(userInput.equals("0")){
+        if(userInput==0){
             createAccount();
         }
         else{
-            int accountIndexChosen = Character.getNumericValue(userInput.charAt(0))-97;
+            int accountIndexChosen = userInput-1;
             am.switchAccount(userAccounts.get(accountIndexChosen).getId());
             AccountMenu.accountMenu();
         }

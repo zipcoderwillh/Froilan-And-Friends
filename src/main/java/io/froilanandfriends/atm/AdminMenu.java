@@ -84,7 +84,7 @@ public class AdminMenu {
         System.out.println("Max Capacity: 2,000 bills");
 
         MenuUtilities.delayedPrint(1500);
-        MenuUtilities.promptForText("\n When finished, hit RETURN.");
+        MenuUtilities.promptForReturn();
         adminMenu();
     }
     public static void viewAllTransactions(){
@@ -96,8 +96,8 @@ public class AdminMenu {
             System.out.println(t.getDate()+ " - "+t.getTransactionType()+" - "+t.getAmount());
         }
         MenuUtilities.delayedPrint(1500);
-        MenuUtilities.promptForText("Press RETURN when finished.");
-        AccountMenu.accountMenu();
+        MenuUtilities.promptForReturn();
+        AdminMenu.adminMenu();
     }
     public static void unflagUser(){
         /* Prompts for a username to unflag

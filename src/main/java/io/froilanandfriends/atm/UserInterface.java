@@ -349,7 +349,6 @@ public class UserInterface {
         clearScreen();
         AccountManager am = AccountManager.getAccountManager();
         int depositAmount=promptForPositiveInt("How much are you depositing? ");
-        int numBills = promptForPositiveInt("Enter the number of bills you are depositing.");
 
         boolean depositSuccess = atm.deposit(depositAmount);
         if(!depositSuccess){

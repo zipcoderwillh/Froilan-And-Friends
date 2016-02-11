@@ -79,8 +79,8 @@ public class ATM {
         // Make sure attempted reload doesn't exceed ATM's max capacity.
         // If ok, go ahead and add bills to trays and increase ATMBalance.
         if( (currentNumberOfBills + twenties + tens) <= MAXCAPACITY ) {
-            withdrawalTray.put(20, twenties);
-            withdrawalTray.put(10, tens);
+            withdrawalTray.put(20, withdrawalTray.get(20)+twenties);
+            withdrawalTray.put(10, withdrawalTray.get(10)+tens);
             ATMBalance += (twenties * 20) + (tens * 10);
             result = true;
         }

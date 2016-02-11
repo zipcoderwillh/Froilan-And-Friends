@@ -31,8 +31,10 @@ public class AccountManager {
         for (Account account: allAccounts) {
             String accountType = account.getAccountType().toString() + ",";
             String accountID = account.getId() + "\n";
+            String accountBalance = Double.toString(account.getBalance()) + "\n";
             stringBuilder.append(accountType);
             stringBuilder.append(accountID);
+            stringBuilder.append(accountBalance);
         }
         String accountsToString = stringBuilder.toString();
         FileIO.logRecords(accountsToString, PATHNAME);
@@ -60,6 +62,14 @@ public class AccountManager {
         currentAccount = newAccount;
         //add the current user to the account's userid list
         newAccount.getUserIDs().add(UserManager.getUserManager().getCurrentUser().getUserID());
+        //Log all accounts
+        try {
+            logAccounts();
+        }
+        catch (Exception e)
+        {
+            System.out.println("ERROR: Could not log accounts.");
+        }
         return newAccount;
     }
 
@@ -85,7 +95,6 @@ public class AccountManager {
         allAccounts.add(newAccount);
         //set currentAccount to the one we just made
         currentAccount = newAccount;
-        //add the current user to the account's userid list
         return newAccount;
 
     }
@@ -97,7 +106,16 @@ public class AccountManager {
                 allAccounts.remove(i);
             }
         }
+        //clear out current account;
         currentAccount = null;
+        //re log all the accounts
+        try {
+            logAccounts();
+        }
+        catch (Exception e)
+        {
+            System.out.println("ERROR: Could not log accounts.");
+        }
     }
     public void switchAccount(long accountIDtoSwitchTo){
         //set current account to one with the given id

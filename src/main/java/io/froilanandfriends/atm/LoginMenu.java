@@ -87,7 +87,7 @@ public class LoginMenu {
             userName = MenuUtilities.promptForText("Enter Desired Username: ").toLowerCase();
             userName = removeIllegalCharacters(userName);
             //check username availability:
-            if(userName.indexOf(' ')>=0||userName.length()>8){
+            if(userName.indexOf(' ')>=0||userName.length()>8||userName==null||userName.isEmpty()){
                 System.out.println("Usernames can be a maximum of 8 characters and may not contain spaces.");
                 MenuUtilities.delayedPrint(800);
             }
