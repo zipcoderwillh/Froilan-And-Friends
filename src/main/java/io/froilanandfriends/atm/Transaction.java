@@ -22,14 +22,24 @@ public class Transaction {
     private long fromAccount,toAccount;
     private double amount;
     private long id;
-    //private static long transactionIdCount = 0;
     TransactionType transactionType;
 
+    /**
+     * <h1>Constructor Summary</h1>
+     */
 
-
-    /*** This is the constructor we will use to load transaction objects from history***/
-    //Transaction constructor 1.
-    Transaction(TransactionType mType, long mFromAccount, long mToAccount, double mAmount, Date date, long id){
+    /**
+     * Constructor
+     * This constructor will take args for every member field of Transaction. Whenever we load from
+     * our data file, this constructor will be used.
+     * @param mType TransactionType
+     * @param mFromAccount long
+     * @param mToAccount long
+     * @param mAmount double
+     * @param date Date
+     * @param id long
+     */
+    public Transaction(TransactionType mType, long mFromAccount, long mToAccount, double mAmount, Date date, long id){
         transactionType = mType;
         fromAccount = mFromAccount;
         toAccount = mToAccount;
@@ -39,8 +49,16 @@ public class Transaction {
         //Set id to id of old transaction
         this.id = id;
     }
-    // Transaction constructor 2.
-    Transaction(TransactionType mType, long mFromAccount, long mToAccount, double mAmount, long mId){
+
+    /**
+     * Constructor used for deposits and transfers
+     * @param mType <code>TransactionType </code>
+     * @param mFromAccount <code>long</code>
+     * @param mToAccount <code> long </code>
+     * @param mAmount <code> double</code>
+     * @param mId <code> long</code>
+     */
+    public Transaction(TransactionType mType, long mFromAccount, long mToAccount, double mAmount, long mId){
         transactionType = mType;
         fromAccount = mFromAccount;
         toAccount = mToAccount;
@@ -50,8 +68,16 @@ public class Transaction {
         //Set id equal to last Transaction id + 1;
         id = mId;
     }
-    //Transaction constructor 3.
-    Transaction(TransactionType mType, long mFromAccount, double mAmount, long mId){
+
+    /**
+     * Constructor used for withdrawls.
+     * @param mType <code> TransactionType</code>
+     * @param mFromAccount <code> long</code>
+     * @param mAmount <code> double</code>
+     * @param mId <code> long</code>
+     */
+
+    public Transaction(TransactionType mType, long mFromAccount, double mAmount, long mId){
 
         this(mType, mFromAccount, -1, mAmount, mId);
     }
