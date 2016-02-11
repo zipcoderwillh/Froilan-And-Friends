@@ -2,13 +2,18 @@ package io.froilanandfriends.atm;
 
 import org.junit.Before;
 import org.junit.Test;
+import org.junit.BeforeClass;
 import static org.junit.Assert.*;
 
 /**
  * Created by johnb on 2/8/16.
  */
 public class AccountTest {
+    @BeforeClass
+    public static void setupUser() {
+        UserManager.getUserManager().setCurrentUser(null);
 
+    }
 
     @Test
     public void testStringGetId() throws Exception {

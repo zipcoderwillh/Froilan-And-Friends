@@ -38,7 +38,7 @@ public abstract class Account {
         userIDs.add(0,Integer.parseInt(accountFields[3].trim()));
 
         //Check size of input string lines - for every record after the fourth will be extra users in account.
-        int extraUsers = accountFields.length - 4;
+        int extraUsers = accountFields.length - 3;
         for(int i = 1; i<extraUsers; i++ ){
             userIDs.add(i,Integer.parseInt(accountFields[i+3]));
         }
