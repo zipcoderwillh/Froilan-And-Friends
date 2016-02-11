@@ -4,6 +4,10 @@ import java.util.ArrayList;
 
 public class AccountMenu {
 
+    /**
+     * Displays the account menu and presents the user with account related choices
+     * based on the user's choices, advances to the corresponding menu
+     */
     public static void accountMenu(){
         /*Account-Level Menu
          *      User Choice: Check Balance, Withdraw, Deposit, Transfer, View Transactions, Close Account, Switch Account, Logout
@@ -44,18 +48,18 @@ public class AccountMenu {
         }
 
     }
-
-    public static void withdraw(){
-        /* If user has <$10, prompts them to empty their account,
-         *           if yes, withdraws balance
-         *           if no, goes to -> accountMenu()
+    /** If user has <$10, prompts them to empty their account,
+         *  if yes, withdraws balance
+         *  if no, goes to -> accountMenu()
          * User has >$10:
-         *       prompts user to enter withdraw amount in $10 increments
-         *           validates that amount is in $10 increments
-         *           validates that amount is <= $300 maximum withdrawal
-         *   Checks atm tray to ensure withdraw amount can be processed
-         *      if yes: processes withdrawal, success message, goes to -> accountMenu()
-         *      if no: error message, goes to -> accountMenu()                    */
+         *  prompts user to enter withdraw amount in $10 increments
+         *  validates that amount is in $10 increments
+         *  validates that amount is <= $300 maximum withdrawal
+         *  Checks atm tray to ensure withdraw amount can be processed
+         *  if yes: processes withdrawal, success message, goes to -> accountMenu()
+         *  if no: error message, goes to -> accountMenu()                    */
+    public static void withdraw(){
+
         MenuUtilities.clearScreen();
         AccountManager am = AccountManager.getAccountManager();
         Account currAccount = am.getCurrentAccount();
@@ -114,11 +118,12 @@ public class AccountMenu {
             accountMenu();
         }
     }
+    /** Prompts for deposit amount and number of bills
+         *  Validates number of bills && space in atm
+         *  If failure: error message -> accountMenu()
+         *  If success: process deposit -> accountMenu()        */
     public static void deposit(){
-        /* Prompts for deposit amount and number of bills
-         *       Validates number of bills && space in atm
-         *           If failure: error message -> accountMenu()
-         *           If success: process deposit -> accountMenu()        */
+
         ATM atm = ATM.getATM();
         MenuUtilities.clearScreen();
         AccountManager am = AccountManager.getAccountManager();
@@ -144,11 +149,12 @@ public class AccountMenu {
             accountMenu();
         }
     }
+    /** Prompts user for account # destination && amount to transfer
+         * Validates account && balance
+         * if failure : error message, goes to-> accountMenu()
+         * if success : processes transaction, goes to -> accountMenu()       */
     public static void transfer(){
-        /* Prompts user for account # destination && amount to transfer
-         *       Validates account && balance
-         *           if failure : error message, goes to-> accountMenu()
-         *           if success : processes transaction, goes to -> accountMenu()       */
+
         MenuUtilities.clearScreen();
         AccountManager am = AccountManager.getAccountManager();
         Account currAccount = am.getCurrentAccount();
@@ -186,9 +192,10 @@ public class AccountMenu {
         }
         accountMenu();
     }
+    /**  Prints out all transaction history of current user
+     *   When user is finished, goes to -> accountMenu()        */
     public static void viewTransactions(){
-        /*  Prints out all transaction history of current user
-         *       When user is finished, goes to -> accountMenu()        */
+
         MenuUtilities.clearScreen();
         TransactionManager tm = TransactionManager.getTransactionManager();
         UserManager um = UserManager.getUserManager();
@@ -199,11 +206,11 @@ public class AccountMenu {
         MenuUtilities.promptForReturn();
         accountMenu();
     }
-
+    /** Prompts user to ensure they want to close their account
+     *  if yes: closes account, goes to -> userMenu()
+     *  if no: goes to -> accountMenu()                     */
     public static void closeAccount(){
-        /* Prompts user to ensure they want to close their account
-         *       if yes: closes account, goes to -> userMenu()
-         *       if no: goes to -> accountMenu()                     */
+
         MenuUtilities.clearScreen();
         AccountManager am = AccountManager.getAccountManager();
         Account currentAccount = am.getCurrentAccount();
@@ -241,8 +248,11 @@ public class AccountMenu {
         }
     }
 
+    /**
+     * Prints out current balance, when finished, goes to -> accountMenu()
+     */
     public static void checkBalance(){
-        //Prints out current balance, when finished, goes to -> accountMenu()
+
         MenuUtilities.clearScreen();
         AccountManager am = AccountManager.getAccountManager();
         Account currAccount = am.getCurrentAccount();
@@ -251,6 +261,10 @@ public class AccountMenu {
         MenuUtilities.promptForReturn();
         accountMenu();
     }
+
+    /**
+     * allows user to add a user to the current account
+     */
     public static void addUser(){
         MenuUtilities.clearScreen();
         AccountManager am = AccountManager.getAccountManager();
