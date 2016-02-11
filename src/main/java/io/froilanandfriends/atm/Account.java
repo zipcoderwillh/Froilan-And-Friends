@@ -12,6 +12,14 @@ public abstract class Account {
     protected AccountType accountType;
     protected long id;
     protected double balance;
+
+    /**
+     * Users are be able to share accounts, in other words, each account can
+     * have more than one userID affiliated with it. Hence we need an arrayList
+     * to hold multiple IDs. The user who creates the account will always
+     * be at index zero in the array.
+     *
+     * **/
     protected ArrayList<Integer> userIDs = new ArrayList<Integer>();
 
     //Standard Constructor - takes no args, initializes Account with subclass type setter, id with superclass id setter,

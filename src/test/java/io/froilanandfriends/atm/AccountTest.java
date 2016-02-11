@@ -15,6 +15,14 @@ public class AccountTest {
 
     }
 
+
+    @Test
+    public void testConstructorWithStringArg(){
+
+
+    }
+
+
     @Test
     public void testStringGetId() throws Exception {
         //account object made from single string has intended ID

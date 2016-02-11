@@ -43,6 +43,9 @@ public class AccountManagerTest {
 
     }
 
+
+    
+
     @Test
     public void testLoadAccounts() throws Exception {
         /*
@@ -115,6 +118,7 @@ public class AccountManagerTest {
         UserManager.setPATHNAME("userLog.csv");
         AccountManager.setPATHNAME("accountsLog.csv");
     }
+
 
     @Test
     public void testGetAccountManager() throws Exception {
