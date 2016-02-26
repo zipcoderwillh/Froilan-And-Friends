@@ -1,8 +1,7 @@
 package io.froilanandfriends.atm;
 
 /**
- * <h1>Class BusinessAccount</h1>
- * <p>Type of account for business accounts</p>
+ * Extends {@link Account} to represent a business account.
  */
 public class BusinessAccount extends Account {
     BusinessAccount(){

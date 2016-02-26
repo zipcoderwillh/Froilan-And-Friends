@@ -5,12 +5,25 @@ import org.omg.CORBA.INTERNAL;
 import java.util.ArrayList;
 
 /**
- * <h1>Abstract Class Account</h1>
- * <p>Class to hold accounts</p>
+ * Represents an individual account. Superclass for other account types.
+ * @see AccountManager().
+ *
  */
 public abstract class Account {
+
+    /**
+     * Indicates the type of the account (such as checking, savings, etc.).
+     */
     protected AccountType accountType;
+
+    /**
+     * Unique identifier for this account.
+     */
     protected long id;
+
+    /**
+     * The amount of money currently in the account.
+     */
     protected double balance;
 
     /**
@@ -26,7 +39,7 @@ public abstract class Account {
     //balance of zero, and first user in userids array as current users user id.
 
     /**
-     * Account constructor, called in sub-classes
+     * Account constructor, called in sub-classes.
      */
     public Account(){
         //Give this account a unique id based on the nanosecond
@@ -39,8 +52,8 @@ public abstract class Account {
 
     /**
      * Secondary constructor that generates an account based on a string from an account record
-     * called from sub-classes
-     * @param bigString the string representation of the account
+     * called from sub-classes.
+     * @param bigString the string representation of the account.
      */
     Account(String bigString){
         String[] accountFields = bigString.split(",");
@@ -67,22 +80,22 @@ public abstract class Account {
     }
 
     /**
-     * Adds the user with given id to this account
-     * @param userID the user id to add to the account
+     * Adds the user with given id to this account.
+     * @param userID the user id to add to the account.
      */
     public void addUserID(int userID){userIDs.add(userID);}
 
     /**
-     * Removes the given money from the account
-     * @param amountToWithdraw the amount of money to remove
+     * Removes the given amount of money from the account.
+     * @param amountToWithdraw the amount of money to remove.
      */
     public void withdraw(double amountToWithdraw){
         balance-=amountToWithdraw;
     }
 
     /**
-     * Adds the given amount to this account
-     * @param amountToDeposit the amount of money add
+     * Adds the given amount of money to this account.
+     * @param amountToDeposit the amount of money add.
      */
     //add money to this account
     public void deposit(double amountToDeposit){
@@ -90,39 +103,39 @@ public abstract class Account {
     }
 
     /**
-     * returns this account's type
-     * @return the type of account thsi is
+     * Getter method for this account's type.
+     * @return the type of this account.
      */
     public AccountType getAccountType() {
         return accountType;
     }
 
     /**
-     * returns this account's id
-     * @return this account's id
+     * Getter method for this account's id.
+     * @return this account's id.
      */
     public long getId() {
         return id;
     }
 
     /**
-     * Returns this account's balance
-     * @return the balance in this account
+     * Returns this account's balance.
+     * @return the balance in this account.
      */
     public double getBalance() {
         return balance;
     }
 
     /**
-     * Returns the userIDs linked with this account
-     * @return list of userIDs associated with this account
+     * Returns the userIDs linked with this account.
+     * @return list of userIDs associated with this account.
      */
     public ArrayList<Integer> getUserIDs() {
         return userIDs;
     }
 
     /**
-     * Enum type retresenting the type of account
+     * Enum type representing the type of account.
      */
     public enum AccountType{
         CHECKING,SAVINGS,BUSINESS

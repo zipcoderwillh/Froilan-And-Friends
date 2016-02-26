@@ -3,25 +3,36 @@ package io.froilanandfriends.atm;
 import java.util.Date;
 
 /**
- * <h1>Class Transaction</h1>
+ * Class for individual transaction objects. Any interaction involving money at the ATM
+ * will generate an instance of this class.
  */
 
 
 public class Transaction {
 
     /**
-     * public class for transaction objects. Any interaction involving money at the ATM
-     * will generate an instance of this class
+     * Date of transaction.
      */
-
-
-
-
-
     private Date date;
+
+    /**
+     * Account IDs for destination and source accounts.
+     */
     private long fromAccount,toAccount;
+
+    /**
+     * Amount of transaction.
+     */
     private double amount;
+
+    /**
+     * Unique transaction ID.
+     */
     private long id;
+
+    /**
+     * Current transaction type.
+     */
     TransactionType transactionType;
 
     /**
@@ -29,8 +40,7 @@ public class Transaction {
      */
 
     /**
-     * Constructor
-     * This constructor will take args for every member field of Transaction. Whenever we load from
+     * Will take args for every member field of Transaction. Whenever we load from
      * our data file, this constructor will be used.
      * @param mType TransactionType
      * @param mFromAccount long
@@ -51,7 +61,7 @@ public class Transaction {
     }
 
     /**
-     * Constructor used for deposits and transfers
+     * Used for deposits and transfers.
      * @param mType <code>TransactionType </code>
      * @param mFromAccount <code>long</code>
      * @param mToAccount <code> long </code>
@@ -70,7 +80,7 @@ public class Transaction {
     }
 
     /**
-     * Constructor used for withdrawls.
+     * Used for withdrawls.
      * @param mType <code> TransactionType</code>
      * @param mFromAccount <code> long</code>
      * @param mAmount <code> double</code>
@@ -83,19 +93,15 @@ public class Transaction {
     }
 
     /**
-     * <h1>Method Summary</h1>
-     */
-
-    /**
-     *
-     * @return Date, date object of the instance
+     * Getter method for date of transaction.
+     * @return Date, date object of the instance.
      */
     public Date getDate() {
         return date;
     }
 
     /**
-     *
+     * Getter method for source of transaction.
      * @return long, fromAccount of transaction
      */
     public long getFromAccount() {
@@ -103,7 +109,7 @@ public class Transaction {
     }
 
     /**
-     *
+     *Getter method for destination of transaction.
      * @return long, toAccount of transaction
      */
     public long getToAccount() {
@@ -111,7 +117,7 @@ public class Transaction {
     }
 
     /**
-     *
+     * Getter method for amount of transaction.
      * @return double, amount of transaction
      */
     public double getAmount() {
@@ -119,7 +125,7 @@ public class Transaction {
     }
 
     /**
-     *
+     * Getter method for ID of transaction.
      * @return long, id of transaction
      */
     public long getId() {
@@ -127,7 +133,7 @@ public class Transaction {
     }
 
     /**
-     *
+     *Getter method for type of transaction.
      * @return Transaction Type, enum representing transactionType
      */
     public TransactionType getTransactionType() {
@@ -135,7 +141,7 @@ public class Transaction {
     }
 
     /**
-     *
+     * Setter method to set date of transaction.
      * @param date a Date object
      * @return void
      */
@@ -146,6 +152,9 @@ public class Transaction {
 
 }
 
+/**
+ * Represents the various types of transactions.
+ */
 enum TransactionType{
     WITHDRAWL,DEPOSIT,TRANSFER
 }

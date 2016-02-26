@@ -6,23 +6,25 @@ import java.util.ArrayList;
 import java.util.Date;
 
 /**
- * <h1>Class TransactionManager</h1>
- * <p>
  *     Manages Transactions in the form of a large ArrayList of all Transactions. Has methods
  *     to create Transactions and look specific ones up from ArrayList as needed. TransactionManager
  *     is instantiated only once as the singleton {@code current}
- * </p>
  */
 
 public class TransactionManager {
 
+    /**
+     * Path to local storage of transaction logs.
+     */
     private static String PATHNAME = "transactionsLog.csv";
+
+    /**
+     * List of all transactions.
+     */
     private static ArrayList<Transaction> allTransactions = new ArrayList<Transaction>();
 
-
-
-
     private static TransactionManager current = new TransactionManager();
+
     TransactionManager(){
     }
 
@@ -33,8 +35,6 @@ public class TransactionManager {
     public static TransactionManager getTransactionManager(){
         return current;
     }
-
-
 
     /**
      * Creates a Transaction object.

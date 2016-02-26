@@ -5,8 +5,7 @@ import java.util.ArrayList;
 import java.util.logging.Logger;
 
 /**
- * <h1>Class AccountManager</h1>
- * <p>Factory class managing and modifying all accounts</p>
+ * Wrapper class for all existing accounts. Also provides methods for creating, deleting, retrieving, and logging accounts.
  */
 public class AccountManager {
 
@@ -18,9 +17,9 @@ public class AccountManager {
     private static AccountManager current = new AccountManager();
 
     /**
-     * Returns the singleton instance of AccountManager
+     * Returns the singleton instance of AccountManager.
      *
-     * @return a singleton instance of AccountManager
+     * @return a singleton instance of AccountManager.
      */
     public static AccountManager getAccountManager() {
         return current;
@@ -29,19 +28,19 @@ public class AccountManager {
     private AccountFactory factory = new AccountFactory();
 
     /**
-     * Sets the file path for the account record file
+     * Sets the file path for the account record file.
      *
-     * @param PATHNAME the pathname to the account record file
+     * @param PATHNAME the pathname to the account record file.
      */
     public static void setPATHNAME(String PATHNAME) {
         AccountManager.PATHNAME = PATHNAME;
     }
 
     /**
-     * Reads in all account records from FILEPATH
-     * Calls FileIO.readRecords, passing in PATHNAME
+     * Reads in all account records from FILEPATH.
+     * Calls FileIO.readRecords, passing in PATHNAME.
      *
-     * @throws Exception throws an exception if the file can't be read
+     * @throws Exception throws an exception if the file can't be read.
      */
     public void loadAccounts() throws Exception {
         String bigInputString = FileIO.readRecords(PATHNAME);
@@ -52,9 +51,9 @@ public class AccountManager {
     }
 
     /**
-     * logs all the accounts to the file at FILEPATH
+     * Logs all the accounts to the file at FILEPATH.
      *
-     * @throws Exception throws an exception if the file can't be written
+     * @throws Exception throws an exception if the file can't be written.
      */
     public void logAccounts() throws Exception {
         StringBuilder stringBuilder = new StringBuilder();
@@ -86,12 +85,12 @@ public class AccountManager {
     }
 
     /**
-     * Creates an account and sets it as the currently selected account
-     * relies on an AccountFactory for account creation
-     * rewrites the log once hte new account is created
+     * Creates an account and sets it as the currently selected account.
+     * relies on an AccountFactory for account creation.
+     * rewrites the log once hte new account is created.
      *
-     * @param accountType the type of account that should be created
-     * @return the newly created account
+     * @param accountType the type of account that should be created.
+     * @return the newly created account.
      */
     public Account createAccount(Account.AccountType accountType) {
         Account newAccount = factory.create(accountType);
@@ -109,13 +108,11 @@ public class AccountManager {
         return newAccount;
     }
 
-
     /**
-     *     * Creates an account based on a string from a record file
-     *     * relies on an AccountFactory to create the account
-     *     * does not update the log file, as the created account was read in from the log
-     *     * @param loadString one line from the account record file
-     *     * @return returns the created account
+     * Creates an account based on a string from a record file. Relies on an AccountFactory to create the account. Does not update the log file,
+     * as the created account was read in from the log.
+     * @param loadString one line from the account record file.
+     * @return returns the created account.
      */
     public Account createAccount(String loadString) {
         Account newAccount = factory.createFromRecord(loadString);
@@ -126,53 +123,11 @@ public class AccountManager {
         return newAccount;
     }
 
-
-    /*
     /**
-     * Creates an account based on a string from a record file
-     * relies on an AccountFactory to create the account
-     * does not update the log file, as the created account was read in from the log
-     * @param loadString one line from the account record file
-     * @return returns the created account
-     */
- /*
-    public Account createAccount(String loadString)
-    {
-
-        Account newAccount;
-        switch (loadString.substring(0,loadString.indexOf(',')).toUpperCase())
-        {
-            case "SAVINGS":
-
-                newAccount = new SavingsAccount(loadString);
-                break;
-            case "CHECKING":
-                newAccount = new CheckingAccount(loadString);
-                break;
-            case "BUSINESS":
-                newAccount = new BusinessAccount(loadString);
-                break;
-            default:
-                return null;
-        }
-
-
-        Account newAccount = factory.createFromRecord(loadString);
-
-        //add new account to the accounts list
-        allAccounts.add(newAccount);
-        //set currentAccount to the one we just made
-        currentAccount = newAccount;
-        return newAccount;
-    }
-*/
-
-
-    /**
-     * Deletes an account with id accountIDtoDelete if it exists
-     * updates the log file once the account has been deleted
+     * Deletes an account with id accountIDtoDelete if it exists.
+     * Updates the log file once the account has been deleted.
      *
-     * @param accountIDtoDelete the account id to delete
+     * @param accountIDtoDelete the account id to delete.
      */
     public void deleteAccount(long accountIDtoDelete) {
         //loop through all accounts and remove the one with a matching id
@@ -192,9 +147,9 @@ public class AccountManager {
     }
 
     /**
-     * switches this AccountManager's currentAccount to accountIDtoSwitchTo
+     * Switches this AccountManager's currentAccount to accountIDtoSwitchTo.
      *
-     * @param accountIDtoSwitchTo the account id to make the current account
+     * @param accountIDtoSwitchTo the account id to make the current account.
      */
     public void switchAccount(long accountIDtoSwitchTo) {
         //set current account to one with the given id
@@ -202,14 +157,14 @@ public class AccountManager {
     }
 
     /**
-     * Sets this AccountManager's currentAccount to null
+     * Sets this AccountManager's currentAccount to null.
      */
     public void clearCurrentAccount() {
         currentAccount = null;
     }
 
     /**
-     * returns the id of this AccountManager's current account
+     * Returns the id of this AccountManager's current account.
      *
      * @return the current account
      */
@@ -218,6 +173,11 @@ public class AccountManager {
         return currentAccount.getId();
     }
 
+    /**
+     * Getter method to retrieve account by ID number.
+     * @param accountIDtoGet ID number of account to retrieve.
+     * @return account with specified ID.
+     */
     public Account getAccount(long accountIDtoGet) {
         Account acc = null;
         //loop through and assign acc to the matching account
@@ -230,8 +190,8 @@ public class AccountManager {
     }
 
     /**
-     * Withdraws the given amount from the current account
-     * logs the account record after the withdraw
+     * Withdraws the given amount from the current account.
+     * Logs the account record after the withdraw.
      *
      * @param amountToWithdrawl the amount to withdraw
      */
@@ -247,10 +207,10 @@ public class AccountManager {
     }
 
     /**
-     * Deposits the given amount into the current account
-     * logs accounts after the money has been deposited
+     * Deposits the given amount into the current account.
+     * Logs accounts after the money has been deposited.
      *
-     * @param amountToDeposit the amount to deposit
+     * @param amountToDeposit the amount to deposit.
      */
     public void deposit(double amountToDeposit) {
         //add given money to the current account
@@ -264,11 +224,11 @@ public class AccountManager {
     }
 
     /**
-     * Transfers the given amount from the current account into an account matching the given id
-     * updates the account logs once the transfer has finished
+     * Transfers the given amount from the current account into an account matching the given id.
+     * Updates the account logs once the transfer has finished.
      *
-     * @param accountNumber    the account id to transfer the funds INTO
-     * @param amountToTransfer the amouunt to transfer into account that matches the passed id
+     * @param accountNumber    the account id to transfer the funds INTO.
+     * @param amountToTransfer the amouunt to transfer into account that matches the passed id.
      */
     public void transfer(long accountNumber, double amountToTransfer) {
         //if the target account number is wrong, do nothing
@@ -288,9 +248,9 @@ public class AccountManager {
     }
 
     /**
-     * returns a list of accounts that the current user is linked wth
+     * Returns a list of accounts that the current user is linked with.
      *
-     * @return a list containing the current user's accounts
+     * @return a list containing the current user's accounts.
      */
     public ArrayList<Account> getCurrentUsersAccounts() {
         UserManager um = UserManager.getUserManager();
@@ -310,9 +270,9 @@ public class AccountManager {
     }
 
     /**
-     * returns all the accounts in the system
+     * Returns all the accounts in the system.
      *
-     * @return a list containing all accounts
+     * @return a list containing all accounts.
      */
     public ArrayList<Account> getAllAccounts() {
         //return the whole list of accounts
@@ -320,9 +280,9 @@ public class AccountManager {
     }
 
     /**
-     * returns the currently selected account
+     * Returns the currently selected account.
      *
-     * @return the currently selected account
+     * @return the currently selected account.
      */
     public Account getCurrentAccount() {
         //return the current account
@@ -330,10 +290,10 @@ public class AccountManager {
     }
 
     /**
-     * Adds the user that matches the given userID to the currently selected account
-     * logs accounts after adding the user
+     * Adds the user that matches the given userID to the currently selected account.
+     * Logs accounts after adding the user.
      *
-     * @param userID the userID of the user to be linked with the account
+     * @param userID the userID of the user to be linked with the account.
      */
     public void addUserToCurrentAccount(int userID) {
         currentAccount.getUserIDs().add(userID);
@@ -345,10 +305,10 @@ public class AccountManager {
     }
 
     /**
-     * Adds the given user object to hte currently selected account
-     * logs accounts after adding the user
+     * Adds the given user object to hte currently selected account.
+     * Logs accounts after adding the user.
      *
-     * @param user the user to add to the current account
+     * @param user the user to add to the current account.
      */
     public void addUserToCurrentAccount(User user) {
         addUserToCurrentAccount(user.getUserID());
@@ -360,10 +320,10 @@ public class AccountManager {
     }
 
     /**
-     * Removes the user matching the given id from the curreent account
-     * logs accounts after removing
+     * Removes the user matching the given id from the curreent account.
+     * Logs accounts after removing.
      *
-     * @param userID the userID of the user to rmeove from the current account
+     * @param userID the userID of the user to rmeove from the current account.
      */
     public void removeUserFromCurrentAccount(int userID) {
         int toRemove = -1;
@@ -383,10 +343,10 @@ public class AccountManager {
     }
 
     /**
-     * Removes the passed User object from the current account
-     * logs accounts after removeing the user
+     * Removes the passed User object from the current account.
+     * Logs accounts after removeing the user.
      *
-     * @param user the user to remove from the account
+     * @param user the user to remove from the account.
      */
     public void removeUserFromCurrentAccount(User user) {
         removeUserFromCurrentAccount(user.getUserID());

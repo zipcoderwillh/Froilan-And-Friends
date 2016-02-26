@@ -2,10 +2,16 @@ package io.froilanandfriends.atm;
 
 import java.util.Scanner;
 
+/**
+ * A set of utility methods for user interaction in the various menus.
+ */
+
 public class MenuUtilities {
+
+    /**
+     * Sets current user and current account fields to null.
+     */
     public static void logout(){
-        /* Sets current user & current account fields to null
-         *       Logging out message, goes to -> loginMenu()         */
         clearScreen();
         AccountManager am = AccountManager.getAccountManager();
         UserManager um = UserManager.getUserManager();
@@ -16,6 +22,10 @@ public class MenuUtilities {
         LoginMenu.loginMenu();
     }
 
+    /**
+     * Delays printing next line of output by specified millisecond delay.
+     * @param millisecondsDelay
+     */
     public static void delayedPrint(int millisecondsDelay) {
         try {
             Thread.sleep(millisecondsDelay);
@@ -23,6 +33,11 @@ public class MenuUtilities {
         }
 
     }
+
+    /**
+     * Delays printing specified string by specified millisecond delay.
+     * @param millisecondsDelay
+     */
     public static void delayedPrint(int millisecondsDelay,String stringToPrint){
         try {
             Thread.sleep(millisecondsDelay);
@@ -30,6 +45,12 @@ public class MenuUtilities {
         }
         System.out.println(stringToPrint);
     }
+
+    /**
+     * Prompts user to enter some text.
+     * @param textToDisplay Text to display at prompt.
+     * @return text that user has entered.
+     */
     public static String promptForText(String textToDisplay) {
         Scanner input = new Scanner(System.in);
         System.out.println(textToDisplay);
@@ -42,11 +63,21 @@ public class MenuUtilities {
         }
         return userAnswer;
     }
+
+    /**
+     * Waits until user hits <RETURN> to continue.
+     */
     public static void promptForReturn(){
         Scanner input = new Scanner(System.in);
         System.out.println("Press RETURN when finished.");
         String userAnswer = input.nextLine();
     }
+
+    /**
+     * Prompts user to enter a double amount.
+     * @param textToDisplay
+     * @return
+     */
     public static double promptForDouble(String textToDisplay){
         Scanner input = new Scanner(System.in);
 
@@ -57,6 +88,12 @@ public class MenuUtilities {
         double userAnswer=input.nextDouble();
         return userAnswer;
     }
+
+    /**
+     * Prompts user to enter a positive double amount.
+     * @param textToDisplay
+     * @return
+     */
     public static double promptForPositiveDouble(String textToDisplay){
         Scanner input = new Scanner(System.in);
         System.out.println(textToDisplay);
@@ -74,6 +111,12 @@ public class MenuUtilities {
         }
         return userAnswer;
     }
+
+    /**
+     * Prompts user to enter an integer value.
+     * @param textToDisplay
+     * @return
+     */
     public static int promptForInt(String textToDisplay){
         Scanner input = new Scanner(System.in);
         System.out.println(textToDisplay);
@@ -83,6 +126,12 @@ public class MenuUtilities {
         int userAnswer=input.nextInt();
         return userAnswer;
     }
+
+    /**
+     * Prompts user to enter a positive integer value.
+     * @param textToDisplay
+     * @return
+     */
     public static int promptForPositiveInt(String textToDisplay){
         Scanner input = new Scanner(System.in);
         System.out.println(textToDisplay);
@@ -99,6 +148,12 @@ public class MenuUtilities {
         }
         return userAnswer;
     }
+
+    /**
+     * Prompts user to enter a positive long value.
+     * @param textToDisplay
+     * @return
+     */
     public static long promptForPositiveLong(String textToDisplay){
         Scanner input = new Scanner(System.in);
         System.out.println(textToDisplay);
@@ -116,6 +171,9 @@ public class MenuUtilities {
         return userAnswer;
     }
 
+    /**
+     * Clears the console screen.
+     */
     public static void clearScreen(){
         for (int x=0;x<100;x++){
             System.out.println();

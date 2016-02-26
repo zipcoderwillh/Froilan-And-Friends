@@ -2,11 +2,15 @@ package io.froilanandfriends.atm;
 
 import java.util.ArrayList;
 
+/**
+ * Handles user interaction once a non-admin user is logged in.
+ */
+
 public class AccountMenu {
 
     /**
      * Displays the account menu and presents the user with account related choices
-     * based on the user's choices, advances to the corresponding menu
+     * based on the user's choices, advances to the corresponding menu.
      */
     public static void accountMenu(){
         /*Account-Level Menu
@@ -48,16 +52,17 @@ public class AccountMenu {
         }
 
     }
-    /** If user has <$10, prompts them to empty their account,
-         *  if yes, withdraws balance
-         *  if no, goes to -> accountMenu()
-         * User has >$10:
-         *  prompts user to enter withdraw amount in $10 increments
-         *  validates that amount is in $10 increments
-         *  validates that amount is <= $300 maximum withdrawal
-         *  Checks atm tray to ensure withdraw amount can be processed
-         *  if yes: processes withdrawal, success message, goes to -> accountMenu()
-         *  if no: error message, goes to -> accountMenu()                    */
+    /** If user has less $10, prompts them to empty their account,
+     *  if yes, withdraws balance
+     *  if no, goes to {@link accountMenu()}.
+     *  If user has less than $10,
+     *  prompts user to enter withdraw amount in $10 increments,
+     *  validates that amount is in $10 increments,
+     *  validates that amount is less than or equal to $300 maximum withdrawal,
+     *  and checks ATM tray to ensure withdraw amount can be processed.
+     *  If sufficient funds in ATM, processes withdrawal and goes to {@link accountMenu()}.
+     *
+     */
     public static void withdraw(){
 
         MenuUtilities.clearScreen();
@@ -118,10 +123,10 @@ public class AccountMenu {
             accountMenu();
         }
     }
-    /** Prompts for deposit amount and number of bills
-         *  Validates number of bills && space in atm
-         *  If failure: error message -> accountMenu()
-         *  If success: process deposit -> accountMenu()        */
+    /**
+     * Prompts user for deposit amount,
+     *  validates number of bills and space in atm.
+     */
     public static void deposit(){
 
         ATM atm = ATM.getATM();
@@ -149,10 +154,11 @@ public class AccountMenu {
             accountMenu();
         }
     }
-    /** Prompts user for account # destination && amount to transfer
-         * Validates account && balance
-         * if failure : error message, goes to-> accountMenu()
-         * if success : processes transaction, goes to -> accountMenu()       */
+    /**
+     * Prompts user for account destination amount to transfer.
+     * Validates account and balance.
+     *
+     */
     public static void transfer(){
 
         MenuUtilities.clearScreen();
@@ -192,8 +198,10 @@ public class AccountMenu {
         }
         accountMenu();
     }
-    /**  Prints out all transaction history of current user
-     *   When user is finished, goes to -> accountMenu()        */
+    /**
+     * Prints out transaction history of current user.
+     *   When user is finished, goes to {@link accountMenu()}.
+     */
     public static void viewTransactions(){
 
         MenuUtilities.clearScreen();
@@ -206,9 +214,9 @@ public class AccountMenu {
         MenuUtilities.promptForReturn();
         accountMenu();
     }
-    /** Prompts user to ensure they want to close their account
-     *  if yes: closes account, goes to -> userMenu()
-     *  if no: goes to -> accountMenu()                     */
+    /**
+     * Prompts user to ensure they want to close their account.
+     */
     public static void closeAccount(){
 
         MenuUtilities.clearScreen();
@@ -249,7 +257,7 @@ public class AccountMenu {
     }
 
     /**
-     * Prints out current balance, when finished, goes to -> accountMenu()
+     * Prints out current balance, when finished, goes to {@link accountMenu()}.
      */
     public static void checkBalance(){
 
@@ -263,7 +271,7 @@ public class AccountMenu {
     }
 
     /**
-     * allows user to add a user to the current account
+     * Allows user to add a user to the current account.
      */
     public static void addUser(){
         MenuUtilities.clearScreen();

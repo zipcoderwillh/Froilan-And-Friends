@@ -1,8 +1,7 @@
 package io.froilanandfriends.atm;
 
 /**
- * <h1>Class AccountFactory</h1>
- * <p>Factory class for creating Accounts</p>
+ * Factory class which generates a new account when created by a user. Also populates existing accounts from csv file on ATM startup.
  */
 public class AccountFactory {
 

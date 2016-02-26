@@ -4,154 +4,66 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
+/**
+ * Handles all user interaction when a user is logged in as an admin.
+ */
+
 public class AdminMenu {
     /**
      * Main menu for admins.
-     * Allows the user to perform admin specific actions.
-     * Prompts allow for collect deposits, restock withdrawal tray, the withdrawal status, view transactions, flag user
-     * and unflag user.
+     * Allows the user to perform admin specific actions, including
+     * collect deposits, restock withdrawal tray, view withdrawal status, view transactions, and flag users.
      */
-    public static void adminMenu(){
+    public static void adminMenu() {
         //Asks the administrator to choose an option, then calls the corresponding method menu.
         MenuUtilities.clearScreen();
-        if(UserManager.getUserManager().getCurrentUser().getUserName().equals("froilan")){
-            MenuUtilities.delayedPrint(1000,"Welcome, master Froilan....");
-            MenuUtilities.delayedPrint(2700,"                                                                                                                \n" +
-                    "                                                                                                                 \n" +
-                    "                                                          ;;;;''''';:                                            \n" +
-                    "                                                    '+'+'''''++++#++'';,                                         \n" +
-                    "                                                ;''+'+'''''+++####+##++';:.                                      \n" +
-                    "                                             :'+++++'''''''+++###+######+';,                                     \n" +
-                    "                                           ;'++++++'''''''''+++++++++++++++';                                    \n" +
-                    "                                         ;'+++##+++''''''''''''''+++++++'+++'                                    \n" +
-                    "                                        '+++++##+++'''''''''''''''''''''''''+;                                   \n" +
-                    "                                    .;+++##+++++++'''''''';';;;;''';;;;;;;''''                                   \n" +
-                    "                                  ..;########++++''''''';;';;;;;;;;;;;;;;;;;;';                                  \n" +
-                    "                                  .'#########++'+'''''';;;;;;;;;;;;;;;;;::::;;::,                                \n" +
-                    "                                 .'+#########+++'''';;;;;;;;;;;;;;;;;;;:::::::::,.                               \n" +
-                    "                                .'############+''';;;;;;;;;;;;;;;;;;;::::::::::,,,.                              \n" +
-                    "                                ;+############+''';;;;;;;;;;;;;;;;;;::::::::::,,,,..                             \n" +
-                    "                               ;##############++''';;;;;;;;;;;;;;;;:::::::::::,,,,,.                             \n" +
-                    "                              :+###############+''';;;;;;;;;;;;;;;;:::::::::::,,,,,,                             \n" +
-                    "                              '################+''';;;;;;;;;;;;;;;;;:::::::::,,,,,,,.                            \n" +
-                    "                              '################+'';;;;';;;;;;;;;;;;;::::::::::,,,,,,,                            \n" +
-                    "                              #################++';;;;;;;;;;;;;;;;;;;:::::::::,,,,,,,.                           \n" +
-                    "                              #################++';;;;;;';;;;;;;;;;;;;::::,:,:,,,,,,,..                          \n" +
-                    "                              #################+'';;;;;;;';;;;;';;;;;;::::,,::,,,,,,,..`                         \n" +
-                    "                             +#################+';;;;;;';;';;;;;;';;;;;;::::,,,,,,,,,,,.                         \n" +
-                    "                            ;##################+''';'''';'';;;;;'';;;;;:::::,:,,,,,,,,,.`                        \n" +
-                    "                            '##################+'';;''''''';;;;;;;;;;;:::::::::,,,,,,,,..                        \n" +
-                    "                            '##################+''''''''''';;;;;;;;;;:::::,,,,:,,,,,,,,..`                       \n" +
-                    "                            '##################+++'''''''''';;;;;;;;;::::,,,,,,,,,,,,,,..`                       \n" +
-                    "                            ;###################+++'''''''';;;;;;;;;;:::,,,,,,,,,,,,,,,..`                       \n" +
-                    "                            '####################+'''''';;;;;;;::::::::::,,,,,,,,,,,,,....                       \n" +
-                    "                            '####################+''';;;;;;;'+';:::,,,,,:,,,,,,,,,,,,,....:                      \n" +
-                    "                            '###################+'''';;;;;'++:,,,,,,,.........,,,,,,,,....,#                     \n" +
-                    "                            '##################+''''';;;'+#',,,,....,.........,:,,...,,....++                    \n" +
-                    "                            '#################+'''''';;'+#':;,......,;.....``..;;;:::,.....,,'                   \n" +
-                    "                            '#################+'''''';'+##''+.,.....:+,`..```...::;',.......`,;'                 \n" +
-                    "                            '################+';;;;;;;;;';###+#,::+':+,``,;:,`.`;'':...``......;+'               \n" +
-                    "                            '###########+'';:::'';::;;;'';#######+##++;,'+###:.,'##:.``````.``..;#               \n" +
-                    "                            ;#########+::::;''''''''+++#++#############+######:+'##'...;:.`...``.:               \n" +
-                    "                            :#++###+###++#####++++++#####+#####################';##+;+###+,.`.....               \n" +
-                    "                           :;;:;;+############+++++############################;:+#+######+.:+'`.`:              \n" +
-                    "                           ':'''';'+##########+'++++#####+####################+:,;#+#######'###:`,;              \n" +
-                    "                           :'####+'''++######++'''++++###+####################':,,++###########+;##              \n" +
-                    "                           ;+##+###+'''++####+''''++++########################':,,:+###############              \n" +
-                    "                           ;+#+'+###+'''+####+''''+++++######################+':,,,;###############+             \n" +
-                    "                           ;+++;'+##+++''####+''''''++++####################++'::,,,+##############              \n" +
-                    "                           '+++;;''''++';+###+''''''++++++#################++';::,,.'##############              \n" +
-                    "                            '+':;;;;'++';'##++''''''''++++################++';::::,,,##############              \n" +
-                    "                            '+;:;;;'#+';;'###+''''''''''+++##############+''';:::,,,.:#############              \n" +
-                    "                            '':;;'+##+;;;+###+'''''''''''++############+''''';:::,,,..;############              \n" +
-                    "                            '';;''+##;::;+###+''''''''''''+++#######++';;''';;:::,,,...'###########              \n" +
-                    "                            +';''++++::;:+###++''''''''''''''++++++'';;:;'';;:::::,,...,+#########               \n" +
-                    "                            +';'''''+:;;;+###++'''''''''''''';;;;;;;;::;''';'''';:,,,...,'#######                \n" +
-                    "                             ';'';;;'';;;+####+''''''''''';;;;;;;;;;::;;+''++##+++;:,,,,:,;####                  \n" +
-                    "                             '';'';;;+;;;#####+''''''''''';;;;;;;:;;:;;;+++######++;::::,,,;++                   \n" +
-                    "                             :'';;;;'++;'####++'''''''''';;;;;;;;;;;;;';'#########+'';;:,,,+#                    \n" +
-                    "                              ;'+;::;''''####++''''''''''';;;;;;;;;:;;;;;''+++######+;::,.,#                     \n" +
-                    "                              ;;'';:;;;++###+++'''''''';;''';;;;;;;;;::;;;;'+#####++':,:,,,#                     \n" +
-                    "                              :;;:::;;'++####+++++++''';;;;;;;;;;;;;::::::;'+###+'++#+,::,,#                     \n" +
-                    "                              +:;:::;;;++#+###+++++++'';;'';;;;;;;;;:::::;'+#####++###;,:,,#                     \n" +
-                    "                               ';;;::;;+######+++++++'';;;';;;;;;;;:::;''++######++####;:,,#                     \n" +
-                    "                               ,;;';;;'+#####+#+++++++'''';';;;;;;;;;'++##+#+++++++#++++:,,#                     \n" +
-                    "                                  ;'''+######+++++++++++';;;;;;;;;;'+++###++'''';;::::;+;,:#                     \n" +
-                    "                                   ;++#########+++++'++'';;;;;;;;'++#####+++++'''';;;;;;',:#                     \n" +
-                    "                                   ;#+++########+++++++''''';';;'++######++++++++''';;;;+;:#                     \n" +
-                    "                                   ;++''########+##+++++++''''''++###############++++'''+;;#                     \n" +
-                    "                                    +#''+#########++++#++++++'''++############+'+''###+'+''#                     \n" +
-                    "                                    ##''+#########+++##++#++'''+##++#####################''#                     \n" +
-                    "                                    ##''+#########+++##+++++++''+###++++++'''+++++######+'+#                     \n" +
-                    "               `'.+                  #+;'+##############+##+++++++#+++''';;;;;::;;++####+;+#                     \n" +
-                    "   ,@@@         ;,@                  #+;'+################+##+++##+'''''';;;;:::::;:;'#+';#                      \n" +
-                    "   ,@   @@,@@@ ,@,@ @@@ #'@@          ';'+#######################+''''++';;;;;:,,:,,,:'+;'#                      \n" +
-                    "   ,@@@ @ `@ :@,@,@ ` @,#+ @          +;'+######################+'''''+++';;;;;:,,,:,,:';+#                      \n" +
-                    "   ,@   @ .@ .@,@,@`@'@,#: @          +;;++#####################++''';'++++'';;:::,,,,,;'#                       \n" +
-                    "   ,@   @  @;@',@,@,@:@,#: @          '';++#####################+++'''''+##+++++'';:::,;+#                       \n" +
-                    "    `   `   .`  ` ` ``` `  `           ''++#####################++''''''++######+++';::'##                       \n" +
-                    "                                       '''+######################++'''''''++#######+;,:'##                       \n" +
-                    "                                       ';'+######################++'''''''''+++#++';,,:+#                        \n" +
-                    "                                       ';'++#####################++';;;;;;;;;;;';;::,,'#                         \n" +
-                    "     @@         `@                     #;''++#####################+'';;;:::::::::,,,,:+#                         \n" +
-                    "    ,@@  #;@. '@`@                     #';'++++##+################++'';:;::::::::,,,,;##                         \n" +
-                    "    @.@, @.:@ @ #@                     #'''+++++###################++++''':;;;;;::,,:'##                         \n" +
-                    "    @#@@ @  @,@ `@                      ''''+++++######################++++'''';;:::;+##                         \n" +
-                    "   :@  @ @  @ @`@@                      ''''+++++#########################++++'''';'+##                          \n" +
-                    "   #,  #,#  # :#`#                      +'''++++++#+#######################+#++++'+++#                           \n" +
-                    "                                        +;'''+++++++##########################++#++#++                           \n" +
-                    "                                         ;'''++++++++##############################++'                           \n" +
-                    "                                         ;'''++++++++++###########################+++'                           \n" +
-                    "   ,@@@    @             @,              ;'''''++++++++##########################+++++                           \n" +
-                    "   ,@   .``.  :. `..,  ..@, ,:         ##'''''''+'++++++#########################+++++                           \n" +
-                    "   ,@   @@,@ @:#+,@;@,'@;@,@';@         #''''''''''+'+++###################+#######+++                           \n" +
-                    "   ,@## @  @ @@@@,@ @;@, @,'@#`         #+''''''''++++++#################++########++++                          \n" +
-                    "   ,@   @  @ @  ,,@ @;@+ @,. .@          +';''''''++++++###############+++########+++++'                         \n" +
-                    "   ,@   @  @ '@@.,@ @; @@@:,@@'           ';'''''+++++++#############++'+##########++#+''                        \n" +
-                    "                                          ';;;;'''+++++###########++'''+##########+++++''                        \n" +
-                    "                                          ';;;;'''+++#++##+++###+''''''############+#++++';                      \n" +
-                    "                                          ';;;;;;''++###+++++++''''''+############+#+++++++'                     \n" +
-                    "                                           ;;;;;;''++++++++++'''''''++############+#++++++'++                    \n" +
-                    "                                           ;;;;;;''++++++++''++''''+++###########+#+++++++++++                   \n" +
-                    "                                           ';;;;;;'+++++++'++++'''+++###########+##+++++++++++' \n");
-        }
-        System.out.println("                             Admin Menu  \n");
-        System.out.println("Collect Deposits (c) - Restock Withdrawal Tray (r) - Withdrawal Tray Status (w)");
-        System.out.println(" View Transactions (v) - Flag User (f) - Show Flagged Users(s) - Unflag User (u) - Logout (l)\n");
-        String userInput = "";
-        while (true){
-            userInput = MenuUtilities.promptForText("Enter Decision: ").toLowerCase();
-            char charInput =' ';
-            if(userInput!=null){
-                charInput=userInput.charAt(0);
-            }
-            else{
-                charInput='!';
-            }
-            switch (charInput){
-                case 'c':collectDeposits();
-                    break;
-                case 'r':restockWithdrawalTray();
-                    break;
-                case 'w':withdrawalStatus();
-                    break;
-                case 'v':viewAllTransactions();
-                    break;
-                case 'u':unflagUser();
-                    break;
-                case 'f':flagUser();
-                    break;
-                case 'l':MenuUtilities.logout();
-                    break;
-                case 's':showFlaggedUsers();
-                    break;
+        if (UserManager.getUserManager().getCurrentUser().getUserName().equals("froilan")) {
+            MenuUtilities.delayedPrint(1000, "Admin account logged in.");
+            System.out.println("                             Admin Menu  \n");
+            System.out.println("Collect Deposits (c) - Restock Withdrawal Tray (r) - Withdrawal Tray Status (w)");
+            System.out.println(" View Transactions (v) - Flag User (f) - Show Flagged Users(s) - Unflag User (u) - Logout (l)\n");
+            String userInput = "";
+            while (true) {
+                userInput = MenuUtilities.promptForText("Enter Decision: ").toLowerCase();
+                char charInput = ' ';
+                if (userInput != null) {
+                    charInput = userInput.charAt(0);
+                } else {
+                    charInput = '!';
+                }
+                switch (charInput) {
+                    case 'c':
+                        collectDeposits();
+                        break;
+                    case 'r':
+                        restockWithdrawalTray();
+                        break;
+                    case 'w':
+                        withdrawalStatus();
+                        break;
+                    case 'v':
+                        viewAllTransactions();
+                        break;
+                    case 'u':
+                        unflagUser();
+                        break;
+                    case 'f':
+                        flagUser();
+                        break;
+                    case 'l':
+                        MenuUtilities.logout();
+                        break;
+                    case 's':
+                        showFlaggedUsers();
+                        break;
+                }
             }
         }
     }
 
     /**
-     * Collects all the deposits from the ATM
-     * Resets the deposit tray to 0
+     * Collects all the deposits from the ATM and
+     * resets the deposit tray to 0.
      */
     public static void collectDeposits(){
         //Empties the deposit tray from ATM and returns to -> adminMenu()
@@ -169,14 +81,10 @@ public class AdminMenu {
 
     /**
      * Prompts the admin to enter the number of twenties and tens be added to the machine.
-     * Checks with withdrawal tray status to see if there is enough room to accommodate the bills.
+     * Checks withdrawal tray status to see if there is enough room to accommodate the bills.
      * If successful it will restock the ATM with the amount entered and return to the menu.
      */
     public static void restockWithdrawalTray(){
-        /*Prompts admin to enter number of each bill they want to stock
-         *      checks legality
-         *          if illegal -> returns to adminMenu()
-         *          if illegal -> processes restock, returns to -> adminMenu() */
         MenuUtilities.clearScreen();
         ATM atm = ATM.getATM();
         int numTwenties = MenuUtilities.promptForPositiveInt("Enter the number of twenty dollar bills:");
@@ -200,8 +108,7 @@ public class AdminMenu {
 
     /**
      * Checks the withdrawl tray.
-     * Will show how many tens and twenties are in the ATM.
-     * Has a max capacity of 2,000 bills. Refill tray checks here to make sure there are enough bill space.
+     * Will show how many tens and twenties are in the ATM (has a max capacity of 2,000 bills). Refill tray checks here to make sure there are enough bill space.
      */
     public static void withdrawalStatus(){
         //Prints out the status of the withdrawal trays in the ATM then returns to -> adminMenu()
@@ -244,8 +151,6 @@ public class AdminMenu {
      * If the user is not flagged, will prompt that the user is already unflagged.
      */
     public static void unflagUser(){
-        /* Prompts for a username to unflag
-         *      Deflags if user is flagged, returns to -> adminMenu()*/
         MenuUtilities.clearScreen();
         UserManager um = UserManager.getUserManager();
         Authenticator am = Authenticator.getAuthenticator();
@@ -277,8 +182,6 @@ public class AdminMenu {
      * If the user is flagged, than it will prompt saying that the user is already flagged and return ot the admin menu.
      */
     public static void flagUser(){
-        /* Prompts for a username to flag
-         *      flags if user isn't flagged, returns to -> adminMenu()*/
         MenuUtilities.clearScreen();
         UserManager um = UserManager.getUserManager();
         Authenticator am = Authenticator.getAuthenticator();
@@ -305,6 +208,10 @@ public class AdminMenu {
         MenuUtilities.delayedPrint(1400,"Returning to Admin Menu.");
         adminMenu();
     }
+
+    /**
+     * Displays a list of all users currently flagged.
+     */
     public static void showFlaggedUsers(){
         MenuUtilities.clearScreen();
         System.out.println("Flagged Users: \n");

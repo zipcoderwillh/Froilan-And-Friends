@@ -1,8 +1,7 @@
 package io.froilanandfriends.atm;
 
 /**
- * <h1>Class SavingsAccount</h1>
- * <p>Type of account for savings accounts</p>
+ * Extends {@link Account} to represent a savings account.
  */
 public class SavingsAccount extends Account {
     SavingsAccount(){
